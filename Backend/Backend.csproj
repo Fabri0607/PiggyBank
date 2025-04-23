@@ -41,10 +41,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Entidades\Entity\AnalisisIA.cs" />
+    <Compile Include="Entidades\Entity\AsistenteChat.cs" />
+    <Compile Include="Entidades\Entity\Bitacora.cs" />
+    <Compile Include="Entidades\Entity\Categoria.cs" />
+    <Compile Include="Entidades\Entity\GastoCompartido.cs" />
+    <Compile Include="Entidades\Entity\GrupoFamiliar.cs" />
+    <Compile Include="Entidades\Entity\MetaFinanciera.cs" />
+    <Compile Include="Entidades\Entity\MiembroGrupo.cs" />
+    <Compile Include="Entidades\Entity\Permiso.cs" />
+    <Compile Include="Entidades\Entity\Presupuesto.cs" />
+    <Compile Include="Entidades\Entity\Recordatorio.cs" />
+    <Compile Include="Entidades\Entity\Rol.cs" />
+    <Compile Include="Entidades\Entity\RolPermiso.cs" />
+    <Compile Include="Entidades\Entity\Sesion.cs" />
+    <Compile Include="Entidades\Entity\Transaccion.cs" />
+    <Compile Include="Entidades\Entity\Usuario.cs" />
+    <Compile Include="Entidades\Entity\UsuarioRol.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Entidades\Entity\" />
     <Folder Include="Entidades\Enum\" />
     <Folder Include="Entidades\Request\" />
     <Folder Include="Entidades\Response\" />
