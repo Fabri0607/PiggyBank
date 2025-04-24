@@ -1,1 +1,11 @@
-﻿
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="PiggyBank" Class="ConexionLINQDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Function Name="dbo.SP_ABRIR_SESION" Method="SP_ABRIR_SESION">
+    <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="TokenJWT" Parameter="tokenJWT" Type="System.String" DbType="VarChar(MAX)" />
+    <Parameter Name="FechaExpiracion" Parameter="fechaExpiracion" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="SesionID" Parameter="sesionID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+</Database>
