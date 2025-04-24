@@ -22,6 +22,7 @@ namespace AccesoADatos
 	using System;
 	
 	
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="bdForoUNA")]
 	public partial class ConexionLINQDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -30,6 +31,12 @@ namespace AccesoADatos
     #region Definiciones de métodos de extensibilidad
     partial void OnCreated();
     #endregion
+		
+		public ConexionLINQDataContext() : 
+				base(global::AccesoADatos.Properties.Settings.Default.bdForoUNAConnectionString, mappingSource)
+		{
+			OnCreated();
+		}
 		
 		public ConexionLINQDataContext(string connection) : 
 				base(connection, mappingSource)
@@ -53,6 +60,16 @@ namespace AccesoADatos
 				base(connection, mappingSource)
 		{
 			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_INGRESAR_PUBLICACION")]
+		public int SP_INGRESAR_PUBLICACION([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ID_TEMA", DbType="Int")] System.Nullable<int> iD_TEMA, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ID_USUARIO", DbType="Int")] System.Nullable<int> iD_USUARIO, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TITULO", DbType="NVarChar(MAX)")] string tITULO, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="MENSAJE", DbType="NVarChar(MAX)")] string mENSAJE, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="IDRETURN", DbType="Int")] ref System.Nullable<int> iDRETURN, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), iD_TEMA, iD_USUARIO, tITULO, mENSAJE, iDRETURN, eRRORID, eRRORDESCRIPCION);
+			iDRETURN = ((System.Nullable<int>)(result.GetParameterValue(4)));
+			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(5)));
+			eRRORDESCRIPCION = ((string)(result.GetParameterValue(6)));
+			return ((int)(result.ReturnValue));
 		}
 	}
 }
