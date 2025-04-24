@@ -33,7 +33,7 @@ namespace AccesoADatos
     #endregion
 		
 		public ConexionLINQDataContext() : 
-				base(global::AccesoADatos.Properties.Settings.Default.bdForoUNAConnectionString, mappingSource)
+				base(global::Backend.Properties.Settings.Default.PiggyBankConnectionString, mappingSource)
 		{
 			OnCreated();
 		}
@@ -69,6 +69,16 @@ namespace AccesoADatos
 			sesionID = ((System.Nullable<int>)(result.GetParameterValue(3)));
 			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(4)));
 			eRRORDESCRIPCION = ((string)(result.GetParameterValue(5)));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_TRANSACCION_REGISTRAR")]
+		public int SP_TRANSACCION_REGISTRAR([global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Tipo", DbType="VarChar(10)")] string tipo, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Monto", DbType="Decimal(10,2)")] System.Nullable<decimal> monto, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CategoriaID", DbType="Int")] System.Nullable<int> categoriaID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Fecha", DbType="DateTime")] System.Nullable<System.DateTime> fecha, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Descripcion", DbType="Text")] string descripcion, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="EsCompartido", DbType="Bit")] System.Nullable<bool> esCompartido, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="GrupoID", DbType="Int")] System.Nullable<int> grupoID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TransaccionID", DbType="Int")] ref System.Nullable<int> transaccionID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), usuarioID, tipo, monto, categoriaID, fecha, descripcion, esCompartido, grupoID, transaccionID, eRRORID, eRRORDESCRIPCION);
+			transaccionID = ((System.Nullable<int>)(result.GetParameterValue(8)));
+			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(9)));
+			eRRORDESCRIPCION = ((string)(result.GetParameterValue(10)));
 			return ((int)(result.ReturnValue));
 		}
 	}
