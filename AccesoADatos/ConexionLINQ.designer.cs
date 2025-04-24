@@ -22,7 +22,7 @@ namespace AccesoADatos
 	using System;
 	
 	
-	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="bdForoUNA")]
+	[global::System.Data.Linq.Mapping.DatabaseAttribute(Name="PiggyBank")]
 	public partial class ConexionLINQDataContext : System.Data.Linq.DataContext
 	{
 		
@@ -62,13 +62,13 @@ namespace AccesoADatos
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_INGRESAR_PUBLICACION")]
-		public int SP_INGRESAR_PUBLICACION([global::System.Data.Linq.Mapping.ParameterAttribute(Name="ID_TEMA", DbType="Int")] System.Nullable<int> iD_TEMA, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ID_USUARIO", DbType="Int")] System.Nullable<int> iD_USUARIO, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TITULO", DbType="NVarChar(MAX)")] string tITULO, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="MENSAJE", DbType="NVarChar(MAX)")] string mENSAJE, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="IDRETURN", DbType="Int")] ref System.Nullable<int> iDRETURN, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_ABRIR_SESION")]
+		public int SP_ABRIR_SESION([global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TokenJWT", DbType="VarChar(MAX)")] string tokenJWT, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaExpiracion", DbType="DateTime")] System.Nullable<System.DateTime> fechaExpiracion, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SesionID", DbType="Int")] ref System.Nullable<int> sesionID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), iD_TEMA, iD_USUARIO, tITULO, mENSAJE, iDRETURN, eRRORID, eRRORDESCRIPCION);
-			iDRETURN = ((System.Nullable<int>)(result.GetParameterValue(4)));
-			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(5)));
-			eRRORDESCRIPCION = ((string)(result.GetParameterValue(6)));
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), usuarioID, tokenJWT, fechaExpiracion, sesionID, eRRORID, eRRORDESCRIPCION);
+			sesionID = ((System.Nullable<int>)(result.GetParameterValue(3)));
+			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(4)));
+			eRRORDESCRIPCION = ((string)(result.GetParameterValue(5)));
 			return ((int)(result.ReturnValue));
 		}
 	}
