@@ -45,6 +45,7 @@
     <Compile Include="Entidades\Entity\AsistenteChat.cs" />
     <Compile Include="Entidades\Entity\Bitacora.cs" />
     <Compile Include="Entidades\Entity\Categoria.cs" />
+    <Compile Include="Entidades\Entity\Error.cs" />
     <Compile Include="Entidades\Entity\GastoCompartido.cs" />
     <Compile Include="Entidades\Entity\GrupoFamiliar.cs" />
     <Compile Include="Entidades\Entity\MetaFinanciera.cs" />
@@ -58,12 +59,13 @@
     <Compile Include="Entidades\Entity\Transaccion.cs" />
     <Compile Include="Entidades\Entity\Usuario.cs" />
     <Compile Include="Entidades\Entity\UsuarioRol.cs" />
+    <Compile Include="Entidades\Enum\enumErrores.cs" />
+    <Compile Include="Entidades\Enum\enumEstadoSesion.cs" />
+    <Compile Include="Entidades\Request\ReqBase.cs" />
+    <Compile Include="Entidades\Response\ResBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Entidades\Enum\" />
-    <Folder Include="Entidades\Request\" />
-    <Folder Include="Entidades\Response\" />
     <Folder Include="Logica\" />
   </ItemGroup>
   <ItemGroup>
