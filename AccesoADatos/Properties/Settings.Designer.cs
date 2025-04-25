@@ -33,5 +33,16 @@ namespace AccesoADatos.Properties {
                 return ((string)(this["bdForoUNAConnectionString"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=CRISACERN5\\SQLEXPRESS;Initial Catalog=PiggyBank;Integrated Security=T" +
+            "rue;TrustServerCertificate=True")]
+        public string PiggyBankConnectionString {
+            get {
+                return ((string)(this["PiggyBankConnectionString"]));
+            }
+        }
     }
 }
