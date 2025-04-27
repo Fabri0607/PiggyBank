@@ -33,6 +33,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -62,7 +63,9 @@
     <Compile Include="Entidades\Enum\enumErrores.cs" />
     <Compile Include="Entidades\Enum\enumEstadoSesion.cs" />
     <Compile Include="Entidades\Request\ReqBase.cs" />
+    <Compile Include="Entidades\Request\ReqInsertarUsuario.cs" />
     <Compile Include="Entidades\Response\ResBase.cs" />
+    <Compile Include="Entidades\Response\ResInsertarUsuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
