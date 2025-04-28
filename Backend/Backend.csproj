@@ -64,9 +64,19 @@
     <Compile Include="Entidades\Enum\enumErrores.cs" />
     <Compile Include="Entidades\Enum\enumEstadoSesion.cs" />
     <Compile Include="Entidades\Request\ReqBase.cs" />
+    <Compile Include="Entidades\Request\ReqCrearGrupoFamiliar.cs" />
     <Compile Include="Entidades\Request\ReqInsertarUsuario.cs" />
+    <Compile Include="Entidades\Request\ReqInvitarMiembroGrupo.cs" />
+    <Compile Include="Entidades\Request\ReqObtenerBalanceGrupal.cs" />
+    <Compile Include="Entidades\Request\ReqRegistrarGastoCompartido.cs" />
     <Compile Include="Entidades\Response\ResBase.cs" />
+    <Compile Include="Entidades\Response\ResCrearGrupoFamiliar.cs" />
     <Compile Include="Entidades\Response\ResInsertarUsuario.cs" />
+    <Compile Include="Entidades\Response\ResInvitarMiembroGrupo.cs" />
+    <Compile Include="Entidades\Response\ResObtenerBalanceGrupal.cs" />
+    <Compile Include="Entidades\Response\ResRegistrarGastoCompartido.cs" />
+    <Compile Include="Helpers\HelperValidacion.cs" />
+    <Compile Include="Logica\LogicaGrupo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -74,9 +84,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Logica\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\AccesoADatos\AccesoADatos.csproj">
       <Project>{177785a2-7154-4e54-959b-5893c8e82723}</Project>
