@@ -22,10 +22,12 @@ namespace Backend.Entidades
         verificacionFallida = 10,
         verificacionExpirada = 11,
         usuarioFaltante = 12,
-        temaFaltante = 13,
-        tituloFaltante = 14,
-        mensajeFaltante = 15,
-        idPublicacionFaltante = 16
-
+        campoRequerido = 13,
+        valorInvalido = 14,
+        grupoNoEncontrado = 15,
+        usuarioNoEncontrado = 16,
+        rolInvalido = 18,
+        transaccionNoEncontrada = 19,
+        estadoInvalido = 20
     }
 }
