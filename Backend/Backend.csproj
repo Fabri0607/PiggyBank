@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Entidades\Entity\AnalisisIA.cs" />
     <Compile Include="Entidades\Entity\AsistenteChat.cs" />
+    <Compile Include="Entidades\Entity\BalanceMiembro.cs" />
     <Compile Include="Entidades\Entity\Bitacora.cs" />
     <Compile Include="Entidades\Entity\Categoria.cs" />
     <Compile Include="Entidades\Entity\Error.cs" />
