@@ -37,17 +37,6 @@ namespace AccesoADatos.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
-        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=CRISACERN5\\SQLEXPRESS;Initial Catalog=PiggyBank;Integrated Security=T" +
-            "rue;TrustServerCertificate=True")]
-        public string PiggyBankConnectionString {
-            get {
-                return ((string)(this["PiggyBankConnectionString"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
         [global::System.Configuration.DefaultSettingValueAttribute("Data Source=34.41.22.76;Initial Catalog=PiggyBank;Persist Security Info=True;User" +
             " ID=PiggyBankApp;Encrypt=True;TrustServerCertificate=True")]
         public string PiggyBankConnectionString1 {
@@ -64,6 +53,29 @@ namespace AccesoADatos.Properties {
         public string PiggyBankConnectionString2 {
             get {
                 return ((string)(this["PiggyBankConnectionString2"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=34.41.22.76;Initial Catalog=PiggyBank;Persist Security Info=True;User" +
+            " ID=PiggyBankApp;Encrypt=True;TrustServerCertificate=True")]
+        public string PiggyBankConnectionString {
+            get {
+                return ((string)(this["PiggyBankConnectionString"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=34.41.22.76;Initial Catalog=PiggyBank;Persist Security Info=True;User" +
+            " ID=PiggyBankApp;Password=QuMFGzcyzht7c5X;Encrypt=True;TrustServerCertificate=Tr" +
+            "ue")]
+        public string PiggyBankConnectionString3 {
+            get {
+                return ((string)(this["PiggyBankConnectionString3"]));
             }
         }
     }
