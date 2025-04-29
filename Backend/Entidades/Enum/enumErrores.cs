@@ -28,6 +28,13 @@ namespace Backend.Entidades
         usuarioNoEncontrado = 16,
         rolInvalido = 18,
         transaccionNoEncontrada = 19,
-        estadoInvalido = 20
+        estadoInvalido = 20,
+        errorEnvioCorreo = 21,
+        codigoVerificacionFaltante = 22,
+        credencialesInvalidas = 23,
+        emailNoVerificado = 24,
+        sesionInvalida = 25,
+        passwordIgual = 26,
+        emailYaVerificado = 27
     }
 }
