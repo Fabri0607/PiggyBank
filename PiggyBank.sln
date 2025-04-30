@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backend", "Backend\Backend.csproj", "{8FC97BEE-6310-4BA6-824F-22DA26C6BAE9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccesoADatos", "AccesoADatos\AccesoADatos.csproj", "{177785A2-7154-4E54-959B-5893C8E82723}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIsREST", "APIsREST\APIsREST.csproj", "{C6096E25-8304-41A8-8017-C54A5A44BF6A}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "APIRest", "APIRest\APIRest.csproj", "{3FF7279B-56BC-4E28-BD7D-62DA429247EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +23,15 @@ Global
 		{177785A2-7154-4E54-959B-5893C8E82723}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{177785A2-7154-4E54-959B-5893C8E82723}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{177785A2-7154-4E54-959B-5893C8E82723}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C6096E25-8304-41A8-8017-C54A5A44BF6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C6096E25-8304-41A8-8017-C54A5A44BF6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C6096E25-8304-41A8-8017-C54A5A44BF6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C6096E25-8304-41A8-8017-C54A5A44BF6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3FF7279B-56BC-4E28-BD7D-62DA429247EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3FF7279B-56BC-4E28-BD7D-62DA429247EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3FF7279B-56BC-4E28-BD7D-62DA429247EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3FF7279B-56BC-4E28-BD7D-62DA429247EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5D57B7B7-92D7-4829-8E34-FD3281B9C318}
 	EndGlobalSection
 EndGlobal

@@ -1,0 +1,87 @@
+﻿using Backend.Entidades.Request;
+using Backend.Entidades.Response;
+using Backend.Entidades;
+using Backend.Logica;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Web.Http;
+
+namespace APIRest.Controllers
+{
+    public class GrupoController : ApiController
+    {
+        private readonly LogicaGrupo _logica = new LogicaGrupo();
+
+        // POST: /api/grupos
+        [HttpPost]
+        [Route("api/grupos")]
+        public ResCrearGrupoFamiliar CrearGrupo(ReqCrearGrupoFamiliar req)
+        {
+            return _logica.CrearGrupo(req);
+        }
+
+        // POST: /api/grupos/{id}/miembros
+        [HttpPost]
+        [Route("api/grupos/{id}/miembros")]
+        public ResInvitarMiembroGrupo InvitarMiembro(int id, ReqInvitarMiembroGrupo req)
+        {
+            if (req == null || id != req.GrupoID)
+            {
+                return new ResInvitarMiembroGrupo
+                {
+                    resultado = false,
+                    error = new System.Collections.Generic.List<Error>
+                    {
+                        new Error
+                        {
+                            ErrorCode = (int)enumErrores.requestNulo,
+                            Message = "Solicitud no válida o ID de grupo inconsistente"
+                        }
+                    }
+                };
+            }
+            return _logica.InvitarMiembro(req);
+        }
+
+        // POST: /api/grupos/{id}/gastos
+        [HttpPost]
+        [Route("api/grupos/{id}/gastos")]
+        public ResRegistrarGastoCompartido RegistrarGastoCompartido(int id, ReqRegistrarGastoCompartido req)
+        {
+            if (req == null || id != req.GrupoID)
+            {
+                return new ResRegistrarGastoCompartido
+                {
+                    resultado = false,
+                    error = new System.Collections.Generic.List<Error>
+                    {
+                        new Error
+                        {
+                            ErrorCode = (int)enumErrores.requestNulo,
+                            Message = "Solicitud no válida o ID de grupo inconsistente"
+                        }
+                    }
+                };
+            }
+            return _logica.RegistrarGastoCompartido(req);
+        }
+
+        // GET: /api/grupos/{id}/balances
+        [HttpGet]
+        [Route("api/grupos/{id}/balances")]
+        public ResObtenerBalanceGrupal ObtenerBalanceGrupal(int id, [FromUri] DateTime? fechaInicio = null, [FromUri] DateTime? fechaFin = null)
+        {
+            var req = new ReqObtenerBalanceGrupal
+            {
+                GrupoID = id,
+                FechaInicio = fechaInicio,
+                FechaFin = fechaFin
+            };
+            return _logica.ObtenerBalanceGrupal(req);
+        }
+    }
+
+}

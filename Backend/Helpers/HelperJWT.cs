@@ -6,7 +6,7 @@ using System;
 
 public static class HelperJWT
 {
-    private static string ClaveSecreta = "PiggyBankFCON2025";
+    private static string ClaveSecreta = "PiggyBankFCON2025CULOCONCACAYPEDOSYPIPI";
 
     public static string GenerarToken(int usuarioId, string nombre, string email)
     {

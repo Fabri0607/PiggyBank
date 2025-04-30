@@ -233,7 +233,23 @@ namespace Backend.Logica
                 }
 
                 // Consultar usuario para verificar credenciales
-                var usuario = _dbContext.SP_OBTENER_USUARIO_POR_EMAIL(req.Email).FirstOrDefault();
+                int? errorIdBD = 0;
+                string errorMsgBD = "";
+                var usuario = _dbContext.SP_OBTENER_USUARIO_POR_EMAIL(req.Email, ref errorIdBD, ref errorMsgBD).FirstOrDefault();
+
+                if (errorIdBD != 0)
+                {
+                    if (errorIdBD == 400)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.correoFaltante, errorMsgBD));
+                    }
+                    else
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgBD));
+                    }
+                    res.resultado = false;
+                    return res;
+                }
 
                 if (usuario == null)
                 {
@@ -266,15 +282,23 @@ namespace Backend.Logica
 
                 // Registrar sesión
                 int? sesionID = 0;
-                int? errorIdBD = 0;
-                string errorMsgBD = "";
-
+                errorIdBD = 0;
+                errorMsgBD = "";
                 _dbContext.SP_ABRIR_SESION(usuario.UsuarioID, token, fechaExpiracion, ref sesionID, ref errorIdBD, ref errorMsgBD);
 
                 if (sesionID > 0)
                 {
                     // Actualizar último acceso
-                    _dbContext.SP_ACTUALIZAR_ULTIMO_ACCESO(usuario.UsuarioID);
+                    errorIdBD = 0;
+                    errorMsgBD = "";
+                    _dbContext.SP_ACTUALIZAR_ULTIMO_ACCESO(usuario.UsuarioID, ref errorIdBD, ref errorMsgBD);
+
+                    if (errorIdBD != 0)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgBD));
+                        res.resultado = false;
+                        return res;
+                    }
 
                     // Crear la respuesta con información de sesión
                     res.SesionID = sesionID.Value;
@@ -558,7 +582,16 @@ namespace Backend.Logica
                 if (errorIdBD == 0)
                 {
                     // Obtener información del usuario para el envío del correo
-                    var usuario = _dbContext.SP_OBTENER_USUARIO_POR_EMAIL(req.Email).FirstOrDefault();
+                    errorIdBD = 0;
+                    errorMsgBD = "";
+                    var usuario = _dbContext.SP_OBTENER_USUARIO_POR_EMAIL(req.Email, ref errorIdBD, ref errorMsgBD).FirstOrDefault();
+
+                    if (errorIdBD != 0)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgBD));
+                        res.resultado = false;
+                        return res;
+                    }
 
                     if (usuario != null)
                     {

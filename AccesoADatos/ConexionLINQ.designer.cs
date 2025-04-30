@@ -181,13 +181,6 @@ namespace AccesoADatos
 			return ((ISingleResult<SP_OBTENER_TODOS_USUARIOSResult>)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_OBTENER_USUARIO_POR_ID")]
-		public ISingleResult<SP_OBTENER_USUARIO_POR_IDResult> SP_OBTENER_USUARIO_POR_ID([global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), usuarioID);
-			return ((ISingleResult<SP_OBTENER_USUARIO_POR_IDResult>)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_PRESUPUESTO_CREAR")]
 		public int SP_PRESUPUESTO_CREAR([global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CategoriaID", DbType="Int")] System.Nullable<int> categoriaID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="MontoLimite", DbType="Decimal(10,2)")] System.Nullable<decimal> montoLimite, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Periodo", DbType="VarChar(10)")] string periodo, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaInicio", DbType="Date")] System.Nullable<System.DateTime> fechaInicio, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaFin", DbType="Date")] System.Nullable<System.DateTime> fechaFin, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PresupuestoID", DbType="Int")] ref System.Nullable<int> presupuestoID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
 		{
@@ -256,6 +249,31 @@ namespace AccesoADatos
 			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(3)));
 			eRRORDESCRIPCION = ((string)(result.GetParameterValue(4)));
 			return ((ISingleResult<SP_BALANCE_CALCULAR_REGISTRARResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_OBTENER_USUARIO_POR_ID")]
+		public ISingleResult<SP_OBTENER_USUARIO_POR_IDResult> SP_OBTENER_USUARIO_POR_ID([global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), usuarioID);
+			return ((ISingleResult<SP_OBTENER_USUARIO_POR_IDResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_OBTENER_USUARIO_POR_EMAIL")]
+		public ISingleResult<SP_OBTENER_USUARIO_POR_EMAILResult> SP_OBTENER_USUARIO_POR_EMAIL([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Email", DbType="NVarChar(255)")] string email, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), email, eRRORID, eRRORDESCRIPCION);
+			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(1)));
+			eRRORDESCRIPCION = ((string)(result.GetParameterValue(2)));
+			return ((ISingleResult<SP_OBTENER_USUARIO_POR_EMAILResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_ACTUALIZAR_ULTIMO_ACCESO")]
+		public int SP_ACTUALIZAR_ULTIMO_ACCESO([global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), usuarioID, eRRORID, eRRORDESCRIPCION);
+			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(1)));
+			eRRORDESCRIPCION = ((string)(result.GetParameterValue(2)));
+			return ((int)(result.ReturnValue));
 		}
 	}
 	
@@ -504,122 +522,6 @@ namespace AccesoADatos
 				if ((this._UltimoAcceso != value))
 				{
 					this._UltimoAcceso = value;
-				}
-			}
-		}
-	}
-	
-	public partial class SP_OBTENER_USUARIO_POR_IDResult
-	{
-		
-		private int _UsuarioID;
-		
-		private string _Nombre;
-		
-		private string _Email;
-		
-		private System.DateTime _FechaRegistro;
-		
-		private System.Nullable<System.DateTime> _UltimoAcceso;
-		
-		private string _ConfiguracionNotificaciones;
-		
-		public SP_OBTENER_USUARIO_POR_IDResult()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsuarioID", DbType="Int NOT NULL")]
-		public int UsuarioID
-		{
-			get
-			{
-				return this._UsuarioID;
-			}
-			set
-			{
-				if ((this._UsuarioID != value))
-				{
-					this._UsuarioID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nombre", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
-		public string Nombre
-		{
-			get
-			{
-				return this._Nombre;
-			}
-			set
-			{
-				if ((this._Nombre != value))
-				{
-					this._Nombre = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
-		public string Email
-		{
-			get
-			{
-				return this._Email;
-			}
-			set
-			{
-				if ((this._Email != value))
-				{
-					this._Email = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FechaRegistro", DbType="DateTime NOT NULL")]
-		public System.DateTime FechaRegistro
-		{
-			get
-			{
-				return this._FechaRegistro;
-			}
-			set
-			{
-				if ((this._FechaRegistro != value))
-				{
-					this._FechaRegistro = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UltimoAcceso", DbType="DateTime")]
-		public System.Nullable<System.DateTime> UltimoAcceso
-		{
-			get
-			{
-				return this._UltimoAcceso;
-			}
-			set
-			{
-				if ((this._UltimoAcceso != value))
-				{
-					this._UltimoAcceso = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConfiguracionNotificaciones", DbType="VarChar(MAX)")]
-		public string ConfiguracionNotificaciones
-		{
-			get
-			{
-				return this._ConfiguracionNotificaciones;
-			}
-			set
-			{
-				if ((this._ConfiguracionNotificaciones != value))
-				{
-					this._ConfiguracionNotificaciones = value;
 				}
 			}
 		}
@@ -986,6 +888,274 @@ namespace AccesoADatos
 				if ((this._FechaCalculo != value))
 				{
 					this._FechaCalculo = value;
+				}
+			}
+		}
+	}
+	
+	public partial class SP_OBTENER_USUARIO_POR_IDResult
+	{
+		
+		private int _UsuarioID;
+		
+		private string _Nombre;
+		
+		private string _Email;
+		
+		private System.DateTime _FechaRegistro;
+		
+		private System.Nullable<System.DateTime> _UltimoAcceso;
+		
+		private string _ConfiguracionNotificaciones;
+		
+		private string _LlaveUnica;
+		
+		private string _PasswordHash;
+		
+		public SP_OBTENER_USUARIO_POR_IDResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsuarioID", DbType="Int NOT NULL")]
+		public int UsuarioID
+		{
+			get
+			{
+				return this._UsuarioID;
+			}
+			set
+			{
+				if ((this._UsuarioID != value))
+				{
+					this._UsuarioID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nombre", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		public string Nombre
+		{
+			get
+			{
+				return this._Nombre;
+			}
+			set
+			{
+				if ((this._Nombre != value))
+				{
+					this._Nombre = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		public string Email
+		{
+			get
+			{
+				return this._Email;
+			}
+			set
+			{
+				if ((this._Email != value))
+				{
+					this._Email = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FechaRegistro", DbType="DateTime NOT NULL")]
+		public System.DateTime FechaRegistro
+		{
+			get
+			{
+				return this._FechaRegistro;
+			}
+			set
+			{
+				if ((this._FechaRegistro != value))
+				{
+					this._FechaRegistro = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UltimoAcceso", DbType="DateTime")]
+		public System.Nullable<System.DateTime> UltimoAcceso
+		{
+			get
+			{
+				return this._UltimoAcceso;
+			}
+			set
+			{
+				if ((this._UltimoAcceso != value))
+				{
+					this._UltimoAcceso = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ConfiguracionNotificaciones", DbType="VarChar(MAX)")]
+		public string ConfiguracionNotificaciones
+		{
+			get
+			{
+				return this._ConfiguracionNotificaciones;
+			}
+			set
+			{
+				if ((this._ConfiguracionNotificaciones != value))
+				{
+					this._ConfiguracionNotificaciones = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LlaveUnica", DbType="VarChar(128) NOT NULL", CanBeNull=false)]
+		public string LlaveUnica
+		{
+			get
+			{
+				return this._LlaveUnica;
+			}
+			set
+			{
+				if ((this._LlaveUnica != value))
+				{
+					this._LlaveUnica = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PasswordHash", DbType="VarChar(255) NOT NULL", CanBeNull=false)]
+		public string PasswordHash
+		{
+			get
+			{
+				return this._PasswordHash;
+			}
+			set
+			{
+				if ((this._PasswordHash != value))
+				{
+					this._PasswordHash = value;
+				}
+			}
+		}
+	}
+	
+	public partial class SP_OBTENER_USUARIO_POR_EMAILResult
+	{
+		
+		private int _UsuarioID;
+		
+		private string _Nombre;
+		
+		private string _Email;
+		
+		private string _PasswordHash;
+		
+		private string _LlaveUnica;
+		
+		private bool _EmailVerificado;
+		
+		public SP_OBTENER_USUARIO_POR_EMAILResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsuarioID", DbType="Int NOT NULL")]
+		public int UsuarioID
+		{
+			get
+			{
+				return this._UsuarioID;
+			}
+			set
+			{
+				if ((this._UsuarioID != value))
+				{
+					this._UsuarioID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nombre", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		public string Nombre
+		{
+			get
+			{
+				return this._Nombre;
+			}
+			set
+			{
+				if ((this._Nombre != value))
+				{
+					this._Nombre = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		public string Email
+		{
+			get
+			{
+				return this._Email;
+			}
+			set
+			{
+				if ((this._Email != value))
+				{
+					this._Email = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PasswordHash", DbType="VarChar(255) NOT NULL", CanBeNull=false)]
+		public string PasswordHash
+		{
+			get
+			{
+				return this._PasswordHash;
+			}
+			set
+			{
+				if ((this._PasswordHash != value))
+				{
+					this._PasswordHash = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_LlaveUnica", DbType="VarChar(128) NOT NULL", CanBeNull=false)]
+		public string LlaveUnica
+		{
+			get
+			{
+				return this._LlaveUnica;
+			}
+			set
+			{
+				if ((this._LlaveUnica != value))
+				{
+					this._LlaveUnica = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EmailVerificado", DbType="Bit NOT NULL")]
+		public bool EmailVerificado
+		{
+			get
+			{
+				return this._EmailVerificado;
+			}
+			set
+			{
+				if ((this._EmailVerificado != value))
+				{
+					this._EmailVerificado = value;
 				}
 			}
 		}
