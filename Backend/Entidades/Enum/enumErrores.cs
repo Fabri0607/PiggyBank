@@ -35,6 +35,7 @@ namespace Backend.Entidades
         emailNoVerificado = 24,
         sesionInvalida = 25,
         passwordIgual = 26,
-        emailYaVerificado = 27
+        emailYaVerificado = 27,
+        categoriaNoEncontrada = 28
     }
 }

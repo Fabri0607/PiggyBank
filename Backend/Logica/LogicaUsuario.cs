@@ -258,7 +258,6 @@ namespace Backend.Logica
                     return res;
                 }
 
-                // Verificar si el email está confirmado
                 if (!usuario.EmailVerificado)
                 {
                     res.error.Add(HelperValidacion.CrearError(enumErrores.emailNoVerificado, "El correo electrónico no ha sido verificado"));
@@ -276,47 +275,62 @@ namespace Backend.Logica
                     return res;
                 }
 
-                // Generar token JWT
-                string token = HelperJWT.GenerarToken(usuario.UsuarioID, usuario.Nombre, usuario.Email);
-                DateTime fechaExpiracion = DateTime.Now.AddHours(24);
-
-                // Registrar sesión
+                // Crear sesión en blanco (sin token aún)
                 int? sesionID = 0;
                 errorIdBD = 0;
                 errorMsgBD = "";
-                _dbContext.SP_ABRIR_SESION(usuario.UsuarioID, token, fechaExpiracion, ref sesionID, ref errorIdBD, ref errorMsgBD);
+                DateTime fechaExpiracion = DateTime.Now.AddHours(24);
 
-                if (sesionID > 0)
-                {
-                    // Actualizar último acceso
-                    errorIdBD = 0;
-                    errorMsgBD = "";
-                    _dbContext.SP_ACTUALIZAR_ULTIMO_ACCESO(usuario.UsuarioID, ref errorIdBD, ref errorMsgBD);
+                _dbContext.SP_ABRIR_SESION(usuario.UsuarioID, "", fechaExpiracion, ref sesionID, ref errorIdBD, ref errorMsgBD);
 
-                    if (errorIdBD != 0)
-                    {
-                        res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgBD));
-                        res.resultado = false;
-                        return res;
-                    }
-
-                    // Crear la respuesta con información de sesión
-                    res.SesionID = sesionID.Value;
-                    res.Token = token;
-                    res.FechaExpiracion = fechaExpiracion;
-                    res.Usuario = new UsuarioDTO
-                    {
-                        UsuarioID = usuario.UsuarioID,
-                        Nombre = usuario.Nombre,
-                        Email = usuario.Email
-                    };
-                    res.resultado = true;
-                }
-                else
+                if (sesionID <= 0)
                 {
                     res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgBD));
                     res.resultado = false;
+                    return res;
                 }
+
+                // Generar el token con el SesionID ya creado
+                string token = HelperJWT.GenerarToken(usuario.UsuarioID, usuario.Nombre, usuario.Email);
+
+                // Actualizar la sesión con el token generado
+                errorIdBD = 0;
+                errorMsgBD = "";
+                _dbContext.SP_ACTUALIZAR_TOKEN_SESION(sesionID.Value, token, ref errorIdBD, ref errorMsgBD);
+
+                if (errorIdBD != 0)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgBD));
+                    res.resultado = false;
+                    return res;
+                }
+
+                // Actualizar último acceso
+                errorIdBD = 0;
+                errorMsgBD = "";
+                _dbContext.SP_ACTUALIZAR_ULTIMO_ACCESO(usuario.UsuarioID, ref errorIdBD, ref errorMsgBD);
+
+                if (errorIdBD != 0)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgBD));
+                    res.resultado = false;
+                    return res;
+                }
+
+                // Armar respuesta
+                res.SesionID = sesionID.Value;
+                res.Token = token;
+                res.FechaExpiracion = fechaExpiracion;
+                res.Usuario = new UsuarioDTO
+                {
+                    UsuarioID = usuario.UsuarioID,
+                    Nombre = usuario.Nombre,
+                    Email = usuario.Email,
+                    FechaRegistro = usuario.FechaRegistro,
+                    UltimoAcceso = usuario.UltimoAcceso,
+                    ConfiguracionNotificaciones = usuario.ConfiguracionNotificaciones
+                };
+                res.resultado = true;
             }
             catch (Exception ex)
             {
@@ -326,6 +340,7 @@ namespace Backend.Logica
 
             return res;
         }
+
 
         // 4. Cerrar sesión
         public ResCerrarSesion CerrarSesion(ReqCerrarSesion req)

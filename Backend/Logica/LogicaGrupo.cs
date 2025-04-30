@@ -164,10 +164,6 @@ namespace Backend.Logica
                 }
                 else
                 {
-                    if (req.TransaccionID <= 0)
-                    {
-                        res.error.Add(HelperValidacion.CrearError(enumErrores.transaccionNoEncontrada, "Transacción inválida"));
-                    }
                     if (req.GrupoID <= 0)
                     {
                         res.error.Add(HelperValidacion.CrearError(enumErrores.grupoNoEncontrado, "Grupo inválido"));
@@ -184,6 +180,14 @@ namespace Backend.Logica
                     {
                         res.error.Add(HelperValidacion.CrearError(enumErrores.estadoInvalido, "Estado inválido"));
                     }
+                    if (req.CategoriaID <= 0)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.categoriaNoEncontrada, "Categoría inválida"));
+                    }
+                    if (!string.IsNullOrEmpty(req.Descripcion) && req.Descripcion.Length > 1000)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.valorInvalido, "La descripción es demasiado larga"));
+                    }
                 }
                 #endregion
 
@@ -194,19 +198,33 @@ namespace Backend.Logica
                 }
 
                 int? gastoID = 0;
+                int? transaccionID = 0;
                 int? errorIdBD = 0;
                 string errorMsgBD = "";
 
-                _dbContext.SP_GASTO_COMPARTIDO_REGISTRAR(req.TransaccionID, req.GrupoID, req.UsuarioID, req.Monto, req.Estado, ref gastoID, ref errorIdBD, ref errorMsgBD);
+                // Llamar al stored procedure
+                _dbContext.SP_GASTO_COMPARTIDO_REGISTRAR(
+                    req.GrupoID,
+                    req.UsuarioID,
+                    req.Monto,
+                    req.Estado,
+                    req.CategoriaID,
+                    req.Descripcion,
+                    ref gastoID,
+                    ref transaccionID,
+                    ref errorIdBD,
+                    ref errorMsgBD
+                );
 
                 if (gastoID > 0)
                 {
                     res.GastoID = gastoID.Value;
+                    res.TransaccionID = transaccionID.Value;
                     res.resultado = true;
                 }
                 else
                 {
-                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, "Error al registrar el gasto compartido"));
+                    res.error.Add(HelperValidacion.CrearError((enumErrores)errorIdBD, errorMsgBD));
                     res.resultado = false;
                 }
             }

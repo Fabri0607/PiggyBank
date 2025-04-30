@@ -8,10 +8,11 @@ namespace Backend.Entidades.Request
 {
     public class ReqRegistrarGastoCompartido : ReqBase
     {
-        public int TransaccionID { get; set; } // ID de la transacción asociada
         public int GrupoID { get; set; }
-        public int UsuarioID { get; set; } // ID del usuario responsable
+        public int UsuarioID { get; set; }
         public decimal Monto { get; set; }
         public string Estado { get; set; } // 'Pendiente', 'Pagado', 'Rechazado'
+        public int CategoriaID { get; set; }
+        public string Descripcion { get; set; }
     }
 }

@@ -54,17 +54,6 @@
     <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.SP_GASTO_COMPARTIDO_REGISTRAR" Method="SP_GASTO_COMPARTIDO_REGISTRAR">
-    <Parameter Name="TransaccionID" Parameter="transaccionID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="GrupoID" Parameter="grupoID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="Monto" Parameter="monto" Type="System.Decimal" DbType="Decimal(10,2)" />
-    <Parameter Name="Estado" Parameter="estado" Type="System.String" DbType="VarChar(20)" />
-    <Parameter Name="GastoID" Parameter="gastoID" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
-    <Return Type="System.Int32" />
-  </Function>
   <Function Name="dbo.SP_GRUPO_CREAR" Method="SP_GRUPO_CREAR">
     <Parameter Name="Nombre" Parameter="nombre" Type="System.String" DbType="VarChar(100)" />
     <Parameter Name="Descripcion" Parameter="descripcion" Type="System.String" DbType="Text" />
@@ -225,6 +214,12 @@
       <Column Name="PasswordHash" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
+  <Function Name="dbo.SP_ACTUALIZAR_ULTIMO_ACCESO" Method="SP_ACTUALIZAR_ULTIMO_ACCESO">
+    <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
   <Function Name="dbo.SP_OBTENER_USUARIO_POR_EMAIL" Method="SP_OBTENER_USUARIO_POR_EMAIL">
     <Parameter Name="Email" Parameter="email" Type="System.String" DbType="NVarChar(255)" />
     <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
@@ -233,13 +228,30 @@
       <Column Name="UsuarioID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="Nombre" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
       <Column Name="Email" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="FechaRegistro" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UltimoAcceso" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="ConfiguracionNotificaciones" Type="System.String" DbType="VarChar(MAX)" CanBeNull="true" />
       <Column Name="PasswordHash" Type="System.String" DbType="VarChar(255) NOT NULL" CanBeNull="false" />
       <Column Name="LlaveUnica" Type="System.String" DbType="VarChar(128) NOT NULL" CanBeNull="false" />
       <Column Name="EmailVerificado" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
-  <Function Name="dbo.SP_ACTUALIZAR_ULTIMO_ACCESO" Method="SP_ACTUALIZAR_ULTIMO_ACCESO">
+  <Function Name="dbo.SP_GASTO_COMPARTIDO_REGISTRAR" Method="SP_GASTO_COMPARTIDO_REGISTRAR">
+    <Parameter Name="GrupoID" Parameter="grupoID" Type="System.Int32" DbType="Int" />
     <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Monto" Parameter="monto" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Parameter Name="Estado" Parameter="estado" Type="System.String" DbType="VarChar(20)" />
+    <Parameter Name="CategoriaID" Parameter="categoriaID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Descripcion" Parameter="descripcion" Type="System.String" DbType="Text" />
+    <Parameter Name="GastoID" Parameter="gastoID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="TransaccionID" Parameter="transaccionID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_ACTUALIZAR_TOKEN_SESION" Method="SP_ACTUALIZAR_TOKEN_SESION">
+    <Parameter Name="SesionID" Parameter="sesionID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="TokenJWT" Parameter="tokenJWT" Type="System.String" DbType="VarChar(MAX)" />
     <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
     <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
     <Return Type="System.Int32" />

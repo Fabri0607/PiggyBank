@@ -58,6 +58,7 @@ namespace APIRest.Controllers
 
         [HttpPost]
         [Route("api/usuarios/reenviar-codigo")]
+        [AllowAnonymous]
         public ResReenviarCodigoVerificacion ReenviarCodigo(ReqReenviarCodigoVerificacion req)
         {
             return _logica.ReenviarCodigoVerificacion(req);

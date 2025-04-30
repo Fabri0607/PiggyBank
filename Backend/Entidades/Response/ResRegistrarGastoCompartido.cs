@@ -9,5 +9,6 @@ namespace Backend.Entidades.Response
     public class ResRegistrarGastoCompartido : ResBase
     {
         public int GastoID { get; set; } // ID del gasto compartido registrado
+        public int TransaccionID { get; set; } // ID de la transacción creada
     }
 }

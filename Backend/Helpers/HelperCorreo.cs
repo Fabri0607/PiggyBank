@@ -14,7 +14,23 @@ namespace Backend.Helpers
                 var fromAddress = new MailAddress("piggybank@28223796dae901db.maileroo.org", "PiggyBank");
                 var toAddress = new MailAddress(emailDestinatario, nombreDestinatario);
                 const string subject = "Código de Verificación - PiggyBank";
-                string body = $"Hola {nombreDestinatario},\n\nTu código de verificación es: {codigo}\n\nEste código es válido por 30 minutos.\n\nGracias,\nEquipo PiggyBank";
+                string body = $@"
+            <html>
+            <body style='font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;'>
+                <div style='max-width: 600px; margin: auto; background-color: #ffffff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);'>
+                    <h2 style='color: #4CAF50;'>¡Hola {nombreDestinatario}!</h2>
+                    <p style='font-size: 16px;'>Gracias por registrarte en <strong>PiggyBank</strong>.</p>
+                    <p style='font-size: 16px;'>Tu código de verificación es:</p>
+                    <div style='font-size: 24px; font-weight: bold; color: #333; background-color: #e7f3fe; padding: 10px; border-radius: 8px; text-align: center;'>
+                        {codigo}
+                    </div>
+                    <p style='font-size: 14px; color: #555;'>Este código es válido por 30 minutos.</p>
+                    <hr style='margin: 30px 0;'>
+                    <p style='font-size: 12px; color: #999;'>Si no solicitaste este código, puedes ignorar este mensaje.</p>
+                    <p style='font-size: 14px;'>Atentamente,<br>El equipo de <strong>PiggyBank</strong></p>
+                </div>
+            </body>
+            </html>";
 
                 // Configuración del servidor SMTP de Maileroo
                 var smtp = new SmtpClient
@@ -35,7 +51,7 @@ namespace Backend.Helpers
                 {
                     Subject = subject,
                     Body = body,
-                    IsBodyHtml = false // Cambia a true si usas HTML
+                    IsBodyHtml = true // Cambia a true si usas HTML
                 })
                 {
                     smtp.Send(message);
