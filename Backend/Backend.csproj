@@ -123,6 +123,7 @@
     <Compile Include="Entidades\Request\ReqBase.cs" />
     <Compile Include="Entidades\Request\ReqCambiarPassword.cs" />
     <Compile Include="Entidades\Request\ReqCerrarSesion.cs" />
+    <Compile Include="Entidades\Request\ReqCrearCategoria.cs" />
     <Compile Include="Entidades\Request\ReqCrearGrupoFamiliar.cs" />
     <Compile Include="Entidades\Request\ReqIniciarSesion.cs" />
     <Compile Include="Entidades\Request\ReqInvitarMiembroGrupo.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="Entidades\Response\ResBase.cs" />
     <Compile Include="Entidades\Response\ResCambiarPassword.cs" />
     <Compile Include="Entidades\Response\ResCerrarSesion.cs" />
+    <Compile Include="Entidades\Response\ResCrearCategoria.cs" />
     <Compile Include="Entidades\Response\ResCrearGrupoFamiliar.cs" />
     <Compile Include="Entidades\Response\ResIniciarSesion.cs" />
     <Compile Include="Entidades\Response\ResInvitarMiembroGrupo.cs" />
@@ -148,6 +150,7 @@
     <Compile Include="Helpers\HelperCorreo.cs" />
     <Compile Include="Helpers\HelperJWT.cs" />
     <Compile Include="Helpers\HelperValidacion.cs" />
+    <Compile Include="Logica\LogicaCategoria.cs" />
     <Compile Include="Logica\LogicaGrupo.cs" />
     <Compile Include="Logica\LogicaUsuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

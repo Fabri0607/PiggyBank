@@ -285,6 +285,16 @@ namespace AccesoADatos
 			eRRORDESCRIPCION = ((string)(result.GetParameterValue(3)));
 			return ((int)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_INGRESAR_CATEGORIA")]
+		public int SP_INGRESAR_CATEGORIA([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Nombre", DbType="VarChar(50)")] string nombre, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Icono", DbType="VarChar(50)")] string icono, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ColorHex", DbType="VarChar(7)")] string colorHex, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CategoriaID", DbType="Int")] ref System.Nullable<int> categoriaID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORMSGBD", DbType="NVarChar(MAX)")] ref string eRRORMSGBD)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), nombre, icono, colorHex, categoriaID, eRRORID, eRRORMSGBD);
+			categoriaID = ((System.Nullable<int>)(result.GetParameterValue(3)));
+			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(4)));
+			eRRORMSGBD = ((string)(result.GetParameterValue(5)));
+			return ((int)(result.ReturnValue));
+		}
 	}
 	
 	public partial class SP_BALANCE_OBTENER_POR_GRUPOResult
