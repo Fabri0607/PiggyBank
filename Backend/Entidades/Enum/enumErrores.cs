@@ -37,6 +37,14 @@ namespace Backend.Entidades
         passwordIgual = 26,
         emailYaVerificado = 27,
         categoriaNoEncontrada = 28,
-        categoriaRepetida = 29
+        categoriaRepetida = 29,
+        errorAlBorrarPorDependencias = 30,
+        tipoTransaccionFaltante = 31,
+        tipoTransaccionInvalido = 32,
+        montoInvalido = 33,
+        categoriaFaltante = 34,
+        fechaFaltante = 35,
+        fechaInvalida = 36,
+        tituloFaltante = 37
     }
 }

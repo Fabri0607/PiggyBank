@@ -16,10 +16,24 @@ namespace APIRest.Controllers
 
 
         [HttpPost]
-        [Route("api/categorias/crear")]
+        [Route("api/categoria/crear")]
         public ResCrearCategoria Crear(ReqCrearCategoria req)
         {
             return _logica.CrearCategoria(req);
+        }
+
+        [HttpPut]
+        [Route("api/categoria/actualizar/{categoriaId}")]
+        public ResActualizarCategoria ActualizarCategoria(int categoriaId, [FromBody] ReqActualizarCategoria req)
+        {
+            return _logica.ActualizarCategoria(categoriaId, req);
+        }
+
+        [HttpDelete]
+        [Route("api/categoria/eliminar/{categoriaId}")]
+        public ResEliminarCategoria EliminarCategoria(int categoriaId)
+        {
+            return _logica.EliminarCategoria(categoriaId);
         }
 
     }

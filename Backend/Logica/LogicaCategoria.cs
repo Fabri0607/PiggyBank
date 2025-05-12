@@ -1,5 +1,6 @@
 ﻿using AccesoADatos;
 using Backend.Entidades;
+using Backend.Entidades.Entity;
 using Backend.Entidades.Request;
 using Backend.Entidades.Response;
 using Backend.Helpers;
@@ -29,7 +30,7 @@ namespace Backend.Logica
 
             try
             {
-                if(req == null)
+                if (req == null)
                 {
                     res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "El objeto request es nulo"));
                 }
@@ -67,7 +68,7 @@ namespace Backend.Logica
                         }
                         else
                         {
-                            if(errorIdBD == 1)
+                            if (errorIdBD == 1)
                             {
                                 res.resultado = false;
                                 res.error.Add(HelperValidacion.CrearError(enumErrores.categoriaRepetida, errorMsgBD));
@@ -91,5 +92,133 @@ namespace Backend.Logica
         }
 
 
+        public ResActualizarCategoria ActualizarCategoria(int CategoriaId, ReqActualizarCategoria req)
+        {
+            ResActualizarCategoria res = new ResActualizarCategoria()
+            {
+                error = new List<Error>()
+            };
+            try
+            {
+                if (req == null)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "El objeto request es nulo"));
+                }
+                else if (CategoriaId <= 0)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.valorInvalido, "Debe ingresar un Id valido"));
+                }
+                else
+                {
+                    if (String.IsNullOrEmpty(req.Nombre))
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.campoRequerido, "El campo Nombre es requerido"));
+                    }
+
+                    // Fin de validaciones
+
+                    if (res.error.Any())
+                    {
+                        res.resultado = false;
+                    }
+                    else
+                    {
+                        int? idBD = 0;
+                        int? errorIdBD = 0;
+                        string errorMsgBD = "";
+                        _dbContext.SP_ACTUALIZAR_CATEGORIA(
+                            CategoriaId,
+                            req.Nombre,
+                            req.Icono,
+                            req.ColorHex,
+                            ref errorIdBD,
+                            ref errorMsgBD
+                        );
+                        if (errorIdBD == 0)
+                        {
+                            res.resultado = true;
+                        }
+                        else
+                        {
+                            if (errorIdBD == 1)
+                            {
+                                res.resultado = false;
+                                res.error.Add(HelperValidacion.CrearError(enumErrores.categoriaNoEncontrada, errorMsgBD));
+                            }
+                            else if (errorIdBD == 2)
+                            {
+                                res.resultado = false;
+                                res.error.Add(HelperValidacion.CrearError(enumErrores.categoriaRepetida, errorMsgBD));
+                            }
+                            else
+                            {
+                                res.resultado = false;
+                                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, "Error en la base de datos"));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                res.resultado = false;
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Excepcion no controlada"));
+            }
+            return res;
+        }
+
+
+        public ResEliminarCategoria EliminarCategoria(int CategoriaId)
+        {
+            ResEliminarCategoria res = new ResEliminarCategoria()
+            {
+                error = new List<Error>()
+            };
+            try
+            {
+                if (CategoriaId <= 0)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.valorInvalido, "Debe ingresar un Id valido"));
+                }
+                else
+                {
+                    int? errorIdBD = 0;
+                    string errorMsgBD = "";
+                    _dbContext.SP_BORRAR_CATEGORIA(
+                        CategoriaId,
+                        ref errorIdBD,
+                        ref errorMsgBD
+                    );
+                    if (errorIdBD == 0)
+                    {
+                        res.resultado = true;
+                    }
+                    else
+                    {
+                        if (errorIdBD == 1)
+                        {
+                            res.resultado = false;
+                            res.error.Add(HelperValidacion.CrearError(enumErrores.categoriaNoEncontrada, errorMsgBD));
+                        }
+                        else if (errorIdBD == 2)
+                        {
+                            res.resultado = false;
+                            res.error.Add(HelperValidacion.CrearError(enumErrores.errorAlBorrarPorDependencias, errorMsgBD));
+                        }
+                        else
+                        {
+                            res.resultado = false;
+                            res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, "Error en la base de datos"));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                res.resultado = false;
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Excepcion no controlada"));
+            }
+            return res;
+        }
     }
 }
