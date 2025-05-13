@@ -1,21 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="PiggyBank" Class="ConexionLINQDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
   <Connection Mode="AppSettings" ConnectionString="Data Source=34.41.22.76;Initial Catalog=PiggyBank;Persist Security Info=True;User ID=PiggyBankApp;Encrypt=True;Trust Server Certificate=True" SettingsObjectName="AccesoADatos.Properties.Settings" SettingsPropertyName="PiggyBankConnectionString3" Provider="System.Data.SqlClient" />
-  <Function Name="dbo.SP_ABRIR_SESION" Method="SP_ABRIR_SESION">
-    <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="TokenJWT" Parameter="tokenJWT" Type="System.String" DbType="VarChar(MAX)" />
-    <Parameter Name="FechaExpiracion" Parameter="fechaExpiracion" Type="System.DateTime" DbType="DateTime" />
-    <Parameter Name="SesionID" Parameter="sesionID" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
-    <Return Type="System.Int32" />
-  </Function>
-  <Function Name="dbo.SP_ACTIVAR_USUARIO" Method="SP_ACTIVAR_USUARIO">
-    <Parameter Name="Email" Parameter="email" Type="System.String" DbType="VarChar(100)" />
-    <Parameter Name="CodigoVerificacion" Parameter="codigoVerificacion" Type="System.String" DbType="VarChar(10)" />
-    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="ERRORMSG" Parameter="eRRORMSG" Type="System.String" DbType="VarChar(MAX)" Direction="InOut" />
-    <Return Type="System.Int32" />
-  </Function>
   <Function Name="dbo.SP_BALANCE_OBTENER_POR_GRUPO" Method="SP_BALANCE_OBTENER_POR_GRUPO">
     <Parameter Name="GrupoID" Parameter="grupoID" Type="System.Int32" DbType="Int" />
     <Parameter Name="FechaInicio" Parameter="fechaInicio" Type="System.DateTime" DbType="Date" />
@@ -249,11 +233,27 @@
     <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.SP_ACTUALIZAR_TOKEN_SESION" Method="SP_ACTUALIZAR_TOKEN_SESION">
-    <Parameter Name="SesionID" Parameter="sesionID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="TokenJWT" Parameter="tokenJWT" Type="System.String" DbType="VarChar(MAX)" />
+  <Function Name="dbo.SP_ABRIR_SESION" Method="SP_ABRIR_SESION">
+    <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Guid" Parameter="guid" Type="System.String" DbType="VarChar(MAX)" />
+    <Parameter Name="FechaExpiracion" Parameter="fechaExpiracion" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="SesionID" Parameter="sesionID" Type="System.Int32" DbType="Int" Direction="InOut" />
     <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
     <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_ACTUALIZAR_TOKEN_SESION" Method="SP_ACTUALIZAR_TOKEN_SESION">
+    <Parameter Name="SesionID" Parameter="sesionID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Guid" Parameter="guid" Type="System.String" DbType="VarChar(MAX)" />
+    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_ACTIVAR_USUARIO" Method="SP_ACTIVAR_USUARIO">
+    <Parameter Name="Email" Parameter="email" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="CodigoVerificacion" Parameter="codigoVerificacion" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORMSG" Parameter="eRRORMSG" Type="System.String" DbType="VarChar(MAX)" Direction="InOut" />
     <Return Type="System.Int32" />
   </Function>
 </Database>

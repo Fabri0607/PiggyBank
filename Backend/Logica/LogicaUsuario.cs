@@ -279,9 +279,10 @@ namespace Backend.Logica
                 int? sesionID = 0;
                 errorIdBD = 0;
                 errorMsgBD = "";
+                string guid = Guid.NewGuid().ToString("N");
                 DateTime fechaExpiracion = DateTime.Now.AddHours(24);
 
-                _dbContext.SP_ABRIR_SESION(usuario.UsuarioID, "", fechaExpiracion, ref sesionID, ref errorIdBD, ref errorMsgBD);
+                _dbContext.SP_ABRIR_SESION(usuario.UsuarioID, guid, fechaExpiracion, ref sesionID, ref errorIdBD, ref errorMsgBD);
 
                 if (sesionID <= 0)
                 {
@@ -289,8 +290,6 @@ namespace Backend.Logica
                     res.resultado = false;
                     return res;
                 }
-
-                string guid = Guid.NewGuid().ToString("N");
 
                 // Generar el token con el SesionID ya creado
                 string token = HelperJWT.GenerarToken(guid);

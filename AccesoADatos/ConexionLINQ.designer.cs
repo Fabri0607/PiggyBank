@@ -62,25 +62,6 @@ namespace AccesoADatos
 			OnCreated();
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_ABRIR_SESION")]
-		public int SP_ABRIR_SESION([global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TokenJWT", DbType="VarChar(MAX)")] string tokenJWT, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaExpiracion", DbType="DateTime")] System.Nullable<System.DateTime> fechaExpiracion, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SesionID", DbType="Int")] ref System.Nullable<int> sesionID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), usuarioID, tokenJWT, fechaExpiracion, sesionID, eRRORID, eRRORDESCRIPCION);
-			sesionID = ((System.Nullable<int>)(result.GetParameterValue(3)));
-			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(4)));
-			eRRORDESCRIPCION = ((string)(result.GetParameterValue(5)));
-			return ((int)(result.ReturnValue));
-		}
-		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_ACTIVAR_USUARIO")]
-		public int SP_ACTIVAR_USUARIO([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Email", DbType="VarChar(100)")] string email, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CodigoVerificacion", DbType="VarChar(10)")] string codigoVerificacion, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORMSG", DbType="VarChar(MAX)")] ref string eRRORMSG)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), email, codigoVerificacion, eRRORID, eRRORMSG);
-			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(2)));
-			eRRORMSG = ((string)(result.GetParameterValue(3)));
-			return ((int)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_BALANCE_OBTENER_POR_GRUPO")]
 		public ISingleResult<SP_BALANCE_OBTENER_POR_GRUPOResult> SP_BALANCE_OBTENER_POR_GRUPO([global::System.Data.Linq.Mapping.ParameterAttribute(Name="GrupoID", DbType="Int")] System.Nullable<int> grupoID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaInicio", DbType="Date")] System.Nullable<System.DateTime> fechaInicio, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaFin", DbType="Date")] System.Nullable<System.DateTime> fechaFin)
 		{
@@ -277,12 +258,31 @@ namespace AccesoADatos
 			return ((int)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_ACTUALIZAR_TOKEN_SESION")]
-		public int SP_ACTUALIZAR_TOKEN_SESION([global::System.Data.Linq.Mapping.ParameterAttribute(Name="SesionID", DbType="Int")] System.Nullable<int> sesionID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TokenJWT", DbType="VarChar(MAX)")] string tokenJWT, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_ABRIR_SESION")]
+		public int SP_ABRIR_SESION([global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Guid", DbType="VarChar(MAX)")] string guid, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaExpiracion", DbType="DateTime")] System.Nullable<System.DateTime> fechaExpiracion, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="SesionID", DbType="Int")] ref System.Nullable<int> sesionID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), sesionID, tokenJWT, eRRORID, eRRORDESCRIPCION);
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), usuarioID, guid, fechaExpiracion, sesionID, eRRORID, eRRORDESCRIPCION);
+			sesionID = ((System.Nullable<int>)(result.GetParameterValue(3)));
+			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(4)));
+			eRRORDESCRIPCION = ((string)(result.GetParameterValue(5)));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_ACTUALIZAR_TOKEN_SESION")]
+		public int SP_ACTUALIZAR_TOKEN_SESION([global::System.Data.Linq.Mapping.ParameterAttribute(Name="SesionID", DbType="Int")] System.Nullable<int> sesionID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Guid", DbType="VarChar(MAX)")] string guid, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), sesionID, guid, eRRORID, eRRORDESCRIPCION);
 			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(2)));
 			eRRORDESCRIPCION = ((string)(result.GetParameterValue(3)));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_ACTIVAR_USUARIO")]
+		public int SP_ACTIVAR_USUARIO([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Email", DbType="VarChar(100)")] string email, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CodigoVerificacion", DbType="VarChar(10)")] string codigoVerificacion, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORMSG", DbType="VarChar(MAX)")] ref string eRRORMSG)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), email, codigoVerificacion, eRRORID, eRRORMSG);
+			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(2)));
+			eRRORMSG = ((string)(result.GetParameterValue(3)));
 			return ((int)(result.ReturnValue));
 		}
 	}
