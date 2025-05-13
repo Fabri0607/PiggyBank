@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Backend.Logica
 {
@@ -21,6 +22,83 @@ namespace Backend.Logica
             _dbContext = new ConexionLINQDataContext();
         }
 
+        // Validar Sesión
+        private bool ValidarSesion(ReqBase req, ref List<Error> errores)
+        {
+            try
+            {
+                // Validar que el token no sea nulo o vacío
+                if (string.IsNullOrEmpty(req.token))
+                {
+                    errores.Add(HelperValidacion.CrearError(enumErrores.tokenFaltante, "El token de autorización es requerido"));
+                    return false;
+                }
+
+                // Extraer el GUID del JWT
+                string guid;
+                try
+                {
+                    guid = HelperJWT.ValidarTokenYObtenerGuid(req.token);
+                }
+                catch (SecurityTokenException ex)
+                {
+                    errores.Add(HelperValidacion.CrearError(enumErrores.tokenInvalido, ex.Message));
+                    return false;
+                }
+
+                // Consultar la sesión en la base de datos
+                int? errorIdBD = 0;
+                string errorMsgBD = "";
+                var sesion = _dbContext.SP_SESION_OBTENER_POR_GUID(guid, ref errorIdBD, ref errorMsgBD).FirstOrDefault();
+
+                if (errorIdBD != 0)
+                {
+                    errores.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgBD));
+                    return false;
+                }
+
+                if (sesion == null)
+                {
+                    errores.Add(HelperValidacion.CrearError(enumErrores.sesionNoEncontrada, "Sesión no encontrada"));
+                    return false;
+                }
+
+                // Verificar si la sesión está activa
+                if (!sesion.EsActivo)
+                {
+                    errores.Add(HelperValidacion.CrearError(enumErrores.sesionInactiva, "La sesión no está activa"));
+                    return false;
+                }
+
+                // Verificar si la sesión ha expirado
+                if (sesion.FechaExpiracion < DateTime.Now)
+                {
+                    errores.Add(HelperValidacion.CrearError(enumErrores.sesionExpirada, "La sesión ha expirado"));
+                    return false;
+                }
+
+                // Asignar la sesión al request
+                req.sesion = new Sesion
+                {
+                    SesionID = sesion.SesionID,
+                    UsuarioID = sesion.UsuarioID,
+                    Guid = sesion.Guid,
+                    FechaCreacion = sesion.FechaCreacion,
+                    FechaExpiracion = sesion.FechaExpiracion,
+                    EsActivo = sesion.EsActivo,
+                    MotivoRevocacion = sesion.MotivoRevocacion
+                };
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errores.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, $"Error al validar la sesión: {ex.Message}"));
+                return false;
+            }
+        }
+
+
         // 1. Crear grupo familiar
         public ResCrearGrupoFamiliar CrearGrupo(ReqCrearGrupoFamiliar req)
         {
@@ -29,8 +107,19 @@ namespace Backend.Logica
                 error = new List<Error>()
             };
 
+            List<Error> errores = new List<Error>();
+
             try
             {
+
+                // Validar la sesión
+                if (!ValidarSesion(req, ref errores))
+                {
+                    res.error = errores;
+                    res.resultado = false;
+                    return res;
+                }
+
                 #region Validaciones
                 if (req == null)
                 {
@@ -93,8 +182,19 @@ namespace Backend.Logica
                 error = new List<Error>()
             };
 
+            List<Error> errores = new List<Error>();
+
             try
             {
+
+                // Validar la sesión
+                if (!ValidarSesion(req, ref errores))
+                {
+                    res.error = errores;
+                    res.resultado = false;
+                    return res;
+                }
+
                 #region Validaciones
                 if (req == null)
                 {
@@ -155,8 +255,19 @@ namespace Backend.Logica
                 error = new List<Error>()
             };
 
+            List<Error> errores = new List<Error>();
+
             try
             {
+
+                // Validar la sesión
+                if (!ValidarSesion(req, ref errores))
+                {
+                    res.error = errores;
+                    res.resultado = false;
+                    return res;
+                }
+
                 #region Validaciones
                 if (req == null)
                 {
@@ -246,8 +357,19 @@ namespace Backend.Logica
                 Balances = new List<BalanceMiembro>()
             };
 
+            List<Error> errores = new List<Error>();
+
             try
             {
+
+                // Validar la sesión
+                if (!ValidarSesion(req, ref errores))
+                {
+                    res.error = errores;
+                    res.resultado = false;
+                    return res;
+                }
+
                 #region Validaciones
                 if (req == null)
                 {

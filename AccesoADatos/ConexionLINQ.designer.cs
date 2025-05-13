@@ -285,6 +285,15 @@ namespace AccesoADatos
 			eRRORMSG = ((string)(result.GetParameterValue(3)));
 			return ((int)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_SESION_OBTENER_POR_GUID")]
+		public ISingleResult<SP_SESION_OBTENER_POR_GUIDResult> SP_SESION_OBTENER_POR_GUID([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Guid", DbType="VarChar(MAX)")] string guid, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ErrorID", DbType="Int")] ref System.Nullable<int> errorID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ErrorMensaje", DbType="VarChar(255)")] ref string errorMensaje)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), guid, errorID, errorMensaje);
+			errorID = ((System.Nullable<int>)(result.GetParameterValue(1)));
+			errorMensaje = ((string)(result.GetParameterValue(2)));
+			return ((ISingleResult<SP_SESION_OBTENER_POR_GUIDResult>)(result.ReturnValue));
+		}
 	}
 	
 	public partial class SP_BALANCE_OBTENER_POR_GRUPOResult
@@ -1220,6 +1229,140 @@ namespace AccesoADatos
 				if ((this._EmailVerificado != value))
 				{
 					this._EmailVerificado = value;
+				}
+			}
+		}
+	}
+	
+	public partial class SP_SESION_OBTENER_POR_GUIDResult
+	{
+		
+		private int _SesionID;
+		
+		private int _UsuarioID;
+		
+		private string _Guid;
+		
+		private System.DateTime _FechaCreacion;
+		
+		private System.DateTime _FechaExpiracion;
+		
+		private bool _EsActivo;
+		
+		private string _MotivoRevocacion;
+		
+		public SP_SESION_OBTENER_POR_GUIDResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_SesionID", DbType="Int NOT NULL")]
+		public int SesionID
+		{
+			get
+			{
+				return this._SesionID;
+			}
+			set
+			{
+				if ((this._SesionID != value))
+				{
+					this._SesionID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsuarioID", DbType="Int NOT NULL")]
+		public int UsuarioID
+		{
+			get
+			{
+				return this._UsuarioID;
+			}
+			set
+			{
+				if ((this._UsuarioID != value))
+				{
+					this._UsuarioID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Guid", DbType="VarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Guid
+		{
+			get
+			{
+				return this._Guid;
+			}
+			set
+			{
+				if ((this._Guid != value))
+				{
+					this._Guid = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FechaCreacion", DbType="DateTime NOT NULL")]
+		public System.DateTime FechaCreacion
+		{
+			get
+			{
+				return this._FechaCreacion;
+			}
+			set
+			{
+				if ((this._FechaCreacion != value))
+				{
+					this._FechaCreacion = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FechaExpiracion", DbType="DateTime NOT NULL")]
+		public System.DateTime FechaExpiracion
+		{
+			get
+			{
+				return this._FechaExpiracion;
+			}
+			set
+			{
+				if ((this._FechaExpiracion != value))
+				{
+					this._FechaExpiracion = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EsActivo", DbType="Bit NOT NULL")]
+		public bool EsActivo
+		{
+			get
+			{
+				return this._EsActivo;
+			}
+			set
+			{
+				if ((this._EsActivo != value))
+				{
+					this._EsActivo = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MotivoRevocacion", DbType="VarChar(255)")]
+		public string MotivoRevocacion
+		{
+			get
+			{
+				return this._MotivoRevocacion;
+			}
+			set
+			{
+				if ((this._MotivoRevocacion != value))
+				{
+					this._MotivoRevocacion = value;
 				}
 			}
 		}

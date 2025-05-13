@@ -148,6 +148,7 @@
     <Compile Include="Helpers\HelperCorreo.cs" />
     <Compile Include="Helpers\HelperJWT.cs" />
     <Compile Include="Helpers\HelperValidacion.cs" />
+    <Compile Include="Logica\LogicaAutenticacion.cs" />
     <Compile Include="Logica\LogicaGrupo.cs" />
     <Compile Include="Logica\LogicaUsuario.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

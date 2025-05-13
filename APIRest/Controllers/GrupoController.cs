@@ -8,18 +8,40 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Security.Cryptography;
 
 namespace APIRest.Controllers
 {
     public class GrupoController : ApiController
     {
         private readonly LogicaGrupo _logica = new LogicaGrupo();
+        private readonly LogicaAutenticacion _logicaAutenticacion = new LogicaAutenticacion();
 
         // POST: /api/grupos
         [HttpPost]
         [Route("api/grupos")]
         public ResCrearGrupoFamiliar CrearGrupo(ReqCrearGrupoFamiliar req)
         {
+            var authHeader = Request.Headers.Authorization;
+            if (authHeader != null && authHeader.Scheme == "Bearer")
+            {
+                req.token = authHeader.Parameter;
+            }
+            else
+            {
+                return new ResCrearGrupoFamiliar
+                {
+                    resultado = false,
+                    error = new List<Error>
+            {
+                new Error
+                {
+                    ErrorCode = (int)enumErrores.tokenFaltante,
+                    Message = "Token de autorización no proporcionado"
+                }
+            }
+                };
+            }
             return _logica.CrearGrupo(req);
         }
 
@@ -43,6 +65,28 @@ namespace APIRest.Controllers
                     }
                 };
             }
+
+            var authHeader = Request.Headers.Authorization;
+            if (authHeader != null && authHeader.Scheme == "Bearer")
+            {
+                req.token = authHeader.Parameter;
+            }
+            else
+            {
+                return new ResInvitarMiembroGrupo
+                {
+                    resultado = false,
+                    error = new List<Error>
+            {
+                new Error
+                {
+                    ErrorCode = (int)enumErrores.tokenFaltante,
+                    Message = "Token de autorización no proporcionado"
+                }
+            }
+                };
+            }
+
             return _logica.InvitarMiembro(req);
         }
 
@@ -66,6 +110,28 @@ namespace APIRest.Controllers
                     }
                 };
             }
+
+            var authHeader = Request.Headers.Authorization;
+            if (authHeader != null && authHeader.Scheme == "Bearer")
+            {
+                req.token = authHeader.Parameter;
+            }
+            else
+            {
+                return new ResRegistrarGastoCompartido
+                {
+                    resultado = false,
+                    error = new List<Error>
+            {
+                new Error
+                {
+                    ErrorCode = (int)enumErrores.tokenFaltante,
+                    Message = "Token de autorización no proporcionado"
+                }
+            }
+                };
+            }
+
             return _logica.RegistrarGastoCompartido(req);
         }
 
@@ -80,6 +146,28 @@ namespace APIRest.Controllers
                 FechaInicio = fechaInicio,
                 FechaFin = fechaFin
             };
+
+            var authHeader = Request.Headers.Authorization;
+            if (authHeader != null && authHeader.Scheme == "Bearer")
+            {
+                req.token = authHeader.Parameter;
+            }
+            else
+            {
+                return new ResObtenerBalanceGrupal
+                {
+                    resultado = false,
+                    error = new List<Error>
+            {
+                new Error
+                {
+                    ErrorCode = (int)enumErrores.tokenFaltante,
+                    Message = "Token de autorización no proporcionado"
+                }
+            }
+                };
+            }
+
             return _logica.ObtenerBalanceGrupal(req);
         }
     }

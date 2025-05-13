@@ -36,6 +36,12 @@ namespace Backend.Entidades
         sesionInvalida = 25,
         passwordIgual = 26,
         emailYaVerificado = 27,
-        categoriaNoEncontrada = 28
+        categoriaNoEncontrada = 28,
+        autenticacionFallida = 29,
+        tokenFaltante = 30,
+        tokenInvalido = 31,
+        sesionNoEncontrada = 32,
+        sesionInactiva = 33,
+        sesionExpirada = 34
     }
 }
