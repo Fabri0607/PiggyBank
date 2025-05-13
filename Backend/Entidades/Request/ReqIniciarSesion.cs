@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Backend.Entidades.Request
 {
-    public class ReqIniciarSesion : ReqBase
+    public class ReqIniciarSesion
     {
         public string Email { get; set; }
         public string Password { get; set; }

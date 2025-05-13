@@ -290,13 +290,15 @@ namespace Backend.Logica
                     return res;
                 }
 
-                // Generar el token con el SesionID ya creado
-                string token = HelperJWT.GenerarToken(usuario.UsuarioID, usuario.Nombre, usuario.Email);
+                string guid = Guid.NewGuid().ToString("N");
 
-                // Actualizar la sesión con el token generado
+                // Generar el token con el SesionID ya creado
+                string token = HelperJWT.GenerarToken(guid);
+
+                // Actualizar la sesión con el guid generado
                 errorIdBD = 0;
                 errorMsgBD = "";
-                _dbContext.SP_ACTUALIZAR_TOKEN_SESION(sesionID.Value, token, ref errorIdBD, ref errorMsgBD);
+                _dbContext.SP_ACTUALIZAR_TOKEN_SESION(sesionID.Value, guid, ref errorIdBD, ref errorMsgBD);
 
                 if (errorIdBD != 0)
                 {
@@ -318,7 +320,6 @@ namespace Backend.Logica
                 }
 
                 // Armar respuesta
-                res.SesionID = sesionID.Value;
                 res.Token = token;
                 res.FechaExpiracion = fechaExpiracion;
                 res.Usuario = new UsuarioDTO

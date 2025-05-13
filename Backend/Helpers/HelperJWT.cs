@@ -11,15 +11,13 @@ namespace Backend.Helpers
         // Clave secreta usada para firmar el token (debe tener al menos 32 caracteres para SHA256)
         private static readonly string ClaveSecreta = "ClaveJWT_SuperSegura_ParaTuAPI_123456";
 
-        public static string GenerarToken(int usuarioId, string nombre, string email)
+        public static string GenerarToken(string guid)
         {
             var key = Encoding.UTF8.GetBytes(ClaveSecreta);
 
             var claims = new[]
             {
-                new Claim("UsuarioID", usuarioId.ToString()),
-                new Claim(ClaimTypes.Name, nombre),
-                new Claim(ClaimTypes.Email, email)
+                new Claim("Guid", guid),
             };
 
             var tokenDescriptor = new SecurityTokenDescriptor
