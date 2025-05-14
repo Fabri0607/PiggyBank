@@ -270,4 +270,22 @@
       <Column Name="MotivoRevocacion" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
     </ElementType>
   </Function>
+  <Function Name="dbo.SP_INSERTAR_MENSAJE_CHAT" Method="SP_INSERTAR_MENSAJE_CHAT">
+    <Parameter Name="AnalisisID" Parameter="analisisID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Role" Parameter="role" Type="System.String" DbType="NVarChar(50)" />
+    <Parameter Name="Content" Parameter="content" Type="System.String" DbType="NVarChar(MAX)" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_CREAR_ANALISIS" Method="SP_CREAR_ANALISIS">
+    <Parameter Name="UsusarioID" Parameter="ususarioID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FechaInicio" Parameter="fechaInicio" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="FechaFin" Parameter="fechaFin" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="ContextoID" Parameter="contextoID" Type="System.Int32" DbType="Int" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_ACTUALIZAR_RESUMEN" Method="SP_ACTUALIZAR_RESUMEN">
+    <Parameter Name="AnalisisID" Parameter="analisisID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Resumen" Parameter="resumen" Type="System.String" DbType="Text" />
+    <Return Type="System.Int32" />
+  </Function>
 </Database>

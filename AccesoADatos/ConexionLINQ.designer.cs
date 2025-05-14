@@ -294,6 +294,27 @@ namespace AccesoADatos
 			errorMensaje = ((string)(result.GetParameterValue(2)));
 			return ((ISingleResult<SP_SESION_OBTENER_POR_GUIDResult>)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_INSERTAR_MENSAJE_CHAT")]
+		public int SP_INSERTAR_MENSAJE_CHAT([global::System.Data.Linq.Mapping.ParameterAttribute(Name="AnalisisID", DbType="Int")] System.Nullable<int> analisisID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Role", DbType="NVarChar(50)")] string role, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Content", DbType="NVarChar(MAX)")] string content)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), analisisID, role, content);
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_CREAR_ANALISIS")]
+		public int SP_CREAR_ANALISIS([global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsusarioID", DbType="Int")] System.Nullable<int> ususarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaInicio", DbType="Date")] System.Nullable<System.DateTime> fechaInicio, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaFin", DbType="Date")] System.Nullable<System.DateTime> fechaFin, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ContextoID", DbType="Int")] System.Nullable<int> contextoID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), ususarioID, fechaInicio, fechaFin, contextoID);
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_ACTUALIZAR_RESUMEN")]
+		public int SP_ACTUALIZAR_RESUMEN([global::System.Data.Linq.Mapping.ParameterAttribute(Name="AnalisisID", DbType="Int")] System.Nullable<int> analisisID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Resumen", DbType="Text")] string resumen)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), analisisID, resumen);
+			return ((int)(result.ReturnValue));
+		}
 	}
 	
 	public partial class SP_BALANCE_OBTENER_POR_GRUPOResult
