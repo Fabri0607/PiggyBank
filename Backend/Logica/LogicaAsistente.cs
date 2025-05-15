@@ -175,27 +175,221 @@ namespace Backend.Logica
         }
         private ResCrearAnalisis CrearAnalisis(ReqCrearAnalisis req)
         {
-            throw new NotImplementedException();
+            ResCrearAnalisis res = new ResCrearAnalisis
+            {
+                error = new List<Error>(),
+                AnalisisID = 0
+            };
+            List<Error> errores = new List<Error>();
+            try {
+                    if (!ValidarSesion(req, ref errores))
+                    {
+                        res.resultado = false;
+                        res.error = errores;
+                        return res;
+                    }
+                #region Validaciones
+                if (req == null)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "Solicitud no válida"));
+                }
+                else
+                {
+                    if (req.sesion == null)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.sesionInvalida, "La sesión no es válida"));
+                    }
+                    else
+                    {
+                        if (req.UsuarioID <= 0)
+                        {
+                            res.error.Add(HelperValidacion.CrearError(enumErrores.usuarioNoEncontrado, "Usuario Inválido"));
+                        }
+                        if (req.FechaInicio.HasValue && req.FechaFin.HasValue && req.FechaInicio > req.FechaFin)
+                        {
+                            res.error.Add(HelperValidacion.CrearError(enumErrores.FechaInvalida, "La fecha de inicio no puede ser mayor que la fecha de fin"));
+                        }
+                        if (req.ContextoID <= 0)
+                        {
+                            res.error.Add(HelperValidacion.CrearError(enumErrores.campoRequerido, "El ID del contexto es requerido"));
+                        }
+                    }
+                }
+
+                #endregion
+
+                if (res.error.Any())
+                {
+                    res.resultado = false;
+                    return res;
+                }
+                int? AnalisisID = 0;
+                int? errorIDDB = 0;
+                string errorMsgDB = "";
+                var analisis = _dbContext.SP_CREAR_ANALISIS(req.UsuarioID, req.FechaInicio, req.FechaFin, req.ContextoID, ref AnalisisID, ref errorIDDB, ref errorMsgDB);
+                if (errorIDDB != 0)
+                {
+                    res.resultado = false;
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgDB));
+                }
+                else
+                {
+                    res.AnalisisID = AnalisisID ?? 0;
+                    res.resultado = true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                res.resultado = false;
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, $"Error al crear el análisis: {ex.Message}"));
+            }
+
+            return res;
         }
 
         private ResInsertarMensajeChat InsertarMensajeChat(ReqInsertarMensajeChat req)
         {
-            throw new NotImplementedException();
+            ResInsertarMensajeChat res = new ResInsertarMensajeChat
+            {
+                error = new List<Error>(),
+                MensajeID = 0
+            };
+            List<Error> errores = new List<Error>();
+            try
+            {
+                if (!ValidarSesion(req, ref errores))
+                {
+                    res.resultado = false;
+                    res.error = errores;
+                    return res;
+                }
+                #region Validaciones
+                if (req == null)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "Solicitud no válida"));
+                }
+                else
+                {
+                    if (req.sesion == null)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.sesionInvalida, "La sesión no es válida"));
+                    }
+                    else
+                    {
+                        if (req.AnalisisID <= 0)
+                        {
+                            res.error.Add(HelperValidacion.CrearError(enumErrores.campoRequerido, "El ID del análisis es requerido"));
+                        }
+                        if (string.IsNullOrEmpty(req.Role))
+                        {
+                            res.error.Add(HelperValidacion.CrearError(enumErrores.campoRequerido, "El rol es requerido"));
+                        }
+                        
+                    }
+                }
+                #endregion
+                if (res.error.Any())
+                {
+                    res.resultado = false;
+                    return res;
+                }
+                int? MensajeID = 0;
+                int? errorIDDB = 0;
+                string errorMsgDB = "";
+                var mensaje = _dbContext.SP_INSERTAR_MENSAJE_CHAT(req.AnalisisID, req.Role, req.Content, ref MensajeID, ref errorIDDB, ref errorMsgDB);
+                if (errorIDDB != 0)
+                {
+                    res.resultado = false;
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgDB));
+                }
+                else
+                {
+                    res.MensajeID = MensajeID ?? 0;
+                    res.resultado = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                res.resultado = false;
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, $"Error al insertar el mensaje: {ex.Message}"));
+            }
+            return res;
         }
         private ResObtenerMensajes ObtenerMensajesChat(ReqObtenerMensajes req)
         {
-            throw new NotImplementedException();
+            ResObtenerMensajes res = new ResObtenerMensajes
+            {
+                error = new List<Error>(),
+                MensajesChat = new List<MensajeChat>()
+            };
+            List<Error> errores = new List<Error>();
+            try
+            {
+                if (!ValidarSesion(req, ref errores))
+                {
+                    res.resultado = false;
+                    res.error = errores;
+                    return res;
+                }
+                #region Validaciones
+                if (req == null)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "Solicitud no válida"));
+                }
+                else
+                {
+                    if (req.sesion == null)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.sesionInvalida, "La sesión no es válida"));
+                    }
+                    else
+                    {
+                        if(req.AnalisisID <= 0)
+                        {
+                            res.error.Add(HelperValidacion.CrearError(enumErrores.campoRequerido, "El ID del análisis es requerido"));
+                        }
+                    }
+                }
+                #endregion
+                if (res.error.Any())
+                {
+                    res.resultado = false;
+                    return res;
+                }
+
+                var mensajes = _dbContext.SP_OBTENER_MENSAJES(req.AnalisisID)
+                    .Select(b => new MensajeChat
+                    {
+                        MensajeID = b.MensajeID,
+                        AnalisisID = b.AnalisisID,
+                        Role = b.Role,
+                        Content = b.Content,
+                        FechaEnvio = b.FechaEnvio,
+                        Orden = b.Orden
+                    }).ToList();
+                res.MensajesChat = mensajes;
+                res.resultado = true;
+            }
+            catch (Exception ex)
+            {
+                res.resultado = false;
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, $"Error al obtener los mensajes: {ex.Message}"));
+            }
+            return res;
+
         }
 
         
         private ResObtenerAnalisisUsuario ObtenerAnalisis(ReqObtenerAnalisisUsuario req)
         {
             throw new NotImplementedException();
+
         }
         
         private ResActualizarResumen ActualizarAnalisis(ReqActualizarResumen req)
         {
-            throw new NotImplementedException();
+          throw new NotImplementedException();
         }
 
 

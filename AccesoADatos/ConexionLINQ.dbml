@@ -326,4 +326,15 @@
       <Column Name="ColorHex" Type="System.String" DbType="VarChar(7)" CanBeNull="true" />
     </ElementType>
   </Function>
+  <Function Name="dbo.SP_OBTENER_MENSAJES" Method="SP_OBTENER_MENSAJES">
+    <Parameter Name="AnalisisID" Parameter="analisisID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="SP_OBTENER_MENSAJESResult">
+      <Column Name="MensajeID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AnalisisID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Role" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Content" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="Orden" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FechaEnvio" Type="System.DateTime" DbType="DateTime2 NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
 </Database>

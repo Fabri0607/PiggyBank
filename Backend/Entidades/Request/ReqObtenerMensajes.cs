@@ -8,6 +8,6 @@ namespace Backend.Entidades.Request
 {
     public class ReqObtenerMensajes : ReqBase
     {
-        int AnalisisID { get; set; } // ID del análisis al que pertenecen los mensajes
+       public int AnalisisID { get; set; } // ID del análisis al que pertenecen los mensajes
     }
 }

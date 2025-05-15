@@ -344,6 +344,13 @@ namespace AccesoADatos
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), usuarioID, fechaInicio, fechaFin, tipo);
 			return ((ISingleResult<SP_TRANSACCIONES_OBTENER_POR_USUARIOResult>)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_OBTENER_MENSAJES")]
+		public ISingleResult<SP_OBTENER_MENSAJESResult> SP_OBTENER_MENSAJES([global::System.Data.Linq.Mapping.ParameterAttribute(Name="AnalisisID", DbType="Int")] System.Nullable<int> analisisID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), analisisID);
+			return ((ISingleResult<SP_OBTENER_MENSAJESResult>)(result.ReturnValue));
+		}
 	}
 	
 	public partial class SP_BALANCE_OBTENER_POR_GRUPOResult
@@ -1725,6 +1732,122 @@ namespace AccesoADatos
 				if ((this._ColorHex != value))
 				{
 					this._ColorHex = value;
+				}
+			}
+		}
+	}
+	
+	public partial class SP_OBTENER_MENSAJESResult
+	{
+		
+		private int _MensajeID;
+		
+		private int _AnalisisID;
+		
+		private string _Role;
+		
+		private string _Content;
+		
+		private int _Orden;
+		
+		private System.DateTime _FechaEnvio;
+		
+		public SP_OBTENER_MENSAJESResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_MensajeID", DbType="Int NOT NULL")]
+		public int MensajeID
+		{
+			get
+			{
+				return this._MensajeID;
+			}
+			set
+			{
+				if ((this._MensajeID != value))
+				{
+					this._MensajeID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AnalisisID", DbType="Int NOT NULL")]
+		public int AnalisisID
+		{
+			get
+			{
+				return this._AnalisisID;
+			}
+			set
+			{
+				if ((this._AnalisisID != value))
+				{
+					this._AnalisisID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Role", DbType="NVarChar(50) NOT NULL", CanBeNull=false)]
+		public string Role
+		{
+			get
+			{
+				return this._Role;
+			}
+			set
+			{
+				if ((this._Role != value))
+				{
+					this._Role = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Content", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Content
+		{
+			get
+			{
+				return this._Content;
+			}
+			set
+			{
+				if ((this._Content != value))
+				{
+					this._Content = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Orden", DbType="Int NOT NULL")]
+		public int Orden
+		{
+			get
+			{
+				return this._Orden;
+			}
+			set
+			{
+				if ((this._Orden != value))
+				{
+					this._Orden = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FechaEnvio", DbType="DateTime2 NOT NULL")]
+		public System.DateTime FechaEnvio
+		{
+			get
+			{
+				return this._FechaEnvio;
+			}
+			set
+			{
+				if ((this._FechaEnvio != value))
+				{
+					this._FechaEnvio = value;
 				}
 			}
 		}
