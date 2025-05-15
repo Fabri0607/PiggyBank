@@ -42,6 +42,8 @@ namespace Backend.Entidades
         tokenInvalido = 31,
         sesionNoEncontrada = 32,
         sesionInactiva = 33,
-        sesionExpirada = 34
+        sesionExpirada = 34,
+        TipoTransaccionInvalido = 35,
+        FechaInvalida = 36,
     }
 }

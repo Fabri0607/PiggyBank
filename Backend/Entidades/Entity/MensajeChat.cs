@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Backend.Entidades.Entity
 {
-    class MensajeChat
+    public class MensajeChat
     {
         public int MensajeID { get; set; }
         public int AnalisisID { get; set; }

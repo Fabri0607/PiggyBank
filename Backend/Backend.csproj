@@ -100,6 +100,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\TransaccionDTO.cs" />
     <Compile Include="DTO\UsuarioDTO.cs" />
     <Compile Include="Entidades\Entity\AnalisisIA.cs" />
     <Compile Include="Entidades\Entity\BalanceMiembro.cs" />
@@ -124,12 +125,16 @@
     <Compile Include="Entidades\Enum\enumErrores.cs" />
     <Compile Include="Entidades\Enum\enumEstadoSesion.cs" />
     <Compile Include="Entidades\Request\ReqActualizarPerfil.cs" />
+    <Compile Include="Entidades\Request\ReqActualizarResumen.cs" />
     <Compile Include="Entidades\Request\ReqBase.cs" />
     <Compile Include="Entidades\Request\ReqCambiarPassword.cs" />
     <Compile Include="Entidades\Request\ReqCerrarSesion.cs" />
+    <Compile Include="Entidades\Request\ReqCrearAnalisis.cs" />
     <Compile Include="Entidades\Request\ReqCrearGrupoFamiliar.cs" />
     <Compile Include="Entidades\Request\ReqIniciarSesion.cs" />
+    <Compile Include="Entidades\Request\ReqInsertarMensajeChat.cs" />
     <Compile Include="Entidades\Request\ReqInvitarMiembroGrupo.cs" />
+    <Compile Include="Entidades\Request\ReqObtenerAnalisisUsuario.cs" />
     <Compile Include="Entidades\Request\ReqObtenerBalanceGrupal.cs" />
     <Compile Include="Entidades\Request\ReqObtenerTransacciones.cs" />
     <Compile Include="Entidades\Request\ReqObtenerMensajes.cs" />
@@ -139,12 +144,16 @@
     <Compile Include="Entidades\Request\ReqRegistrarUsuario.cs" />
     <Compile Include="Entidades\Request\ReqVerificarUsuario.cs" />
     <Compile Include="Entidades\Response\ResActualizarPerfil.cs" />
+    <Compile Include="Entidades\Response\ResActualizarResumen.cs" />
     <Compile Include="Entidades\Response\ResBase.cs" />
     <Compile Include="Entidades\Response\ResCambiarPassword.cs" />
     <Compile Include="Entidades\Response\ResCerrarSesion.cs" />
+    <Compile Include="Entidades\Response\ResCrearAnalisis.cs" />
     <Compile Include="Entidades\Response\ResCrearGrupoFamiliar.cs" />
     <Compile Include="Entidades\Response\ResIniciarSesion.cs" />
+    <Compile Include="Entidades\Response\ResInsertarMensajeChat.cs" />
     <Compile Include="Entidades\Response\ResInvitarMiembroGrupo.cs" />
+    <Compile Include="Entidades\Response\ResObtenerAnalisisUsuario.cs" />
     <Compile Include="Entidades\Response\ResObtenerBalanceGrupal.cs" />
     <Compile Include="Entidades\Response\ResObtenerTransacciones.cs" />
     <Compile Include="Entidades\Response\ResObtenerMensajes.cs" />

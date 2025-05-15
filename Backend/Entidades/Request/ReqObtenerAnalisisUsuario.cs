@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Backend.Entidades.Request
 {
-    public class ReqObtenerMensajes : ReqBase
+    public class ReqObtenerAnalisisUsuario : ReqBase
     {
-        int AnalisisID { get; set; } // ID del análisis al que pertenecen los mensajes
+        public int UsuarioID { get; set; } // ID del usuario para el que se obtienen los análisis
     }
 }

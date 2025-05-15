@@ -10,6 +10,6 @@ namespace Backend.Entidades.Request
     {
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
-        public int UsuarioID { get; set; } // ID del usuario que crea el grupo
+        public int UsuarioID { get; set; }
     }
 }

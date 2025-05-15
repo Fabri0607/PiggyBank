@@ -1,4 +1,5 @@
 ﻿using AccesoADatos;
+using Backend.DTO;
 using Backend.Entidades;
 using Backend.Entidades.Entity;
 using Backend.Entidades.Request;
@@ -8,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting.Messaging;
 
 
 namespace Backend.Logica
@@ -96,23 +98,85 @@ namespace Backend.Logica
                 return false;
             }
         }
-
+        //Obtener transacciones
         private ResObtenerTransacciones ObtenerTransacciones(ReqObtenerTransacciones req)
 
         {
+            ResObtenerTransacciones res = new ResObtenerTransacciones
+            {
+                error = new List<Error>(),
+                Transacciones = new List<TransaccionDTO>()
+            };
+            List<Error> errores = new List<Error>();
+            try
+            {
+                if(!ValidarSesion(req, ref errores))
+                {
+                    res.resultado = false;
+                    res.error = errores;
+                    return res;
+                }
+                #region Validaciones
+                if (req == null)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "Solicitud no válida"));
+                }
+                else
+                {
+                    if (req.sesion == null)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.sesionInvalida, "La sesión no es válida"));
+                    }
+                    else
+                    {
+                        if(req.UsuarioID <= 0)
+                        {
+                            res.error.Add(HelperValidacion.CrearError(enumErrores.usuarioNoEncontrado, "Usuario Inválido"));
+                        }
+                        if (!(String.IsNullOrEmpty(req.Tipo) || req.Tipo=="Gasto" || req.Tipo == "Ingreso"))
+                        {
+                            res.error.Add(HelperValidacion.CrearError(enumErrores.TipoTransaccionInvalido, "El tipo de transacción no es válido"));
+                        }
+                        // Si ambas fechas están presentes, validar el rango
+                        if (req.FechaInicio.HasValue && req.FechaFin.HasValue && req.FechaInicio > req.FechaFin)
+                        {
+                                res.error.Add(HelperValidacion.CrearError(enumErrores.FechaInvalida, "La fecha de inicio no puede ser mayor que la fecha de fin"));
+                        }
+
+                    }
+                }
+                #endregion
+                if (res.error.Any())
+                {
+                    res.resultado = false;
+                    return res;
+                }
+                
+                var Transacciones = _dbContext.SP_TRANSACCIONES_OBTENER_POR_USUARIO(req.UsuarioID, req.FechaInicio, req.FechaFin, req.Tipo)
+                    .Select( b=>new TransaccionDTO
+                    {
+                        Tipo = b.Tipo,
+                        TransaccionID = b.TransaccionID,
+                        Monto = b.Monto,
+                        Fecha = b.Fecha,
+                        Titulo = b.Titulo,
+                        Descripcion = b.Descripcion,
+                        Categoria = b.Categoria
+
+                    }).ToList();
+                res.Transacciones = Transacciones;
+                res.resultado = true;
+            }
+            catch (Exception ex) {
+                res.resultado = false;
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, $"Error al obtener las transacciones: {ex.Message}"));
+            }
+            return res;
+        }
+        private ResCrearAnalisis CrearAnalisis(ReqCrearAnalisis req)
+        {
             throw new NotImplementedException();
         }
-        //actualizar resumen
-        //crearanalisis
-        //insertarmensaje
-        //obtener contexto x id
-        //obtener todos contextos
-        //obtener transacciones
-        //obtener mensajes
-        //obtener analisis usuario
-
-
-
 
         private ResInsertarMensajeChat InsertarMensajeChat(ReqInsertarMensajeChat req)
         {
@@ -123,10 +187,7 @@ namespace Backend.Logica
             throw new NotImplementedException();
         }
 
-        private ResCrearAnalisis CrearAnalisis(ReqCrearAnalisis req)
-        {
-            throw new NotImplementedException();
-        }
+        
         private ResObtenerAnalisisUsuario ObtenerAnalisis(ReqObtenerAnalisisUsuario req)
         {
             throw new NotImplementedException();
