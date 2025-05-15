@@ -214,5 +214,74 @@ namespace APIRest.Controllers
 
             return _logica.SalirGrupo(req);
         }
+
+        [HttpGet]
+        [Route("api/grupos")]
+        public ResListarGrupos ListarGrupos([FromUri] int usuarioId)
+        {
+            var req = new ReqListarGrupos
+            {
+                UsuarioID = usuarioId
+            };
+
+            var authHeader = Request.Headers.Authorization;
+            if (authHeader != null && authHeader.Scheme == "Bearer")
+            {
+                req.token = authHeader.Parameter;
+            }
+            else
+            {
+                return new ResListarGrupos
+                {
+                    resultado = false,
+                    error = new List<Error>
+            {
+                new Error
+                {
+                    ErrorCode = (int)enumErrores.tokenFaltante,
+                    Message = "Token de autorización no proporcionado"
+                }
+            }
+                };
+            }
+
+            return _logica.ListarGrupos(req);
+        }
+
+        /*
+        [HttpGet]
+        [Route("api/grupos/{id}")]
+        public ResObtenerDetallesGrupo ObtenerDetallesGrupo(int id, [FromUri] int usuarioId)
+        {
+            var req = new ReqObtenerDetallesGrupo
+            {
+                GrupoID = id,
+                UsuarioID = usuarioId
+            };
+
+            var authHeader = Request.Headers.Authorization;
+            if (authHeader != null && authHeader.Scheme == "Bearer")
+            {
+                req.token = authHeader.Parameter;
+            }
+            else
+            {
+                return new ResObtenerDetallesGrupo
+                {
+                    resultado = false,
+                    error = new List<Error>
+            {
+                new Error
+                {
+                    ErrorCode = (int)enumErrores.tokenFaltante,
+                    Message = "Token de autorización no proporcionado"
+                }
+            }
+                };
+            }
+
+            return _logica.ObtenerDetallesGrupo(req);
+        }
+        */
     }
 }

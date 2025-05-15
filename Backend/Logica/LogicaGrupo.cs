@@ -10,6 +10,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.IdentityModel.Tokens;
+using Backend.DTO;
 
 namespace Backend.Logica
 {
@@ -97,7 +98,6 @@ namespace Backend.Logica
                 return false;
             }
         }
-
 
         // 1. Crear grupo familiar
         public ResCrearGrupoFamiliar CrearGrupo(ReqCrearGrupoFamiliar req)
@@ -451,6 +451,7 @@ namespace Backend.Logica
             return res;
         }
 
+        // 5. Salir de grupo
         public ResSalirGrupo SalirGrupo(ReqSalirGrupo req)
         {
             ResSalirGrupo res = new ResSalirGrupo
@@ -529,6 +530,187 @@ namespace Backend.Logica
             return res;
         }
 
+        // 6. Listar Grupos por Usuario
+        public ResListarGrupos ListarGrupos(ReqListarGrupos req)
+        {
+            ResListarGrupos res = new ResListarGrupos
+            {
+                error = new List<Error>(),
+                Grupos = new List<GrupoDTO>()
+            };
+
+            List<Error> errores = new List<Error>();
+
+            try
+            {
+                // Validar la sesión
+                if (!ValidarSesion(req, ref errores))
+                {
+                    res.error = errores;
+                    res.resultado = false;
+                    return res;
+                }
+
+                #region Validaciones
+                if (req == null)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "Solicitud no válida"));
+                }
+                else
+                {
+                    if (req.UsuarioID <= 0)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.usuarioNoEncontrado, "Usuario inválido"));
+                    }
+                    if (req.sesion.UsuarioID != req.UsuarioID)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.permisoDenegado, "No tienes permiso para realizar esta acción"));
+                    }
+                }
+                #endregion
+
+                if (res.error.Any())
+                {
+                    res.resultado = false;
+                    return res;
+                }
+
+                int? errorIdBD = 0;
+                string errorMsgBD = "";
+
+                var grupos = _dbContext.SP_GRUPO_LISTAR_POR_USUARIO(req.UsuarioID, ref errorIdBD, ref errorMsgBD);
+
+                if (errorIdBD == 0)
+                {
+                    res.Grupos = grupos.Select(g => new GrupoDTO
+                    {
+                        GrupoID = g.GrupoID,
+                        Nombre = g.Nombre,
+                        Descripcion = g.Descripcion,
+                        FechaCreacion = g.FechaCreacion,
+                        CreadoPorUsuarioID = g.CreadoPorUsuarioID,
+                        Estado = g.Estado,
+                        FechaActualizacion = g.FechaActualizacion,
+                        Rol = g.Rol
+                    }).ToList();
+                    res.resultado = true;
+                }
+                else
+                {
+                    res.error.Add(HelperValidacion.CrearError((enumErrores)errorIdBD, errorMsgBD));
+                    res.resultado = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Error en la lógica: " + ex.Message));
+                res.resultado = false;
+            }
+
+            return res;
+        }
+
+        // 7. Obtener detalles de grupo
+        /*
+        public ResObtenerDetallesGrupo ObtenerDetallesGrupo(ReqObtenerDetallesGrupo req)
+        {
+            ResObtenerDetallesGrupo res = new ResObtenerDetallesGrupo
+            {
+                error = new List<Error>(),
+                Miembros = new List<MiembroDTO>()
+            };
+
+            List<Error> errores = new List<Error>();
+
+            try
+            {
+                // Validar la sesión
+                if (!ValidarSesion(req, ref errores))
+                {
+                    res.error = errores;
+                    res.resultado = false;
+                    return res;
+                }
+
+                #region Validaciones
+                if (req == null)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "Solicitud no válida"));
+                }
+                else
+                {
+                    if (req.GrupoID <= 0)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.grupoNoEncontrado, "Grupo inválido"));
+                    }
+                    if (req.UsuarioID <= 0)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.usuarioNoEncontrado, "Usuario inválido"));
+                    }
+                    if (req.sesion.UsuarioID != req.UsuarioID)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.permisoDenegado, "No tienes permiso para realizar esta acción"));
+                    }
+                }
+                #endregion
+
+                if (res.error.Any())
+                {
+                    res.resultado = false;
+                    return res;
+                }
+
+                int? errorIdBD = 0;
+                string errorMsgBD = "";
+
+                var grupoResult = _dbContext.SP_GRUPO_OBTENER_DETALLES(req.GrupoID, req.UsuarioID, ref errorIdBD, ref errorMsgBD);
+
+                if (errorIdBD == 0)
+                {
+                    var grupo = grupoResult.FirstOrDefault();
+                    if (grupo != null)
+                    {
+                        res.Grupo = new GrupoDTO
+                        {
+                            GrupoID = grupo.GrupoID,
+                            Nombre = grupo.Nombre,
+                            Descripcion = grupo.Descripcion,
+                            FechaCreacion = grupo.FechaCreacion,
+                            CreadoPorUsuarioID = grupo.CreadoPorUsuarioID,
+                            Estado = grupo.Estado,
+                            FechaActualizacion = grupo.FechaActualizacion
+                        };
+
+                        res.Miembros = grupoResult.Select(m => new MiembroDTO
+                        {
+                            UsuarioID = m.UsuarioID,
+                            NombreUsuario = m.NombreUsuario,
+                            Rol = m.Rol,
+                            FechaUnion = m.FechaUnion
+                        }).Where(m => m.UsuarioID > 0).ToList(); // Filtrar solo miembros
+                        res.resultado = true;
+                    }
+                    else
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.grupoNoEncontrado, "Grupo no encontrado"));
+                        res.resultado = false;
+                    }
+                }
+                else
+                {
+                    res.error.Add(HelperValidacion.CrearError((enumErrores)errorIdBD, errorMsgBD));
+                    res.resultado = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Error en la lógica: " + ex.Message));
+                res.resultado = false;
+            }
+
+            return res;
+        }
+        */
     }
 
 }
