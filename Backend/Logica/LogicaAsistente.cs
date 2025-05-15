@@ -383,16 +383,118 @@ namespace Backend.Logica
         
         private ResObtenerAnalisisUsuario ObtenerAnalisis(ReqObtenerAnalisisUsuario req)
         {
-            throw new NotImplementedException();
+            ResObtenerAnalisisUsuario res = new ResObtenerAnalisisUsuario
+            {
+                error = new List<Error>(),
+                AnalisisIA = new List<AnalisisIA>()
+            };
+            List<Error> errores = new List<Error>();
+            try {
+                if(!ValidarSesion(req, ref errores))
+                {
+                    res.resultado = false;
+                    res.error = errores;
+                    return res;
+                }
+                #region Validaciones
+                if (req == null)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "Solicitud no válida"));
+                }
+                else
+                {
+                    if (req.UsuarioID <= 0)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.campoRequerido, "El Usuario es requerido"));
+                    }
+                }
+                #endregion
+                if (res.error.Any())
+                {
+                    res.resultado = false;
+                    return res;
+                }
+                var analisis = _dbContext.SP_OBTENER_ANALISIS_USUARIO(req.UsuarioID)
+                    .Select(b => new AnalisisIA
+                    {
+                        AnalisisID = b.AnalisisID,
+                        UsuarioID = b.UsuarioID,
+                        Contexto = b.ContextoID,
+                        FechaInicio = b.FechaInicio,
+                        FechaFin = b.FechaFin,
+                        FechaGeneracion = b.FechaGeneracion,
+                        Resumen = b.Resumen,
+                    }).ToList();
+                res.AnalisisIA = analisis;
 
+
+            }
+            catch (Exception ex)
+            {
+                res.resultado = false;
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, $"Error al obtener el análisis: {ex.Message}"));
+            }
+
+            return res;
         }
         
         private ResActualizarResumen ActualizarAnalisis(ReqActualizarResumen req)
         {
-          throw new NotImplementedException();
+            ResActualizarResumen res = new ResActualizarResumen
+            {
+                error = new List<Error>()
+            };
+            List<Error> errores = new List<Error>();
+            try
+            {
+                if(!ValidarSesion(req, ref errores))
+                {
+                    res.resultado = false;
+                    res.error = errores;
+                    return res;
+                }
+                #region Validaciones
+                if (req == null)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "Solicitud no válida"));
+                }
+                else
+                {
+                    
+                        if (req.AnalisisID <= 0)
+                        {
+                            res.error.Add(HelperValidacion.CrearError(enumErrores.campoRequerido, "El ID del análisis es requerido"));
+                        }
+                        if (string.IsNullOrEmpty(req.Resumen))
+                        {
+                            res.error.Add(HelperValidacion.CrearError(enumErrores.campoRequerido, "El resumen es requerido"));
+                        }
+                }
+                #endregion
+                if (res.error.Any())
+                {
+                    res.resultado = false;
+                    return res;
+                }
+                int? errorIDDB = 0;
+                string errorMsgDB = "";
+                var analisis = _dbContext.SP_ACTUALIZAR_RESUMEN(req.AnalisisID, req.Resumen, ref errorIDDB, ref errorMsgDB);
+                if (errorIDDB != 0)
+                {
+                    res.resultado = false;
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgDB));
+                }
+                else
+                {
+                    res.resultado = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                res.resultado = false;
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, $"Error al actualizar el análisis: {ex.Message}"));
+            }
+            return res;
         }
-
-
-
     } 
 }

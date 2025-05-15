@@ -14,6 +14,6 @@ namespace Backend.Entidades.Entity
         public DateTime FechaFin { get; set; }
         public string Resumen { get; set; }
         public DateTime FechaGeneracion { get; set; }
-        public string Contexto { get; set; }
+        public int? Contexto { get; set; }
     }
 }
