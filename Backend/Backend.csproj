@@ -131,6 +131,8 @@
     <Compile Include="Entidades\Request\ReqIniciarSesion.cs" />
     <Compile Include="Entidades\Request\ReqInvitarMiembroGrupo.cs" />
     <Compile Include="Entidades\Request\ReqObtenerBalanceGrupal.cs" />
+    <Compile Include="Entidades\Request\ReqObtenerTransacciones.cs" />
+    <Compile Include="Entidades\Request\ReqObtenerMensajes.cs" />
     <Compile Include="Entidades\Request\ReqObtenerUsuario.cs" />
     <Compile Include="Entidades\Request\ReqReenviarCodigoVerificacion.cs" />
     <Compile Include="Entidades\Request\ReqRegistrarGastoCompartido.cs" />
@@ -144,6 +146,8 @@
     <Compile Include="Entidades\Response\ResIniciarSesion.cs" />
     <Compile Include="Entidades\Response\ResInvitarMiembroGrupo.cs" />
     <Compile Include="Entidades\Response\ResObtenerBalanceGrupal.cs" />
+    <Compile Include="Entidades\Response\ResObtenerTransacciones.cs" />
+    <Compile Include="Entidades\Response\ResObtenerMensajes.cs" />
     <Compile Include="Entidades\Response\ResObtenerUsuario.cs" />
     <Compile Include="Entidades\Response\ResReenviarCodigoVerificacion.cs" />
     <Compile Include="Entidades\Response\ResRegistrarGastoCompartido.cs" />
@@ -153,6 +157,7 @@
     <Compile Include="Helpers\HelperCorreo.cs" />
     <Compile Include="Helpers\HelperJWT.cs" />
     <Compile Include="Helpers\HelperValidacion.cs" />
+    <Compile Include="Logica\LogicaAsistente.cs" />
     <Compile Include="Logica\LogicaAutenticacion.cs" />
     <Compile Include="Logica\LogicaGrupo.cs" />
     <Compile Include="Logica\LogicaUsuario.cs" />
