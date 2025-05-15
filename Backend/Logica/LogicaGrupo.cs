@@ -195,6 +195,25 @@ namespace Backend.Logica
                     return res;
                 }
 
+                // Consultar usuario para verificar credenciales
+                int? errorIdBD = 0;
+                string errorMsgBD = "";
+                var usuario = _dbContext.SP_OBTENER_USUARIO_POR_EMAIL(req.correoUsuario, ref errorIdBD, ref errorMsgBD).FirstOrDefault();
+
+                if (errorIdBD != 0)
+                {
+                    if (errorIdBD == 400)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.correoFaltante, errorMsgBD));
+                    }
+                    else
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgBD));
+                    }
+                    res.resultado = false;
+                    return res;
+                }
+
                 #region Validaciones
                 if (req == null)
                 {
@@ -206,7 +225,7 @@ namespace Backend.Logica
                     {
                         res.error.Add(HelperValidacion.CrearError(enumErrores.grupoNoEncontrado, "Grupo inválido"));
                     }
-                    if (req.UsuarioID <= 0)
+                    if (usuario.UsuarioID <= 0)
                     {
                         res.error.Add(HelperValidacion.CrearError(enumErrores.usuarioNoEncontrado, "Usuario inválido"));
                     }
@@ -223,10 +242,10 @@ namespace Backend.Logica
                     return res;
                 }
 
-                int? errorIdBD = 0;
-                string errorMsgBD = "";
+                int? errorIdBD1 = 0;
+                string errorMsgBD1 = "";
 
-                _dbContext.SP_GRUPO_INVITAR_MIEMBRO(req.GrupoID, req.UsuarioID, req.Rol, ref errorIdBD, ref errorMsgBD);
+                _dbContext.SP_GRUPO_INVITAR_MIEMBRO(req.GrupoID, usuario.UsuarioID, req.Rol, ref errorIdBD1, ref errorMsgBD1);
 
                 if (errorIdBD == 0)
                 {
@@ -431,5 +450,85 @@ namespace Backend.Logica
 
             return res;
         }
+
+        public ResSalirGrupo SalirGrupo(ReqSalirGrupo req)
+        {
+            ResSalirGrupo res = new ResSalirGrupo
+            {
+                error = new List<Error>()
+            };
+
+            List<Error> errores = new List<Error>();
+
+            try
+            {
+                // Validar la sesión
+                if (!ValidarSesion(req, ref errores))
+                {
+                    res.error = errores;
+                    res.resultado = false;
+                    return res;
+                }
+
+                #region Validaciones
+                if (req == null)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "Solicitud no válida"));
+                }
+                else
+                {
+                    if (req.GrupoID <= 0)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.grupoNoEncontrado, "Grupo inválido"));
+                    }
+                    if (req.UsuarioID <= 0)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.usuarioNoEncontrado, "Usuario inválido"));
+                    }
+                    // Validar que el usuario del token coincide con el UsuarioID
+                    if (req.sesion.UsuarioID != req.UsuarioID)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.permisoDenegado, "No tienes permiso para realizar esta acción"));
+                    }
+                }
+                #endregion
+
+                if (res.error.Any())
+                {
+                    res.resultado = false;
+                    return res;
+                }
+
+                int? errorIdBD = 0;
+                string errorMsgBD = "";
+
+                // Llamar al stored procedure
+                _dbContext.SP_GRUPO_SALIR_MIEMBRO(
+                    req.GrupoID,
+                    req.UsuarioID,
+                    ref errorIdBD,
+                    ref errorMsgBD
+                );
+
+                if (errorIdBD == 0)
+                {
+                    res.resultado = true;
+                }
+                else
+                {
+                    res.error.Add(HelperValidacion.CrearError((enumErrores)errorIdBD, errorMsgBD));
+                    res.resultado = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Error en la lógica: " + ex.Message));
+                res.resultado = false;
+            }
+
+            return res;
+        }
+
     }
+
 }

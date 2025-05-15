@@ -9,7 +9,7 @@ namespace Backend.Entidades.Request
     public class ReqInvitarMiembroGrupo : ReqBase
     {
         public int GrupoID { get; set; }
-        public int UsuarioID { get; set; } // ID del usuario a invitar
+        public string correoUsuario { get; set; } // ID del usuario a invitar
         public string Rol { get; set; } // Rol: 'Administrador', 'Miembro', 'Consulta'
     }
 

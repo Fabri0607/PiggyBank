@@ -131,6 +131,7 @@
     <Compile Include="Entidades\Request\ReqReenviarCodigoVerificacion.cs" />
     <Compile Include="Entidades\Request\ReqRegistrarGastoCompartido.cs" />
     <Compile Include="Entidades\Request\ReqRegistrarUsuario.cs" />
+    <Compile Include="Entidades\Request\ReqSalirGrupo.cs" />
     <Compile Include="Entidades\Request\ReqVerificarUsuario.cs" />
     <Compile Include="Entidades\Response\ResActualizarPerfil.cs" />
     <Compile Include="Entidades\Response\ResBase.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Entidades\Response\ResReenviarCodigoVerificacion.cs" />
     <Compile Include="Entidades\Response\ResRegistrarGastoCompartido.cs" />
     <Compile Include="Entidades\Response\ResRegistrarUsuario.cs" />
+    <Compile Include="Entidades\Response\ResSalirGrupo.cs" />
     <Compile Include="Entidades\Response\ResVerificarUsuario.cs" />
     <Compile Include="Helpers\HelperCorreo.cs" />
     <Compile Include="Helpers\HelperJWT.cs" />

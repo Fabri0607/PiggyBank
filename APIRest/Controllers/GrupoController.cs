@@ -170,6 +170,49 @@ namespace APIRest.Controllers
 
             return _logica.ObtenerBalanceGrupal(req);
         }
-    }
 
+        [HttpPost]
+        [Route("api/grupos/{id}/salir")]
+        public ResSalirGrupo SalirGrupo(int id, ReqSalirGrupo req)
+        {
+            if (req == null || id != req.GrupoID)
+            {
+                return new ResSalirGrupo
+                {
+                    resultado = false,
+                    error = new List<Error>
+            {
+                new Error
+                {
+                    ErrorCode = (int)enumErrores.requestNulo,
+                    Message = "Solicitud no válida o ID de grupo inconsistente"
+                }
+            }
+                };
+            }
+
+            var authHeader = Request.Headers.Authorization;
+            if (authHeader != null && authHeader.Scheme == "Bearer")
+            {
+                req.token = authHeader.Parameter;
+            }
+            else
+            {
+                return new ResSalirGrupo
+                {
+                    resultado = false,
+                    error = new List<Error>
+            {
+                new Error
+                {
+                    ErrorCode = (int)enumErrores.tokenFaltante,
+                    Message = "Token de autorización no proporcionado"
+                }
+            }
+                };
+            }
+
+            return _logica.SalirGrupo(req);
+        }
+    }
 }
