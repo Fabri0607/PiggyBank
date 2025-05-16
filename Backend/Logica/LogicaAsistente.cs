@@ -7,9 +7,11 @@ using Backend.Entidades.Response;
 using Backend.Helpers;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.CodeDom;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting.Messaging;
+using System.Threading.Tasks;
 
 
 namespace Backend.Logica
@@ -17,8 +19,8 @@ namespace Backend.Logica
     public class LogicaAsistente
     {
         private readonly ConexionLINQDataContext _dbContext;
-        private readonly string LLM_Api_key; 
-        public LogicaAsistente() 
+        private readonly string LLM_Api_key;
+        public LogicaAsistente()
         {
             _dbContext = new ConexionLINQDataContext();
             LLM_Api_key = Environment.GetEnvironmentVariable("GEMINI_API_KEY");
@@ -98,81 +100,7 @@ namespace Backend.Logica
                 return false;
             }
         }
-        //Obtener transacciones
-        private ResObtenerTransacciones ObtenerTransacciones(ReqObtenerTransacciones req)
-
-        {
-            ResObtenerTransacciones res = new ResObtenerTransacciones
-            {
-                error = new List<Error>(),
-                Transacciones = new List<TransaccionDTO>()
-            };
-            List<Error> errores = new List<Error>();
-            try
-            {
-                if(!ValidarSesion(req, ref errores))
-                {
-                    res.resultado = false;
-                    res.error = errores;
-                    return res;
-                }
-                #region Validaciones
-                if (req == null)
-                {
-                    res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "Solicitud no válida"));
-                }
-                else
-                {
-                    if (req.sesion == null)
-                    {
-                        res.error.Add(HelperValidacion.CrearError(enumErrores.sesionInvalida, "La sesión no es válida"));
-                    }
-                    else
-                    {
-                        if(req.UsuarioID <= 0)
-                        {
-                            res.error.Add(HelperValidacion.CrearError(enumErrores.usuarioNoEncontrado, "Usuario Inválido"));
-                        }
-                        if (!(String.IsNullOrEmpty(req.Tipo) || req.Tipo=="Gasto" || req.Tipo == "Ingreso"))
-                        {
-                            res.error.Add(HelperValidacion.CrearError(enumErrores.TipoTransaccionInvalido, "El tipo de transacción no es válido"));
-                        }
-                        // Si ambas fechas están presentes, validar el rango
-                        if (req.FechaInicio.HasValue && req.FechaFin.HasValue && req.FechaInicio > req.FechaFin)
-                        {
-                                res.error.Add(HelperValidacion.CrearError(enumErrores.FechaInvalida, "La fecha de inicio no puede ser mayor que la fecha de fin"));
-                        }
-
-                    }
-                }
-                #endregion
-                if (res.error.Any())
-                {
-                    res.resultado = false;
-                    return res;
-                }
-                
-                var Transacciones = _dbContext.SP_TRANSACCIONES_OBTENER_POR_USUARIO(req.UsuarioID, req.FechaInicio, req.FechaFin, req.Tipo)
-                    .Select( b=>new TransaccionDTO
-                    {
-                        Tipo = b.Tipo,
-                        TransaccionID = b.TransaccionID,
-                        Monto = b.Monto,
-                        Fecha = b.Fecha,
-                        Titulo = b.Titulo,
-                        Descripcion = b.Descripcion,
-                        Categoria = b.Categoria
-
-                    }).ToList();
-                res.Transacciones = Transacciones;
-                res.resultado = true;
-            }
-            catch (Exception ex) {
-                res.resultado = false;
-                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, $"Error al obtener las transacciones: {ex.Message}"));
-            }
-            return res;
-        }
+        
         private ResCrearAnalisis CrearAnalisis(ReqCrearAnalisis req)
         {
             ResCrearAnalisis res = new ResCrearAnalisis
@@ -182,12 +110,12 @@ namespace Backend.Logica
             };
             List<Error> errores = new List<Error>();
             try {
-                    if (!ValidarSesion(req, ref errores))
-                    {
-                        res.resultado = false;
-                        res.error = errores;
-                        return res;
-                    }
+                if (!ValidarSesion(req, ref errores))
+                {
+                    res.resultado = false;
+                    res.error = errores;
+                    return res;
+                }
                 #region Validaciones
                 if (req == null)
                 {
@@ -285,7 +213,7 @@ namespace Backend.Logica
                         {
                             res.error.Add(HelperValidacion.CrearError(enumErrores.campoRequerido, "El rol es requerido"));
                         }
-                        
+
                     }
                 }
                 #endregion
@@ -316,7 +244,7 @@ namespace Backend.Logica
             }
             return res;
         }
-        private ResObtenerMensajes ObtenerMensajesChat(ReqObtenerMensajes req)
+        public ResObtenerMensajes ObtenerMensajesChat(ReqObtenerMensajes req)
         {
             ResObtenerMensajes res = new ResObtenerMensajes
             {
@@ -345,7 +273,7 @@ namespace Backend.Logica
                     }
                     else
                     {
-                        if(req.AnalisisID <= 0)
+                        if (req.AnalisisID <= 0)
                         {
                             res.error.Add(HelperValidacion.CrearError(enumErrores.campoRequerido, "El ID del análisis es requerido"));
                         }
@@ -380,7 +308,7 @@ namespace Backend.Logica
 
         }
 
-        
+
         private ResObtenerAnalisisUsuario ObtenerAnalisis(ReqObtenerAnalisisUsuario req)
         {
             ResObtenerAnalisisUsuario res = new ResObtenerAnalisisUsuario
@@ -390,7 +318,7 @@ namespace Backend.Logica
             };
             List<Error> errores = new List<Error>();
             try {
-                if(!ValidarSesion(req, ref errores))
+                if (!ValidarSesion(req, ref errores))
                 {
                     res.resultado = false;
                     res.error = errores;
@@ -437,7 +365,7 @@ namespace Backend.Logica
 
             return res;
         }
-        
+
         private ResActualizarResumen ActualizarAnalisis(ReqActualizarResumen req)
         {
             ResActualizarResumen res = new ResActualizarResumen
@@ -447,7 +375,7 @@ namespace Backend.Logica
             List<Error> errores = new List<Error>();
             try
             {
-                if(!ValidarSesion(req, ref errores))
+                if (!ValidarSesion(req, ref errores))
                 {
                     res.resultado = false;
                     res.error = errores;
@@ -460,15 +388,15 @@ namespace Backend.Logica
                 }
                 else
                 {
-                    
-                        if (req.AnalisisID <= 0)
-                        {
-                            res.error.Add(HelperValidacion.CrearError(enumErrores.campoRequerido, "El ID del análisis es requerido"));
-                        }
-                        if (string.IsNullOrEmpty(req.Resumen))
-                        {
-                            res.error.Add(HelperValidacion.CrearError(enumErrores.campoRequerido, "El resumen es requerido"));
-                        }
+
+                    if (req.AnalisisID <= 0)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.campoRequerido, "El ID del análisis es requerido"));
+                    }
+                    if (string.IsNullOrEmpty(req.Resumen))
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.campoRequerido, "El resumen es requerido"));
+                    }
                 }
                 #endregion
                 if (res.error.Any())
@@ -496,5 +424,54 @@ namespace Backend.Logica
             }
             return res;
         }
+        public ResObtenerTodosContexto ObtenerContextos(ReqObtenerTodosContexto req)
+        {
+            ResObtenerTodosContexto res = new ResObtenerTodosContexto
+            {
+                error = new List<Error>(),
+                Contextos = new List<ContextoDTO>()
+            };
+            List<Error> errores = new List<Error>();
+            try
+            {
+                if (!ValidarSesion(req, ref errores))
+                {
+                    res.resultado = false;
+                    res.error = errores;
+                    return res;
+                }
+                #region Validaciones
+                if (req == null)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "Solicitud no válida"));
+                }
+                #endregion
+                if (res.error.Any())
+                {
+                    res.resultado = false;
+                    return res;
+                }
+
+                var contextos = _dbContext.SP_OBTENER_TODOS_CONTEXTO()
+                    .Select(b => new ContextoDTO
+                    {
+                        ContextoID = b.CONTEXTOID,
+                        FechaCreacion = b.FECHACREACION,
+                        Nombre = b.NOMBRE
+                    }).ToList();
+                res.Contextos = contextos;
+            }
+            catch (Exception ex)
+            {
+                res.resultado = false;
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, $"Error al obtener los contextos: {ex.Message}"));
+            }
+            return res;
+        }
+        public async Task<ResObtenerMensajes> GenerarChat(ReqCrearAnalisis reqCA, int idContexto, string tipo, string Mensaje)
+        {
+            throw new NotImplementedException();
+        }
     } 
+    
 }

@@ -100,6 +100,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\ContextoDTO.cs" />
     <Compile Include="DTO\TransaccionDTO.cs" />
     <Compile Include="DTO\UsuarioDTO.cs" />
     <Compile Include="Entidades\Entity\AnalisisIA.cs" />
@@ -136,6 +137,7 @@
     <Compile Include="Entidades\Request\ReqInvitarMiembroGrupo.cs" />
     <Compile Include="Entidades\Request\ReqObtenerAnalisisUsuario.cs" />
     <Compile Include="Entidades\Request\ReqObtenerBalanceGrupal.cs" />
+    <Compile Include="Entidades\Request\ReqObtenerTodosContexto.cs" />
     <Compile Include="Entidades\Request\ReqObtenerTransacciones.cs" />
     <Compile Include="Entidades\Request\ReqObtenerMensajes.cs" />
     <Compile Include="Entidades\Request\ReqObtenerUsuario.cs" />
@@ -155,6 +157,7 @@
     <Compile Include="Entidades\Response\ResInvitarMiembroGrupo.cs" />
     <Compile Include="Entidades\Response\ResObtenerAnalisisUsuario.cs" />
     <Compile Include="Entidades\Response\ResObtenerBalanceGrupal.cs" />
+    <Compile Include="Entidades\Response\ResObtenerTodosContexto.cs" />
     <Compile Include="Entidades\Response\ResObtenerTransacciones.cs" />
     <Compile Include="Entidades\Response\ResObtenerMensajes.cs" />
     <Compile Include="Entidades\Response\ResObtenerUsuario.cs" />
