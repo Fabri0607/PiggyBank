@@ -248,7 +248,6 @@ namespace APIRest.Controllers
             return _logica.ListarGrupos(req);
         }
 
-        /*
         [HttpGet]
         [Route("api/grupos/{id}")]
         public ResObtenerDetallesGrupo ObtenerDetallesGrupo(int id, [FromUri] int usuarioId)
@@ -282,6 +281,155 @@ namespace APIRest.Controllers
 
             return _logica.ObtenerDetallesGrupo(req);
         }
-        */
+
+        [HttpDelete]
+        [Route("api/grupos/{id}/miembros/{memberId}")]
+        public ResEliminarMiembro EliminarMiembro(int id, int memberId, [FromUri] int adminUsuarioId)
+        {
+            var req = new ReqEliminarMiembro
+            {
+                GrupoID = id,
+                UsuarioID = memberId,
+                AdminUsuarioID = adminUsuarioId
+            };
+
+            var authHeader = Request.Headers.Authorization;
+            if (authHeader != null && authHeader.Scheme == "Bearer")
+            {
+                req.token = authHeader.Parameter;
+            }
+            else
+            {
+                return new ResEliminarMiembro
+                {
+                    resultado = false,
+                    error = new List<Error>
+                    {
+                        new Error
+                        {
+                            ErrorCode = (int)enumErrores.tokenFaltante,
+                            Message = "Token de autorización no proporcionado"
+                        }
+                    }
+                };
+            }
+
+            return _logica.EliminarMiembro(req);
+        }
+
+        [HttpPut]
+        [Route("api/grupos/{id}")]
+        public ResActualizarGrupo ActualizarGrupo(int id, ReqActualizarGrupo req)
+        {
+            if (req == null || id != req.GrupoID)
+            {
+                return new ResActualizarGrupo
+                {
+                    resultado = false,
+                    error = new List<Error>
+            {
+                new Error
+                {
+                    ErrorCode = (int)enumErrores.requestNulo,
+                    Message = "Solicitud no válida o ID de grupo inconsistente"
+                }
+            }
+                };
+            }
+
+            var authHeader = Request.Headers.Authorization;
+            if (authHeader != null && authHeader.Scheme == "Bearer")
+            {
+                req.token = authHeader.Parameter;
+            }
+            else
+            {
+                return new ResActualizarGrupo
+                {
+                    resultado = false,
+                    error = new List<Error>
+            {
+                new Error
+                {
+                    ErrorCode = (int)enumErrores.tokenFaltante,
+                    Message = "Token de autorización no proporcionado"
+                }
+            }
+                };
+            }
+
+            return _logica.ActualizarGrupo(req);
+        }
+
+        [HttpGet]
+        [Route("api/grupos/{id}/gastos")]
+        public ResListarGastos ListarGastos(int id, [FromUri] int usuarioId, [FromUri] DateTime? fechaInicio = null, [FromUri] DateTime? fechaFin = null)
+        {
+            var req = new ReqListarGastos
+            {
+                GrupoID = id,
+                UsuarioID = usuarioId,
+                FechaInicio = fechaInicio,
+                FechaFin = fechaFin
+            };
+
+            var authHeader = Request.Headers.Authorization;
+            if (authHeader != null && authHeader.Scheme == "Bearer")
+            {
+                req.token = authHeader.Parameter;
+            }
+            else
+            {
+                return new ResListarGastos
+                {
+                    resultado = false,
+                    error = new List<Error>
+            {
+                new Error
+                {
+                    ErrorCode = (int)enumErrores.tokenFaltante,
+                    Message = "Token de autorización no proporcionado"
+                }
+            }
+                };
+            }
+
+            return _logica.ListarGastos(req);
+        }
+
+        [HttpDelete]
+        [Route("api/grupos/{id}")]
+        public ResEliminarGrupo EliminarGrupo(int id, [FromUri] int adminUsuarioId)
+        {
+            var req = new ReqEliminarGrupo
+            {
+                GrupoID = id,
+                AdminUsuarioID = adminUsuarioId
+            };
+
+            var authHeader = Request.Headers.Authorization;
+            if (authHeader != null && authHeader.Scheme == "Bearer")
+            {
+                req.token = authHeader.Parameter;
+            }
+            else
+            {
+                return new ResEliminarGrupo
+                {
+                    resultado = false,
+                    error = new List<Error>
+            {
+                new Error
+                {
+                    ErrorCode = (int)enumErrores.tokenFaltante,
+                    Message = "Token de autorización no proporcionado"
+                }
+            }
+                };
+            }
+
+            return _logica.EliminarGrupo(req);
+        }
+
     }
 }
