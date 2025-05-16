@@ -75,6 +75,88 @@ namespace APIRest.Controllers
                 };
             }
         }
+        [HttpGet]
+        [Route("api/asistente/analisis/")]
+        public ResObtenerAnalisisUsuario GetAnalisis()
+        {
+            var authHeader = Request.Headers.Authorization;
+            if (authHeader != null && authHeader.Scheme == "Bearer")
+            {
+                var req = new ReqObtenerAnalisisUsuario
+                {
+                    token = authHeader.Parameter
+                };
+                return _logica.ObtenerAnalisis(req);
+            }
+            else
+            {
+                return new ResObtenerAnalisisUsuario
+                {
+                    resultado = false,
+                    error = new List<Error>
+                {
+                    new Error
+                    {
+                        ErrorCode = (int)enumErrores.tokenFaltante,
+                        Message = "Token de autorización no proporcionado"
+                    }
+                }
+                };
+            }
+        }
+        [HttpPost]
+        [Route("api/asistente/analisis/")]
+        public ResCrearAnalisis CrearAnalisis(ReqCrearAnalisis req)
+        {
+            var authHeader = Request.Headers.Authorization;
+            if (authHeader != null && authHeader.Scheme == "Bearer")
+            {
+                req.token = authHeader.Parameter;
+            }
+            else
+            {
+                return new ResCrearAnalisis
+                {
+                    resultado = false,
+                    error = new List<Error>
+                {
+                    new Error
+                    {
+                        ErrorCode = (int)enumErrores.tokenFaltante,
+                        Message = "Token de autorización no proporcionado"
+                    }
+                }
+                };
+            }
+            return _logica.CrearAnalisis(req);
+        }
+        [HttpPost]
+        [Route("api/asistente/analisis/{id}/mensaje")]
+        public ResInsertarMensajeChat InsertarMensaje(int id, ReqInsertarMensajeChat req)
+        {
+            var authHeader = Request.Headers.Authorization;
+            if (authHeader != null && authHeader.Scheme == "Bearer")
+            {
+                req.token = authHeader.Parameter;
+                req.AnalisisID = id;
+            }
+            else
+            {
+                return new ResInsertarMensajeChat
+                {
+                    resultado = false,
+                    error = new List<Error>
+                {
+                    new Error
+                    {
+                        ErrorCode = (int)enumErrores.tokenFaltante,
+                        Message = "Token de autorización no proporcionado"
+                    }
+                }
+                };
+            }
+            return _logica.InsertarMensajeChat(req);
+        }
 
     }
 }

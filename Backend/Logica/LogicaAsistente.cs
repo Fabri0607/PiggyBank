@@ -101,7 +101,7 @@ namespace Backend.Logica
             }
         }
         
-        private ResCrearAnalisis CrearAnalisis(ReqCrearAnalisis req)
+        public ResCrearAnalisis CrearAnalisis(ReqCrearAnalisis req)
         {
             ResCrearAnalisis res = new ResCrearAnalisis
             {
@@ -176,7 +176,7 @@ namespace Backend.Logica
             return res;
         }
 
-        private ResInsertarMensajeChat InsertarMensajeChat(ReqInsertarMensajeChat req)
+        public  ResInsertarMensajeChat InsertarMensajeChat(ReqInsertarMensajeChat req)
         {
             ResInsertarMensajeChat res = new ResInsertarMensajeChat
             {
@@ -309,10 +309,10 @@ namespace Backend.Logica
         }
 
 
-        private ResObtenerAnalisisUsuario ObtenerAnalisis(ReqObtenerAnalisisUsuario req)
+        public ResObtenerAnalisisUsuario ObtenerAnalisis(ReqObtenerAnalisisUsuario req)
         {
             ResObtenerAnalisisUsuario res = new ResObtenerAnalisisUsuario
-            {
+            {  
                 error = new List<Error>(),
                 AnalisisIA = new List<AnalisisIA>()
             };
@@ -365,65 +365,6 @@ namespace Backend.Logica
 
             return res;
         }
-
-        private ResActualizarResumen ActualizarAnalisis(ReqActualizarResumen req)
-        {
-            ResActualizarResumen res = new ResActualizarResumen
-            {
-                error = new List<Error>()
-            };
-            List<Error> errores = new List<Error>();
-            try
-            {
-                if (!ValidarSesion(req, ref errores))
-                {
-                    res.resultado = false;
-                    res.error = errores;
-                    return res;
-                }
-                #region Validaciones
-                if (req == null)
-                {
-                    res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "Solicitud no válida"));
-                }
-                else
-                {
-
-                    if (req.AnalisisID <= 0)
-                    {
-                        res.error.Add(HelperValidacion.CrearError(enumErrores.campoRequerido, "El ID del análisis es requerido"));
-                    }
-                    if (string.IsNullOrEmpty(req.Resumen))
-                    {
-                        res.error.Add(HelperValidacion.CrearError(enumErrores.campoRequerido, "El resumen es requerido"));
-                    }
-                }
-                #endregion
-                if (res.error.Any())
-                {
-                    res.resultado = false;
-                    return res;
-                }
-                int? errorIDDB = 0;
-                string errorMsgDB = "";
-                var analisis = _dbContext.SP_ACTUALIZAR_RESUMEN(req.AnalisisID, req.Resumen, ref errorIDDB, ref errorMsgDB);
-                if (errorIDDB != 0)
-                {
-                    res.resultado = false;
-                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgDB));
-                }
-                else
-                {
-                    res.resultado = true;
-                }
-            }
-            catch (Exception ex)
-            {
-                res.resultado = false;
-                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, $"Error al actualizar el análisis: {ex.Message}"));
-            }
-            return res;
-        }
         public ResObtenerTodosContexto ObtenerContextos(ReqObtenerTodosContexto req)
         {
             ResObtenerTodosContexto res = new ResObtenerTodosContexto
@@ -467,10 +408,6 @@ namespace Backend.Logica
                 res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, $"Error al obtener los contextos: {ex.Message}"));
             }
             return res;
-        }
-        public async Task<ResObtenerMensajes> GenerarChat(ReqCrearAnalisis reqCA, int idContexto, string tipo, string Mensaje)
-        {
-            throw new NotImplementedException();
         }
     } 
     
