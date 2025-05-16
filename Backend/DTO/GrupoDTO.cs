@@ -15,6 +15,5 @@ namespace Backend.DTO
         public int CreadoPorUsuarioID { get; set; }
         public string Estado { get; set; }
         public DateTime? FechaActualizacion { get; set; }
-        public string Rol { get; set; }
     }
 }

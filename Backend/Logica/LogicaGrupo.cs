@@ -590,8 +590,7 @@ namespace Backend.Logica
                         FechaCreacion = g.FechaCreacion,
                         CreadoPorUsuarioID = g.CreadoPorUsuarioID,
                         Estado = g.Estado,
-                        FechaActualizacion = g.FechaActualizacion,
-                        Rol = g.Rol
+                        FechaActualizacion = g.FechaActualizacion
                     }).ToList();
                     res.resultado = true;
                 }
@@ -662,13 +661,15 @@ namespace Backend.Logica
                 int? errorIdBD = 0;
                 string errorMsgBD = "";
 
-                var grupoResult = _dbContext.SP_GRUPO_OBTENER_DETALLES(req.GrupoID, req.UsuarioID, ref errorIdBD, ref errorMsgBD);
+                // Obtener resultados y materializarlos en una lista
+                var grupoResult = _dbContext.SP_GRUPO_OBTENER_DETALLES(req.GrupoID, req.UsuarioID, ref errorIdBD, ref errorMsgBD).ToList();
 
                 if (errorIdBD == 0)
                 {
-                    var grupo = grupoResult.FirstOrDefault();
-                    if (grupo != null)
+                    if (grupoResult.Any())
                     {
+                        // Tomar el primer registro para los datos del grupo
+                        var grupo = grupoResult.First();
                         res.Grupo = new GrupoDTO
                         {
                             GrupoID = grupo.GrupoID,
@@ -680,13 +681,17 @@ namespace Backend.Logica
                             FechaActualizacion = grupo.FechaActualizacion
                         };
 
-                        res.Miembros = grupoResult.Select(m => new MiembroDTO
-                        {
-                            UsuarioID = (int)m.UsuarioID,
-                            NombreUsuario = m.NombreUsuario,
-                            Rol = m.Rol,
-                            FechaUnion = (DateTime)m.FechaUnion
-                        }).Where(m => m.UsuarioID > 0).ToList(); // Filtrar solo miembros
+                        // Procesar los miembros, filtrando registros válidos
+                        res.Miembros = grupoResult
+                            .Where(m => m.UsuarioID > 0 && m.NombreUsuario != "") // Filtrar registros con datos de miembro válidos
+                            .Select(m => new MiembroDTO
+                            {
+                                UsuarioID = m.UsuarioID,
+                                NombreUsuario = m.NombreUsuario,
+                                Rol = m.Rol,
+                                FechaUnion = m.FechaUnion
+                            }).ToList();
+
                         res.resultado = true;
                     }
                     else
