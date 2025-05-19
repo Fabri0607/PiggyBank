@@ -100,15 +100,17 @@ namespace Backend.Logica
                 return false;
             }
         }
-        
+
         public ResCrearAnalisis CrearAnalisis(ReqCrearAnalisis req)
         {
+            string guid = req.sesion.Guid;
             ResCrearAnalisis res = new ResCrearAnalisis
             {
                 error = new List<Error>(),
                 AnalisisID = 0
             };
             List<Error> errores = new List<Error>();
+
             try {
                 if (!ValidarSesion(req, ref errores))
                 {
@@ -129,32 +131,25 @@ namespace Backend.Logica
                     }
                     else
                     {
-                        if (req.UsuarioID <= 0)
-                        {
-                            res.error.Add(HelperValidacion.CrearError(enumErrores.usuarioNoEncontrado, "Usuario Inválido"));
-                        }
-                        if (req.FechaInicio.HasValue && req.FechaFin.HasValue && req.FechaInicio > req.FechaFin)
-                        {
-                            res.error.Add(HelperValidacion.CrearError(enumErrores.FechaInvalida, "La fecha de inicio no puede ser mayor que la fecha de fin"));
-                        }
                         if (req.ContextoID <= 0)
                         {
                             res.error.Add(HelperValidacion.CrearError(enumErrores.campoRequerido, "El ID del contexto es requerido"));
                         }
                     }
                 }
-
                 #endregion
-
                 if (res.error.Any())
                 {
                     res.resultado = false;
                     return res;
                 }
+
+                // Crear el análisis en la base de datos
                 int? AnalisisID = 0;
                 int? errorIDDB = 0;
                 string errorMsgDB = "";
-                var analisis = _dbContext.SP_CREAR_ANALISIS(req.UsuarioID, req.FechaInicio, req.FechaFin, req.ContextoID, ref AnalisisID, ref errorIDDB, ref errorMsgDB);
+                var Analisis = _dbContext.SP_CREAR_ANALISIS(req.sesion.UsuarioID ,req.FechaInicio,
+                req.FechaFin, req.ContextoID,ref AnalisisID, ref errorIDDB, ref errorMsgDB);
                 if (errorIDDB != 0)
                 {
                     res.resultado = false;
@@ -165,6 +160,42 @@ namespace Backend.Logica
                     res.AnalisisID = AnalisisID ?? 0;
                     res.resultado = true;
                 }
+                //obtener el contexto
+                var contexto = _dbContext.SP_OBTENER_CONTEXTO_POR_ID(req.ContextoID)
+                    .Select(b => new IA_Contexto{Instruccion = b.INSTRUCCION,ContextoID = b.CONTEXTOID,}).FirstOrDefault();
+                if (contexto != null)
+                {
+                    //obtener las transacciones
+                    
+                    errorIDDB = 0;
+                    errorMsgDB = "";
+                    var transacciones = _dbContext.SP_TRANSACCIONES_OBTENER_POR_USUARIO(req.sesion.UsuarioID, req.FechaInicio,
+                    req.FechaFin, null);
+                    decimal TotalGastos = transacciones.Where(t => t.Tipo == "Gasto").ToList().Sum( m => m.Monto);
+                    decimal TotalEntradas = transacciones.Where(t => t.Tipo == "Ingreso").ToList().Sum(m => m.Monto);
+
+                    //crear el llamado al API
+
+                    ClienteLlm clienteLlm = new ClienteLlm(LLM_Api_key);
+                    var respuesta = clienteLlm.LlamarLLM(contexto.Instruccion, TotalGastos, TotalEntradas);
+
+
+                    if (true == false)// Crear el mensaje en la base de datos
+                    {
+                        int? MensajeID = 0;
+                        var mensaje = _dbContext.SP_INSERTAR_MENSAJE_CHAT(res.AnalisisID, "user", contexto.Instruccion, ref MensajeID, ref errorIDDB, ref errorMsgDB);
+                        if (errorIDDB != 0)
+                        {
+                            res.resultado = false;
+                            res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgDB));
+                        }
+                    }
+                }
+                else
+                {
+                    res.resultado = false;
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, "No se encontró el contexto"));
+                }
 
             }
             catch (Exception ex)
@@ -172,9 +203,10 @@ namespace Backend.Logica
                 res.resultado = false;
                 res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, $"Error al crear el análisis: {ex.Message}"));
             }
-
             return res;
         }
+
+        
 
         public  ResInsertarMensajeChat InsertarMensajeChat(ReqInsertarMensajeChat req)
         {

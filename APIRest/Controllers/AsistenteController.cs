@@ -104,6 +104,8 @@ namespace APIRest.Controllers
                 };
             }
         }
+
+        //arreglar esto
         [HttpPost]
         [Route("api/asistente/analisis/")]
         public ResCrearAnalisis CrearAnalisis(ReqCrearAnalisis req)
@@ -130,6 +132,8 @@ namespace APIRest.Controllers
             }
             return _logica.CrearAnalisis(req);
         }
+
+        //arreglar tmb
         [HttpPost]
         [Route("api/asistente/analisis/{id}/mensaje")]
         public ResInsertarMensajeChat InsertarMensaje(int id, ReqInsertarMensajeChat req)

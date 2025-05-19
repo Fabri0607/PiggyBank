@@ -299,16 +299,6 @@
       <Column Name="ContextoID" Type="System.Int32" DbType="Int" CanBeNull="true" />
     </ElementType>
   </Function>
-  <Function Name="dbo.SP_CREAR_ANALISIS" Method="SP_CREAR_ANALISIS">
-    <Parameter Name="UsusarioID" Parameter="ususarioID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="FechaInicio" Parameter="fechaInicio" Type="System.DateTime" DbType="Date" />
-    <Parameter Name="FechaFin" Parameter="fechaFin" Type="System.DateTime" DbType="Date" />
-    <Parameter Name="ContextoID" Parameter="contextoID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="AnalisisID" Parameter="analisisID" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="ERRORDESCRIPTION" Parameter="eRRORDESCRIPTION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
-    <Return Type="System.Int32" />
-  </Function>
   <Function Name="dbo.SP_TRANSACCIONES_OBTENER_POR_USUARIO" Method="SP_TRANSACCIONES_OBTENER_POR_USUARIO">
     <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
     <Parameter Name="FechaInicio" Parameter="fechaInicio" Type="System.DateTime" DbType="Date" />
@@ -335,6 +325,26 @@
       <Column Name="Content" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
       <Column Name="Orden" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
       <Column Name="FechaEnvio" Type="System.DateTime" DbType="DateTime2 NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SP_CREAR_ANALISIS" Method="SP_CREAR_ANALISIS">
+    <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FechaInicio" Parameter="fechaInicio" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="FechaFin" Parameter="fechaFin" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="ContextoID" Parameter="contextoID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="AnalisisID" Parameter="analisisID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORDESCRIPTION" Parameter="eRRORDESCRIPTION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
+    <ElementType Name="SP_CREAR_ANALISISResult">
+      <Column Name="TransaccionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Tipo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Monto" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Fecha" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="Titulo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Descripcion" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="Categoria" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Icono" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ColorHex" Type="System.String" DbType="VarChar(7)" CanBeNull="true" />
     </ElementType>
   </Function>
 </Database>
