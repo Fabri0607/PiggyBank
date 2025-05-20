@@ -32,12 +32,6 @@ namespace AccesoADatos
     partial void OnCreated();
     #endregion
 		
-		public ConexionLINQDataContext() : 
-				base(global::AccesoADatos.Properties.Settings.Default.PiggyBankConnectionString3, mappingSource)
-		{
-			OnCreated();
-		}
-		
 		public ConexionLINQDataContext(string connection) : 
 				base(connection, mappingSource)
 		{
@@ -356,6 +350,24 @@ namespace AccesoADatos
 			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(2)));
 			eRRORDESCRIPCION = ((string)(result.GetParameterValue(3)));
 			return ((ISingleResult<SP_GRUPO_OBTENER_DETALLESResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_INVALIDAR_CODIGO_RECUPERACION")]
+		public int SP_INVALIDAR_CODIGO_RECUPERACION([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Email", DbType="VarChar(255)")] string email, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ErrorID", DbType="Int")] ref System.Nullable<int> errorID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ErrorMsg", DbType="VarChar(255)")] ref string errorMsg)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), email, errorID, errorMsg);
+			errorID = ((System.Nullable<int>)(result.GetParameterValue(1)));
+			errorMsg = ((string)(result.GetParameterValue(2)));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_ACTUALIZAR_CODIGO_RECUPERACION")]
+		public int SP_ACTUALIZAR_CODIGO_RECUPERACION([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Email", DbType="VarChar(255)")] string email, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CodigoVerificacion", DbType="VarChar(10)")] string codigoVerificacion, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaExpiracion", DbType="DateTime")] System.Nullable<System.DateTime> fechaExpiracion, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ErrorID", DbType="Int")] ref System.Nullable<int> errorID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ErrorMsg", DbType="VarChar(255)")] ref string errorMsg)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), email, codigoVerificacion, fechaExpiracion, errorID, errorMsg);
+			errorID = ((System.Nullable<int>)(result.GetParameterValue(3)));
+			errorMsg = ((string)(result.GetParameterValue(4)));
+			return ((int)(result.ReturnValue));
 		}
 	}
 	
