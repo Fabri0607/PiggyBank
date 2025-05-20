@@ -1,5 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="PiggyBank" Class="ConexionLINQDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=34.41.22.76;Initial Catalog=PiggyBank;Persist Security Info=True;User ID=PiggyBankApp;Encrypt=True;Trust Server Certificate=True" SettingsObjectName="AccesoADatos.Properties.Settings" SettingsPropertyName="PiggyBankConnectionString3" Provider="System.Data.SqlClient" />
   <Function Name="dbo.SP_BALANCE_OBTENER_POR_GRUPO" Method="SP_BALANCE_OBTENER_POR_GRUPO">
     <Parameter Name="GrupoID" Parameter="grupoID" Type="System.Int32" DbType="Int" />
     <Parameter Name="FechaInicio" Parameter="fechaInicio" Type="System.DateTime" DbType="Date" />
@@ -352,5 +351,19 @@
       <Column Name="Rol" Type="System.String" DbType="VarChar(20) NOT NULL" CanBeNull="false" />
       <Column Name="FechaUnion" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
+  </Function>
+  <Function Name="dbo.SP_INVALIDAR_CODIGO_RECUPERACION" Method="SP_INVALIDAR_CODIGO_RECUPERACION">
+    <Parameter Name="Email" Parameter="email" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="ErrorID" Parameter="errorID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ErrorMsg" Parameter="errorMsg" Type="System.String" DbType="VarChar(255)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_ACTUALIZAR_CODIGO_RECUPERACION" Method="SP_ACTUALIZAR_CODIGO_RECUPERACION">
+    <Parameter Name="Email" Parameter="email" Type="System.String" DbType="VarChar(255)" />
+    <Parameter Name="CodigoVerificacion" Parameter="codigoVerificacion" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="FechaExpiracion" Parameter="fechaExpiracion" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="ErrorID" Parameter="errorID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ErrorMsg" Parameter="errorMsg" Type="System.String" DbType="VarChar(255)" Direction="InOut" />
+    <Return Type="System.Int32" />
   </Function>
 </Database>
