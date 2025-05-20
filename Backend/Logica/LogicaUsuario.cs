@@ -839,6 +839,201 @@ namespace Backend.Logica
             return res;
         }
 
+        // 9. Solicitar código para cambio de contraseña
+        public ResSolicitarCambioPassword SolicitarCambioPassword(ReqSolicitarCambioPassword req)
+        {
+            ResSolicitarCambioPassword res = new ResSolicitarCambioPassword
+            {
+                error = new List<Error>()
+            };
+
+            try
+            {
+                #region Validaciones
+                if (req == null)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "Solicitud no válida"));
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(req.Email))
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.correoFaltante, "El correo electrónico es requerido"));
+                    }
+                    else if (!EsCorreoValido(req.Email))
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.correoIncorrecto, "El formato del correo electrónico no es válido"));
+                    }
+                }
+                #endregion
+
+                if (res.error.Any())
+                {
+                    res.resultado = false;
+                    return res;
+                }
+
+                // Verificar si el usuario existe
+                int? errorIdBD = 0;
+                string errorMsgBD = "";
+                var usuario = _dbContext.SP_OBTENER_USUARIO_POR_EMAIL(req.Email, ref errorIdBD, ref errorMsgBD).FirstOrDefault();
+
+                if (errorIdBD != 0)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgBD));
+                    res.resultado = false;
+                    return res;
+                }
+
+                if (usuario == null)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.usuarioNoEncontrado, "Usuario no encontrado"));
+                    res.resultado = false;
+                    return res;
+                }
+
+                // Generar nuevo código de verificación
+                string nuevoCodigo = GenerarCodigoVerificacion(6);
+                DateTime fechaExpiracion = DateTime.Now.AddMinutes(30);
+
+                // Actualizar el código de verificación y su fecha de expiración
+                errorIdBD = 0;
+                errorMsgBD = "";
+                _dbContext.SP_ACTUALIZAR_CODIGO_RECUPERACION(req.Email, nuevoCodigo, fechaExpiracion, ref errorIdBD, ref errorMsgBD);
+
+                if (errorIdBD != 0)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgBD));
+                    res.resultado = false;
+                    return res;
+                }
+
+                // Enviar correo con el código de verificación
+                bool correoEnviado = HelperCorreo.EnviarCorreoVerificacion(req.Email, usuario.Nombre, nuevoCodigo);
+
+                if (correoEnviado)
+                {
+                    res.resultado = true;
+                }
+                else
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.errorEnvioCorreo, "No se pudo enviar el correo de verificación"));
+                    res.resultado = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Error en la lógica: " + ex.Message));
+                res.resultado = false;
+            }
+
+            return res;
+        }
+
+        // 10. Confirmar cambio de contraseña
+        public ResConfirmarCambioPassword ConfirmarCambioPassword(ReqConfirmarCambioPassword req)
+        {
+            ResConfirmarCambioPassword res = new ResConfirmarCambioPassword
+            {
+                error = new List<Error>()
+            };
+
+            try
+            {
+                #region Validaciones
+                if (req == null)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "Solicitud no válida"));
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(req.Email))
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.correoFaltante, "El correo electrónico es requerido"));
+                    }
+                    else if (!EsCorreoValido(req.Email))
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.correoIncorrecto, "El formato del correo electrónico no es válido"));
+                    }
+                    if (string.IsNullOrEmpty(req.CodigoVerificacion))
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.codigoVerificacionFaltante, "El código de verificación es requerido"));
+                    }
+                    if (string.IsNullOrEmpty(req.NuevoPassword))
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.passwordFaltante, "La nueva contraseña es requerida"));
+                    }
+                    else if (!EsPasswordSeguro(req.NuevoPassword))
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.passwordMuyDebil, "La nueva contraseña no cumple con los requisitos de seguridad"));
+                    }
+                }
+                #endregion
+
+                if (res.error.Any())
+                {
+                    res.resultado = false;
+                    return res;
+                }
+
+                // Verificar si el usuario existe y obtener su información
+                int? errorIdBD = 0;
+                string errorMsgBD = "";
+                var usuario = _dbContext.SP_OBTENER_USUARIO_POR_EMAIL(req.Email, ref errorIdBD, ref errorMsgBD).FirstOrDefault();
+
+                if (errorIdBD != 0)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgBD));
+                    res.resultado = false;
+                    return res;
+                }
+
+                if (usuario == null)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.usuarioNoEncontrado, "Usuario no encontrado"));
+                    res.resultado = false;
+                    return res;
+                }
+                
+
+                // Generar nuevo hash para la nueva contraseña
+                string nuevoPasswordHash = HashearPassword(req.NuevoPassword, usuario.LlaveUnica);
+
+                // Actualizar la contraseña
+                errorIdBD = 0;
+                errorMsgBD = "";
+                _dbContext.SP_USUARIO_CAMBIAR_PASSWORD(usuario.UsuarioID, nuevoPasswordHash, ref errorIdBD, ref errorMsgBD);
+
+                if (errorIdBD != 0)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgBD));
+                    res.resultado = false;
+                    return res;
+                }
+
+                // Invalidar el código de verificación
+                errorIdBD = 0;
+                errorMsgBD = "";
+                _dbContext.SP_INVALIDAR_CODIGO_RECUPERACION(req.Email, ref errorIdBD, ref errorMsgBD);
+
+                if (errorIdBD != 0)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgBD));
+                    res.resultado = false;
+                    return res;
+                }
+
+                res.resultado = true;
+            }
+            catch (Exception ex)
+            {
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Error en la lógica: " + ex.Message));
+                res.resultado = false;
+            }
+
+            return res;
+        }
+
         #region Métodos auxiliares
         private bool EsCorreoValido(string correo)
         {
