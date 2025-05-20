@@ -100,5 +100,17 @@ namespace AccesoADatos.Properties {
                 return ((string)(this["PiggyBankConnectionString5"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.ConnectionString)]
+        [global::System.Configuration.DefaultSettingValueAttribute("Data Source=34.41.22.76;Initial Catalog=PiggyBank;Persist Security Info=True;User" +
+            " ID=PBADM_FABRI;Password=vb54Q8151FUV18K;Encrypt=True;TrustServerCertificate=Tru" +
+            "e")]
+        public string PiggyBankConnectionString6 {
+            get {
+                return ((string)(this["PiggyBankConnectionString6"]));
+            }
+        }
     }
 }

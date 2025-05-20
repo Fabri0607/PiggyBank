@@ -32,6 +32,12 @@ namespace AccesoADatos
     partial void OnCreated();
     #endregion
 		
+		public ConexionLINQDataContext() : 
+				base(global::AccesoADatos.Properties.Settings.Default.PiggyBankConnectionString6, mappingSource)
+		{
+			OnCreated();
+		}
+		
 		public ConexionLINQDataContext(string connection) : 
 				base(connection, mappingSource)
 		{
