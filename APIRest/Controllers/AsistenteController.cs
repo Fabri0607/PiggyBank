@@ -137,7 +137,7 @@ namespace APIRest.Controllers
         //arreglar tmb
         [HttpPost]
         [Route("api/asistente/analisis/{id}/mensaje")]
-        public ResInsertarMensajeChat InsertarMensaje(int id, ReqInsertarMensajeChat req)
+        public async Task<ResInsertarMensajeChat> InsertarMensaje(int id, ReqInsertarMensajeChat req)
         {
             var authHeader = Request.Headers.Authorization;
             if (authHeader != null && authHeader.Scheme == "Bearer")
@@ -160,7 +160,7 @@ namespace APIRest.Controllers
                 }
                 };
             }
-            return _logica.InsertarMensajeChat(req);
+            return await _logica.InsertarMensajeChat(req);
         }
 
     }
