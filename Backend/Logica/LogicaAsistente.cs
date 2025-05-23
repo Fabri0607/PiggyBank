@@ -5,6 +5,7 @@ using Backend.Entidades.Entity;
 using Backend.Entidades.Request;
 using Backend.Entidades.Response;
 using Backend.Helpers;
+using Microsoft.IdentityModel.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Newtonsoft.Json;
 using System;
@@ -189,19 +190,62 @@ namespace Backend.Logica
                     //crear el llamado al API
 
                     ClienteLlm _clienteLlm = new ClienteLlm(LLM_Api_key, contexto.Modelo);
-                    string mensajeInicial = req.Consulta;
+
+                    List<MensajeChat> mensajes = new List<MensajeChat>();
+                    
+                    mensajes.Add(new MensajeChat
+                    {
+                        Role = "user",
+                        Content = req.Consulta,
+                        FechaEnvio = DateTime.Now,
+                        Orden = 1
+                    });
                     var usuario = _dbContext.SP_OBTENER_USUARIO_POR_ID(req.sesion.UsuarioID);
                     string NombreUsuario = usuario.Select(b => new UsuarioDTO { Nombre = b.Nombre}).FirstOrDefault().Nombre;
 
-                    string Json = _clienteLlm.GenerarJSON(contexto.Instruccion, NombreUsuario, TotalGastos, TotalEntradas, transacciones, mensajeInicial);
+                    string Json = _clienteLlm.GenerarJSON(contexto.Instruccion, NombreUsuario, TotalGastos, TotalEntradas, transacciones, mensajes);
                     Console.WriteLine(Json);
                     RespuestaDTO Resultado = await _clienteLlm.GenerarRespuestaAsync(Json);
 
                     if (Resultado != null)// Crear el mensaje del usuario en la base de datos
                     {
                         int? MensajeID = 0;
+                        errorIDDB = 0;
+                        errorMsgDB = "";
                         var mensaje = _dbContext.SP_INSERTAR_MENSAJE_CHAT(AnalisisID,"user",req.Consulta, ref MensajeID, ref errorIDDB, ref errorMsgDB);
-                        
+                        if (errorIDDB != 0)
+                        {
+                            res.resultado = false;
+                            res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgDB));
+                        }
+                        else
+                        {
+                            // Crear el mensaje de respuesta en la base de datos
+                            int? MensajeIDRespuesta = 0;
+                            var mensajeRespuesta = _dbContext.SP_INSERTAR_MENSAJE_CHAT(AnalisisID, "assistant", Resultado.Recomendaciones, ref MensajeIDRespuesta, ref errorIDDB, ref errorMsgDB);
+                            if (errorIDDB != 0)
+                            {
+                                res.resultado = false;
+                                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgDB));
+                            }
+                            else
+                            {
+                                errorIDDB = 0;
+                                errorMsgDB = "";
+                                _dbContext.SP_ACTUALIZAR_RESUMEN(AnalisisID, Resultado.Resumen, ref errorIDDB, ref errorMsgDB);
+                                if (errorIDDB != 0)
+                                {
+                                    res.resultado = false;
+                                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgDB));
+                                }
+                                else
+                                {
+                                    res.resultado = true;
+                                    res.AnalisisID = AnalisisID ?? 0;
+                                }
+                            }
+                        }
+
                     }
                     else
                     {
@@ -226,12 +270,13 @@ namespace Backend.Logica
 
         
 
-        public  ResInsertarMensajeChat InsertarMensajeChat(ReqInsertarMensajeChat req)
+        public  async Task<ResInsertarMensajeChat> InsertarMensajeChat(ReqInsertarMensajeChat req)
         {
             ResInsertarMensajeChat res = new ResInsertarMensajeChat
             {
                 error = new List<Error>(),
-                MensajeID = 0
+                MensajeConsultaID = 0,
+                MensajeRespuestaID = 0
             };
             List<Error> errores = new List<Error>();
             try
@@ -268,19 +313,143 @@ namespace Backend.Logica
                     res.resultado = false;
                     return res;
                 }
-                int? MensajeID = 0;
-                int? errorIDDB = 0;
-                string errorMsgDB = "";
-                var mensaje = _dbContext.SP_INSERTAR_MENSAJE_CHAT(req.AnalisisID, req.Role, req.Content, ref MensajeID, ref errorIDDB, ref errorMsgDB);
-                if (errorIDDB != 0)
+                //formar el texto del request al llm
+
+                AnalisisIA analisis = _dbContext.SP_OBTENER_ANALISIS_ID(req.AnalisisID).
+                 Select(
+                 a => new AnalisisIA
+                 {
+                     Contexto = a.ContextoID,
+                     Resumen = a.Resumen,
+                     UsuarioID = a.UsuarioID,
+                     FechaInicio = a.FechaInicio,
+                     FechaFin = a.FechaFin,
+                     AnalisisID = a.AnalisisID,
+                 }).FirstOrDefault();
+                if (analisis == null)
                 {
                     res.resultado = false;
-                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgDB));
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, "No se encontró el análisis"));
+                    return res;
                 }
                 else
                 {
-                    res.MensajeID = MensajeID ?? 0;
-                    res.resultado = true;
+                    var contexto = _dbContext.SP_OBTENER_CONTEXTO_POR_ID(analisis.Contexto).
+                       Select(b => new IA_Contexto { Instruccion = b.INSTRUCCION, ContextoID = b.CONTEXTOID, Modelo = b.MODELO }).FirstOrDefault();
+                    if (contexto != null)
+                    {
+                        //nombre del usuario
+                        var usuario = _dbContext.SP_OBTENER_USUARIO_POR_ID(analisis.UsuarioID);
+                        string NombreUsuario = usuario.Select(b => new UsuarioDTO { Nombre = b.Nombre }).FirstOrDefault().Nombre;
+                        if (usuario != null)
+                        {
+                            //obtener las transacciones
+                            var transacciones = _dbContext.SP_TRANSACCIONES_OBTENER_POR_USUARIO(req.sesion.UsuarioID, analisis.FechaInicio,
+                                 analisis.FechaFin, null).Select(b => new TransaccionDTO
+                                 {
+                                     Tipo = b.Tipo,
+                                     TransaccionID = b.TransaccionID,
+                                     Monto = b.Monto,
+                                     Fecha = b.Fecha,
+                                     Titulo = b.Titulo,
+                                     Descripcion = b.Descripcion,
+                                     Categoria = b.Categoria
+                                 }).ToList();
+                            decimal TotalGastos = transacciones.Where(t => t.Tipo == "Gasto").ToList().Sum(m => m.Monto);
+                            decimal TotalEntradas = transacciones.Where(t => t.Tipo == "Ingreso").ToList().Sum(m => m.Monto);
+
+                            // Obtener los mensajes anteriores
+                            var mensajes = _dbContext.SP_OBTENER_MENSAJES(analisis.AnalisisID)
+                                .Select(b => new MensajeChat
+                                {
+                                    MensajeID = b.MensajeID,
+                                    AnalisisID = b.AnalisisID,
+                                    Role = b.Role,
+                                    Content = b.Content,
+                                    FechaEnvio = b.FechaEnvio,
+                                    Orden = b.Orden
+                                }).ToList();
+                            //obtener el mensaje del usuario
+                            string mensaje = req.Content;
+                            mensajes.Add(new MensajeChat
+                            {
+                                Role = "user",
+                                Content = mensaje,
+                                FechaEnvio = DateTime.Now,
+                                Orden = 1
+                            });
+                            //formar el json
+                            ClienteLlm _clienteLlm = new ClienteLlm(LLM_Api_key, contexto.Modelo);
+                            string json = _clienteLlm.GenerarJSON(contexto.Instruccion, NombreUsuario, TotalGastos, TotalEntradas, transacciones, mensajes);
+                            Console.WriteLine(json);
+                            RespuestaDTO resultado =  await _clienteLlm.GenerarRespuestaAsync(json);
+
+                            if (resultado != null)
+                            {
+                                // Crear el mensaje del usuario en la base de datos
+                                int? MensajeID = 0;
+                                int? errorIDDB = 0;
+                                string errorMsgDB = "";
+                                var mensajeChat = _dbContext.SP_INSERTAR_MENSAJE_CHAT(analisis.AnalisisID, "user", mensaje, ref MensajeID, ref errorIDDB, ref errorMsgDB);
+                                if (errorIDDB != 0)
+                                {
+                                    res.resultado = false;
+                                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgDB));
+                                }
+                                else
+                                {
+                                    
+                                    // Crear el mensaje de respuesta en la base de datos
+                                    int? MensajeIDRespuesta = 0;
+                                    errorIDDB = 0;
+                                    errorMsgDB = "";
+                                    var mensajeRespuesta = _dbContext.SP_INSERTAR_MENSAJE_CHAT(analisis.AnalisisID, "assistant", resultado.Recomendaciones, ref MensajeIDRespuesta, ref errorIDDB, ref errorMsgDB);
+                                    if (errorIDDB != 0)
+                                    {
+                                        res.resultado = false;
+                                        res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgDB));
+                                    }
+                                    else
+                                    {
+                                        
+                                        // Actualizar el resumen en la base de datos
+                                        errorIDDB = 0;
+                                        errorMsgDB = "";
+                                        _dbContext.SP_ACTUALIZAR_RESUMEN(analisis.AnalisisID, resultado.Resumen, ref errorIDDB, ref errorMsgDB);
+                                        if (errorIDDB != 0)
+                                        {
+                                            res.resultado = false;
+                                            res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgDB));
+                                        }
+                                        else
+                                        {
+                                            res.resultado = true;
+                                            res.MensajeConsultaID = MensajeID ?? 0;
+                                            res.MensajeRespuestaID = MensajeIDRespuesta ?? 0;
+                                        }
+
+                                    }
+                                }
+
+                            }
+                            else
+                            {
+                                res.resultado = false;
+                                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, "No se pudo obtener la respuesta del modelo"));
+                            }
+
+                        }
+                        else
+                        {
+                            res.resultado = false;
+                            res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, "No se encontró el usuario"));
+                        }
+                    }
+                    else
+                    {
+                        res.resultado = false;
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, "No se encontró el contexto"));
+                    }
                 }
             }
             catch (Exception ex)
@@ -290,6 +459,7 @@ namespace Backend.Logica
             }
             return res;
         }
+
         public ResObtenerMensajes ObtenerMensajesChat(ReqObtenerMensajes req)
         {
             ResObtenerMensajes res = new ResObtenerMensajes

@@ -67,7 +67,7 @@ public class ClienteLlm
 
 
 
-    public string GenerarJSON(string Instruccion, string NombreUsuario, decimal TotalGastos, decimal TotalEntradas, List<TransaccionDTO> transacciones,string mensaje)
+    public string GenerarJSON(string Instruccion, string NombreUsuario, decimal TotalGastos, decimal TotalEntradas, List<TransaccionDTO> transacciones,List<MensajeChat> mensajes)
     {
         // Obtener fechas de inicio y fin basadas en las transacciones
         DateTime? fechaInicio = transacciones?.Any() == true ? transacciones.Min(t => t.Fecha) : DateTime.Now.Date;
@@ -97,14 +97,11 @@ public class ClienteLlm
                     t.Categoria
                 }).ToArray() ?? new object[0]
             },
-            mensajes = new[]
+            mensajes = mensajes?.Select(m => new
             {
-            new
-            {
-                role = "user",
-                content = mensaje
-            }
-        }
+                role = m.Role,
+                content = m.Content
+            }).ToArray() ?? new object[0]
         };
         return JsonConvert.SerializeObject(jsonStructure, Formatting.Indented);
         

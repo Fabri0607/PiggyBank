@@ -348,4 +348,16 @@
       <Column Name="FECHACREACION" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
     </ElementType>
   </Function>
+  <Function Name="dbo.SP_OBTENER_ANALISIS_ID" Method="SP_OBTENER_ANALISIS_ID">
+    <Parameter Name="AnalisisID" Parameter="analisisID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="SP_OBTENER_ANALISIS_IDResult">
+      <Column Name="AnalisisID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UsuarioID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="FechaInicio" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="FechaFin" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Resumen" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="FechaGeneracion" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="ContextoID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+    </ElementType>
+  </Function>
 </Database>

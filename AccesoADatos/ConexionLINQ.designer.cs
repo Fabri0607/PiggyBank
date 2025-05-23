@@ -351,6 +351,13 @@ namespace AccesoADatos
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), cONTEXTOID);
 			return ((ISingleResult<SP_OBTENER_CONTEXTO_POR_IDResult>)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_OBTENER_ANALISIS_ID")]
+		public ISingleResult<SP_OBTENER_ANALISIS_IDResult> SP_OBTENER_ANALISIS_ID([global::System.Data.Linq.Mapping.ParameterAttribute(Name="AnalisisID", DbType="Int")] System.Nullable<int> analisisID)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), analisisID);
+			return ((ISingleResult<SP_OBTENER_ANALISIS_IDResult>)(result.ReturnValue));
+		}
 	}
 	
 	public partial class SP_BALANCE_OBTENER_POR_GRUPOResult
@@ -2036,6 +2043,140 @@ namespace AccesoADatos
 				if ((this._FECHACREACION != value))
 				{
 					this._FECHACREACION = value;
+				}
+			}
+		}
+	}
+	
+	public partial class SP_OBTENER_ANALISIS_IDResult
+	{
+		
+		private int _AnalisisID;
+		
+		private int _UsuarioID;
+		
+		private System.DateTime _FechaInicio;
+		
+		private System.DateTime _FechaFin;
+		
+		private string _Resumen;
+		
+		private System.DateTime _FechaGeneracion;
+		
+		private System.Nullable<int> _ContextoID;
+		
+		public SP_OBTENER_ANALISIS_IDResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_AnalisisID", DbType="Int NOT NULL")]
+		public int AnalisisID
+		{
+			get
+			{
+				return this._AnalisisID;
+			}
+			set
+			{
+				if ((this._AnalisisID != value))
+				{
+					this._AnalisisID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsuarioID", DbType="Int NOT NULL")]
+		public int UsuarioID
+		{
+			get
+			{
+				return this._UsuarioID;
+			}
+			set
+			{
+				if ((this._UsuarioID != value))
+				{
+					this._UsuarioID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FechaInicio", DbType="Date NOT NULL")]
+		public System.DateTime FechaInicio
+		{
+			get
+			{
+				return this._FechaInicio;
+			}
+			set
+			{
+				if ((this._FechaInicio != value))
+				{
+					this._FechaInicio = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FechaFin", DbType="Date NOT NULL")]
+		public System.DateTime FechaFin
+		{
+			get
+			{
+				return this._FechaFin;
+			}
+			set
+			{
+				if ((this._FechaFin != value))
+				{
+					this._FechaFin = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Resumen", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string Resumen
+		{
+			get
+			{
+				return this._Resumen;
+			}
+			set
+			{
+				if ((this._Resumen != value))
+				{
+					this._Resumen = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FechaGeneracion", DbType="DateTime NOT NULL")]
+		public System.DateTime FechaGeneracion
+		{
+			get
+			{
+				return this._FechaGeneracion;
+			}
+			set
+			{
+				if ((this._FechaGeneracion != value))
+				{
+					this._FechaGeneracion = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ContextoID", DbType="Int")]
+		public System.Nullable<int> ContextoID
+		{
+			get
+			{
+				return this._ContextoID;
+			}
+			set
+			{
+				if ((this._ContextoID != value))
+				{
+					this._ContextoID = value;
 				}
 			}
 		}

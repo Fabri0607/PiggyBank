@@ -8,6 +8,7 @@ namespace Backend.Entidades.Response
 {
     public class ResInsertarMensajeChat : ResBase
     {
-        public int MensajeID { get; set; } // ID del mensaje insertado
+        public int MensajeConsultaID { get; set; } 
+        public int MensajeRespuestaID { get; set; }
     }
 }
