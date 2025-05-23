@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Backend.DTO;
+using Backend.Entidades.Entity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -10,7 +13,7 @@ public class ClienteLlm
 {
     private readonly HttpClient _httpClient;
     private readonly string _apiKey;
-    private const string DefaultModel = "gemini-2.5-flash-preview-04-17";
+    private readonly string _model;
 
     private class GeminiRequestPayload
     {
@@ -52,21 +55,69 @@ public class ClienteLlm
         NullValueHandling = NullValueHandling.Ignore
     };
 
-    public ClienteLlm(string apiKey, HttpClient httpClient = null)
+    public ClienteLlm(string apiKey,string model, HttpClient httpClient = null)
     {
         if (string.IsNullOrWhiteSpace(apiKey))
             throw new ArgumentNullException(nameof(apiKey));
 
         _apiKey = apiKey;
+        _model = model;
         _httpClient = httpClient ?? new HttpClient();
     }
 
-    private async Task<string> GenerateTextAsync(string prompt, string modelName = DefaultModel)
+
+
+    public string GenerarJSON(string Instruccion, string NombreUsuario, decimal TotalGastos, decimal TotalEntradas, List<TransaccionDTO> transacciones,string mensaje)
+    {
+        // Obtener fechas de inicio y fin basadas en las transacciones
+        DateTime? fechaInicio = transacciones?.Any() == true ? transacciones.Min(t => t.Fecha) : DateTime.Now.Date;
+        DateTime? fechaFin = transacciones?.Any() == true ? transacciones.Max(t => t.Fecha) : DateTime.Now.Date;
+
+        // Crear la estructura JSON
+        var jsonStructure = new
+        {
+            contexto = Instruccion,
+            resumen = "",
+            datos = new
+            {
+                
+                NombreUsuario,
+                FechaInicio = fechaInicio?.ToString("yyyy-MM-dd"),
+                FechaFin = fechaFin?.ToString("yyyy-MM-dd"),
+                TotalGastos,
+                TotalEntradas,
+                Gastos = transacciones?.Select(t => new
+                {
+                    t.Tipo,
+                    id = t.TransaccionID,
+                    t.Monto,
+                    Fecha = t.Fecha.ToString("yyyy-MM-dd"),
+                    t.Titulo,
+                    t.Descripcion,
+                    t.Categoria
+                }).ToArray() ?? new object[0]
+            },
+            mensajes = new[]
+            {
+            new
+            {
+                role = "user",
+                content = mensaje
+            }
+        }
+        };
+        return JsonConvert.SerializeObject(jsonStructure, Formatting.Indented);
+        
+    }
+
+
+   
+    public async Task<RespuestaDTO> GenerarRespuestaAsync(string prompt)
     {
         if (string.IsNullOrWhiteSpace(prompt))
             return null;
 
-        var requestUrl = $"https://generativelanguage.googleapis.com/v1beta/models/{modelName}:generateContent?key={_apiKey}";
+        var requestUrl = $"https://generativelanguage.googleapis.com/v1beta/models/{_model}:generateContent?key={_apiKey}";
 
         var payload = new GeminiRequestPayload
         {
@@ -98,12 +149,15 @@ public class ClienteLlm
             if (geminiResponse?.Candidates != null && geminiResponse.Candidates.Count > 0 &&
                 geminiResponse.Candidates[0].Content?.Parts != null && geminiResponse.Candidates[0].Content.Parts.Count > 0)
             {
-                return geminiResponse.Candidates[0].Content.Parts[0].Text;
+                string respuesta =  geminiResponse.Candidates[0].Content.Parts[0].Text;
+                string CleanedJson = respuesta.Replace("```json", "").Replace("```", "").Trim();
+                RespuestaDTO resultado = JsonConvert.DeserializeObject<RespuestaDTO>(CleanedJson);
+                return resultado;
             }
             else if (geminiResponse?.PromptFeedback?.BlockReason != null)
             {
                 Console.Error.WriteLine($"Content blocked by API: {geminiResponse.PromptFeedback.BlockReason}");
-                return $"[Content Blocked: {geminiResponse.PromptFeedback.BlockReason}]";
+                return null;
             }
             else
             {
@@ -127,4 +181,6 @@ public class ClienteLlm
             return null;
         }
     }
+
+   
 }

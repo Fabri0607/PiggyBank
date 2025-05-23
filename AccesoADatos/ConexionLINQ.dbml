@@ -270,15 +270,6 @@
     <Parameter Name="ERRORDESCRIPTION" Parameter="eRRORDESCRIPTION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.SP_OBTENER_CONTEXTO_POR_ID" Method="SP_OBTENER_CONTEXTO_POR_ID">
-    <Parameter Name="CONTEXTOID" Parameter="cONTEXTOID" Type="System.Int32" DbType="Int" />
-    <ElementType Name="SP_OBTENER_CONTEXTO_POR_IDResult">
-      <Column Name="CONTEXTOID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="NOMBRE" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="INSTRUCCION" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="FECHACREACION" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
-    </ElementType>
-  </Function>
   <Function Name="dbo.SP_OBTENER_TODOS_CONTEXTO" Method="SP_OBTENER_TODOS_CONTEXTO">
     <ElementType Name="SP_OBTENER_TODOS_CONTEXTOResult">
       <Column Name="CONTEXTOID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
@@ -345,6 +336,16 @@
       <Column Name="Categoria" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
       <Column Name="Icono" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
       <Column Name="ColorHex" Type="System.String" DbType="VarChar(7)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SP_OBTENER_CONTEXTO_POR_ID" Method="SP_OBTENER_CONTEXTO_POR_ID">
+    <Parameter Name="CONTEXTOID" Parameter="cONTEXTOID" Type="System.Int32" DbType="Int" />
+    <ElementType Name="SP_OBTENER_CONTEXTO_POR_IDResult">
+      <Column Name="CONTEXTOID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NOMBRE" Type="System.String" DbType="NVarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="INSTRUCCION" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="MODELO" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="FECHACREACION" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
     </ElementType>
   </Function>
 </Database>

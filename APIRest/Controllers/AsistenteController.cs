@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace APIRest.Controllers
@@ -105,10 +106,10 @@ namespace APIRest.Controllers
             }
         }
 
-        //arreglar esto
+        
         [HttpPost]
         [Route("api/asistente/analisis/")]
-        public ResCrearAnalisis CrearAnalisis(ReqCrearAnalisis req)
+        public async Task<ResCrearAnalisis> CrearAnalisis(ReqCrearAnalisis req)
         {
             var authHeader = Request.Headers.Authorization;
             if (authHeader != null && authHeader.Scheme == "Bearer")
@@ -130,7 +131,7 @@ namespace APIRest.Controllers
                 }
                 };
             }
-            return _logica.CrearAnalisis(req);
+            return await _logica.CrearAnalisisAsync(req);
         }
 
         //arreglar tmb

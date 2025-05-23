@@ -6,6 +6,7 @@ using Backend.Entidades.Request;
 using Backend.Entidades.Response;
 using Backend.Helpers;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 using System;
 using System.CodeDom;
 using System.Collections.Generic;
@@ -101,7 +102,7 @@ namespace Backend.Logica
             }
         }
 
-        public ResCrearAnalisis CrearAnalisis(ReqCrearAnalisis req)
+        public async Task<ResCrearAnalisis> CrearAnalisisAsync(ReqCrearAnalisis req)
         {
             string guid = req.sesion.Guid;
             ResCrearAnalisis res = new ResCrearAnalisis
@@ -162,7 +163,7 @@ namespace Backend.Logica
                 }
                 //obtener el contexto
                 var contexto = _dbContext.SP_OBTENER_CONTEXTO_POR_ID(req.ContextoID)
-                    .Select(b => new IA_Contexto{Instruccion = b.INSTRUCCION,ContextoID = b.CONTEXTOID,}).FirstOrDefault();
+                    .Select(b => new IA_Contexto{Instruccion = b.INSTRUCCION,ContextoID = b.CONTEXTOID, Modelo = b.MODELO}).FirstOrDefault();
                 if (contexto != null)
                 {
                     //obtener las transacciones
@@ -170,25 +171,42 @@ namespace Backend.Logica
                     errorIDDB = 0;
                     errorMsgDB = "";
                     var transacciones = _dbContext.SP_TRANSACCIONES_OBTENER_POR_USUARIO(req.sesion.UsuarioID, req.FechaInicio,
-                    req.FechaFin, null);
-                    decimal TotalGastos = transacciones.Where(t => t.Tipo == "Gasto").ToList().Sum( m => m.Monto);
+                    req.FechaFin, null).Select(b => new TransaccionDTO
+                    {
+                        Tipo = b.Tipo,
+                        TransaccionID = b.TransaccionID,
+                        Monto = b.Monto,
+                        Fecha = b.Fecha,
+                        Titulo = b.Titulo,
+                        Descripcion = b.Descripcion,
+                        Categoria = b.Categoria
+                    }).ToList();
+
+                    decimal TotalGastos = transacciones.Where(t => t.Tipo == "Gasto").ToList().Sum(m => m.Monto);
                     decimal TotalEntradas = transacciones.Where(t => t.Tipo == "Ingreso").ToList().Sum(m => m.Monto);
+
 
                     //crear el llamado al API
 
-                    ClienteLlm clienteLlm = new ClienteLlm(LLM_Api_key);
-                    var respuesta = clienteLlm.LlamarLLM(contexto.Instruccion, TotalGastos, TotalEntradas);
+                    ClienteLlm _clienteLlm = new ClienteLlm(LLM_Api_key, contexto.Modelo);
+                    string mensajeInicial = req.Consulta;
+                    var usuario = _dbContext.SP_OBTENER_USUARIO_POR_ID(req.sesion.UsuarioID);
+                    string NombreUsuario = usuario.Select(b => new UsuarioDTO { Nombre = b.Nombre}).FirstOrDefault().Nombre;
 
+                    string Json = _clienteLlm.GenerarJSON(contexto.Instruccion, NombreUsuario, TotalGastos, TotalEntradas, transacciones, mensajeInicial);
+                    Console.WriteLine(Json);
+                    RespuestaDTO Resultado = await _clienteLlm.GenerarRespuestaAsync(Json);
 
-                    if (true == false)// Crear el mensaje en la base de datos
+                    if (Resultado != null)// Crear el mensaje del usuario en la base de datos
                     {
                         int? MensajeID = 0;
-                        var mensaje = _dbContext.SP_INSERTAR_MENSAJE_CHAT(res.AnalisisID, "user", contexto.Instruccion, ref MensajeID, ref errorIDDB, ref errorMsgDB);
-                        if (errorIDDB != 0)
-                        {
-                            res.resultado = false;
-                            res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgDB));
-                        }
+                        var mensaje = _dbContext.SP_INSERTAR_MENSAJE_CHAT(AnalisisID,"user",req.Consulta, ref MensajeID, ref errorIDDB, ref errorMsgDB);
+                        
+                    }
+                    else
+                    {
+                         res.resultado = false;
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, "No se pudo obtener la respuesta del modelo"));
                     }
                 }
                 else
@@ -240,10 +258,6 @@ namespace Backend.Logica
                         if (req.AnalisisID <= 0)
                         {
                             res.error.Add(HelperValidacion.CrearError(enumErrores.campoRequerido, "El ID del análisis es requerido"));
-                        }
-                        if (string.IsNullOrEmpty(req.Role))
-                        {
-                            res.error.Add(HelperValidacion.CrearError(enumErrores.campoRequerido, "El rol es requerido"));
                         }
 
                     }
