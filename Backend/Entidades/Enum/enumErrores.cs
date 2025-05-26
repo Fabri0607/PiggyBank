@@ -43,7 +43,8 @@ namespace Backend.Entidades
         sesionNoEncontrada = 32,
         sesionInactiva = 33,
         sesionExpirada = 34,
-        TipoTransaccionInvalido = 35,
-        FechaInvalida = 36,
+        permisoDenegado = 35,
+        TipoTransaccionInvalido = 36,
+        FechaInvalida = 37,
     }
 }

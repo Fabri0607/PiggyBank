@@ -1,4 +1,5 @@
-﻿using Backend.Entidades.Request;
+﻿using Backend.Entidades;
+using Backend.Entidades.Request;
 using Backend.Entidades.Response;
 using Backend.Logica;
 using System;
@@ -39,6 +40,28 @@ namespace APIRest.Controllers
         [Route("api/usuarios/cerrar-sesion")]
         public ResCerrarSesion CerrarSesion(ReqCerrarSesion req)
         {
+
+            var authHeader = Request.Headers.Authorization;
+            if (authHeader != null && authHeader.Scheme == "Bearer")
+            {
+                req.token = authHeader.Parameter;
+            }
+            else
+            {
+                return new ResCerrarSesion
+                {
+                    resultado = false,
+                    error = new List<Error>
+            {
+                new Error
+                {
+                    ErrorCode = (int)enumErrores.tokenFaltante,
+                    Message = "Token de autorización no proporcionado"
+                }
+            }
+                };
+            }
+
             return _logica.CerrarSesion(req);
         }
 
@@ -46,6 +69,27 @@ namespace APIRest.Controllers
         [Route("api/usuarios/actualizar-perfil")]
         public ResActualizarPerfil ActualizarPerfil(ReqActualizarPerfil req)
         {
+            var authHeader = Request.Headers.Authorization;
+            if (authHeader != null && authHeader.Scheme == "Bearer")
+            {
+                req.token = authHeader.Parameter;
+            }
+            else
+            {
+                return new ResActualizarPerfil
+                {
+                    resultado = false,
+                    error = new List<Error>
+            {
+                new Error
+                {
+                    ErrorCode = (int)enumErrores.tokenFaltante,
+                    Message = "Token de autorización no proporcionado"
+                }
+            }
+                };
+            }
+
             return _logica.ActualizarPerfil(req);
         }
 
@@ -53,6 +97,28 @@ namespace APIRest.Controllers
         [Route("api/usuarios/cambiar-password")]
         public ResCambiarPassword CambiarPassword(ReqCambiarPassword req)
         {
+
+            var authHeader = Request.Headers.Authorization;
+            if (authHeader != null && authHeader.Scheme == "Bearer")
+            {
+                req.token = authHeader.Parameter;
+            }
+            else
+            {
+                return new ResCambiarPassword
+                {
+                    resultado = false,
+                    error = new List<Error>
+            {
+                new Error
+                {
+                    ErrorCode = (int)enumErrores.tokenFaltante,
+                    Message = "Token de autorización no proporcionado"
+                }
+            }
+                };
+            }
+
             return _logica.CambiarPassword(req);
         }
 
@@ -69,6 +135,21 @@ namespace APIRest.Controllers
         public ResObtenerUsuario ObtenerUsuario(ReqObtenerUsuario req)
         {
             return _logica.ObtenerUsuario(req);
+        }
+        [HttpPost]
+        [Route("api/usuarios/solicitar-cambio-password")]
+        [AllowAnonymous]
+        public ResSolicitarCambioPassword SolicitarCambioPassword(ReqSolicitarCambioPassword req)
+        {
+            return _logica.SolicitarCambioPassword(req);
+        }
+
+        [HttpPost]
+        [Route("api/usuarios/confirmar-cambio-password")]
+        [AllowAnonymous]
+        public ResConfirmarCambioPassword ConfirmarCambioPassword(ReqConfirmarCambioPassword req)
+        {
+            return _logica.ConfirmarCambioPassword(req);
         }
     }
 }
