@@ -127,6 +127,7 @@
     <Compile Include="Entidades\Request\ReqBase.cs" />
     <Compile Include="Entidades\Request\ReqCambiarPassword.cs" />
     <Compile Include="Entidades\Request\ReqCerrarSesion.cs" />
+    <Compile Include="Entidades\Request\ReqConfirmarCambioPassword.cs" />
     <Compile Include="Entidades\Request\ReqCrearGrupoFamiliar.cs" />
     <Compile Include="Entidades\Request\ReqEliminarGrupo.cs" />
     <Compile Include="Entidades\Request\ReqEliminarMiembro.cs" />
@@ -141,12 +142,14 @@
     <Compile Include="Entidades\Request\ReqRegistrarGastoCompartido.cs" />
     <Compile Include="Entidades\Request\ReqRegistrarUsuario.cs" />
     <Compile Include="Entidades\Request\ReqSalirGrupo.cs" />
+    <Compile Include="Entidades\Request\ReqSolicitarCambioPassword.cs" />
     <Compile Include="Entidades\Request\ReqVerificarUsuario.cs" />
     <Compile Include="Entidades\Response\ResActualizarGrupo.cs" />
     <Compile Include="Entidades\Response\ResActualizarPerfil.cs" />
     <Compile Include="Entidades\Response\ResBase.cs" />
     <Compile Include="Entidades\Response\ResCambiarPassword.cs" />
     <Compile Include="Entidades\Response\ResCerrarSesion.cs" />
+    <Compile Include="Entidades\Response\ResConfirmarCambioPassword.cs" />
     <Compile Include="Entidades\Response\ResCrearGrupoFamiliar.cs" />
     <Compile Include="Entidades\Response\ResEliminarGrupo.cs" />
     <Compile Include="Entidades\Response\ResEliminarMiembro.cs" />
@@ -161,6 +164,7 @@
     <Compile Include="Entidades\Response\ResRegistrarGastoCompartido.cs" />
     <Compile Include="Entidades\Response\ResRegistrarUsuario.cs" />
     <Compile Include="Entidades\Response\ResSalirGrupo.cs" />
+    <Compile Include="Entidades\Response\ResSolicitarCambioPassword.cs" />
     <Compile Include="Entidades\Response\ResVerificarUsuario.cs" />
     <Compile Include="Helpers\HelperCorreo.cs" />
     <Compile Include="Helpers\HelperJWT.cs" />

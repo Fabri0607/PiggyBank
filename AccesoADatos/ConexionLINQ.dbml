@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="PiggyBank" Class="ConexionLINQDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=34.41.22.76;Initial Catalog=PiggyBank;Persist Security Info=True;User ID=PiggyBankApp;Encrypt=True;Trust Server Certificate=True" SettingsObjectName="AccesoADatos.Properties.Settings" SettingsPropertyName="PiggyBankConnectionString3" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=34.41.22.76;Initial Catalog=PiggyBank;Persist Security Info=True;User ID=PBADM_FABRI;Encrypt=True;Trust Server Certificate=True" SettingsObjectName="AccesoADatos.Properties.Settings" SettingsPropertyName="PiggyBankConnectionString6" Provider="System.Data.SqlClient" />
   <Function Name="dbo.SP_BALANCE_OBTENER_POR_GRUPO" Method="SP_BALANCE_OBTENER_POR_GRUPO">
     <Parameter Name="GrupoID" Parameter="grupoID" Type="System.Int32" DbType="Int" />
     <Parameter Name="FechaInicio" Parameter="fechaInicio" Type="System.DateTime" DbType="Date" />

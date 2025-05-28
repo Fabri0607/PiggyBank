@@ -136,5 +136,20 @@ namespace APIRest.Controllers
         {
             return _logica.ObtenerUsuario(req);
         }
+        [HttpPost]
+        [Route("api/usuarios/solicitar-cambio-password")]
+        [AllowAnonymous]
+        public ResSolicitarCambioPassword SolicitarCambioPassword(ReqSolicitarCambioPassword req)
+        {
+            return _logica.SolicitarCambioPassword(req);
+        }
+
+        [HttpPost]
+        [Route("api/usuarios/confirmar-cambio-password")]
+        [AllowAnonymous]
+        public ResConfirmarCambioPassword ConfirmarCambioPassword(ReqConfirmarCambioPassword req)
+        {
+            return _logica.ConfirmarCambioPassword(req);
+        }
     }
 }
