@@ -105,7 +105,7 @@ namespace Backend.Logica
 
         public async Task<ResCrearAnalisis> CrearAnalisisAsync(ReqCrearAnalisis req)
         {
-            string guid = req.sesion.Guid;
+           
             ResCrearAnalisis res = new ResCrearAnalisis
             {
                 error = new List<Error>(),
@@ -530,7 +530,7 @@ namespace Backend.Logica
             ResObtenerAnalisisUsuario res = new ResObtenerAnalisisUsuario
             {  
                 error = new List<Error>(),
-                AnalisisIA = new List<AnalisisIA>()
+                AnalisisIA = new List<AnalisisDTO>()
             };
             List<Error> errores = new List<Error>();
             try {
@@ -547,7 +547,7 @@ namespace Backend.Logica
                 }
                 else
                 {
-                    if (req.UsuarioID <= 0)
+                    if (req.sesion.UsuarioID <= 0)
                     {
                         res.error.Add(HelperValidacion.CrearError(enumErrores.campoRequerido, "El Usuario es requerido"));
                     }
@@ -558,11 +558,10 @@ namespace Backend.Logica
                     res.resultado = false;
                     return res;
                 }
-                var analisis = _dbContext.SP_OBTENER_ANALISIS_USUARIO(req.UsuarioID)
-                    .Select(b => new AnalisisIA
+                var analisis = _dbContext.SP_OBTENER_ANALISIS_USUARIO(req.sesion.UsuarioID)
+                    .Select(b => new AnalisisDTO
                     {
                         AnalisisID = b.AnalisisID,
-                        UsuarioID = b.UsuarioID,
                         Contexto = b.ContextoID,
                         FechaInicio = b.FechaInicio,
                         FechaFin = b.FechaFin,
@@ -570,6 +569,7 @@ namespace Backend.Logica
                         Resumen = b.Resumen,
                     }).ToList();
                 res.AnalisisIA = analisis;
+                res.resultado = true;
 
 
             }
@@ -617,6 +617,7 @@ namespace Backend.Logica
                         Nombre = b.NOMBRE
                     }).ToList();
                 res.Contextos = contextos;
+                res.resultado = true; 
             }
             catch (Exception ex)
             {

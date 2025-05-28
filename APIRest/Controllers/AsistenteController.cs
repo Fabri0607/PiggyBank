@@ -18,7 +18,7 @@ namespace APIRest.Controllers
     {
         private readonly LogicaAsistente _logica = new LogicaAsistente();
         private readonly LogicaAutenticacion _logicaAutenticacion = new LogicaAutenticacion();
-        // POST: /api/asistentes
+        // POST: /api/asistente
         [HttpGet]
         [Route("api/asistente/contextos")]
         public ResObtenerTodosContexto GetContextos(ReqObtenerTodosContexto req)

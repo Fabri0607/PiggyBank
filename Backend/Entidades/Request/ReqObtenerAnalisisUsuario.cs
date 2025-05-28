@@ -8,6 +8,6 @@ namespace Backend.Entidades.Request
 {
     public class ReqObtenerAnalisisUsuario : ReqBase
     {
-        public int UsuarioID { get; set; } // ID del usuario para el que se obtienen los análisis
+        
     }
 }

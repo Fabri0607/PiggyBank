@@ -100,6 +100,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\AnalisisDTO.cs" />
     <Compile Include="DTO\GastoCompartidoDTO.cs" />
     <Compile Include="DTO\GrupoDTO.cs" />
     <Compile Include="DTO\MiembroDTO.cs" />
