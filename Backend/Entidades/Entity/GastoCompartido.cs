@@ -15,6 +15,5 @@ namespace Backend.Entidades.Entity
         public decimal Monto { get; set; }
         public string Estado { get; set; } // 'Pendiente', 'Pagado', 'Rechazado'
         public DateTime Fecha { get; set; }
-        public string Descripcion { get; set; }
     }
 }

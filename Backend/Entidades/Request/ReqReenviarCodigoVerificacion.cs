@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Backend.Entidades.Request
 {
-    public class ReqReenviarCodigoVerificacion
+    public class ReqReenviarCodigoVerificacion : ReqBase
     {
         public string Email { get; set; }
     }

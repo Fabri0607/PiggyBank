@@ -8,6 +8,7 @@ namespace Backend.Entidades.Request
 {
     public class ReqCerrarSesion : ReqBase
     {
+        public int SesionID { get; set; }
         public string MotivoRevocacion { get; set; }
     }
 }

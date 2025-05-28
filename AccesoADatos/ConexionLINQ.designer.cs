@@ -33,7 +33,7 @@ namespace AccesoADatos
     #endregion
 		
 		public ConexionLINQDataContext() : 
-				base(global::AccesoADatos.Properties.Settings.Default.PiggyBankConnectionString3, mappingSource)
+				base(global::AccesoADatos.Properties.Settings.Default.PiggyBankConnectionString6, mappingSource)
 		{
 			OnCreated();
 		}
@@ -196,6 +196,15 @@ namespace AccesoADatos
 			return ((int)(result.ReturnValue));
 		}
 		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_BALANCE_CALCULAR_REGISTRAR")]
+		public ISingleResult<SP_BALANCE_CALCULAR_REGISTRARResult> SP_BALANCE_CALCULAR_REGISTRAR([global::System.Data.Linq.Mapping.ParameterAttribute(Name="GrupoID", DbType="Int")] System.Nullable<int> grupoID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaInicio", DbType="Date")] System.Nullable<System.DateTime> fechaInicio, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaFin", DbType="Date")] System.Nullable<System.DateTime> fechaFin, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), grupoID, fechaInicio, fechaFin, eRRORID, eRRORDESCRIPCION);
+			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(3)));
+			eRRORDESCRIPCION = ((string)(result.GetParameterValue(4)));
+			return ((ISingleResult<SP_BALANCE_CALCULAR_REGISTRARResult>)(result.ReturnValue));
+		}
+		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_OBTENER_USUARIO_POR_ID")]
 		public ISingleResult<SP_OBTENER_USUARIO_POR_IDResult> SP_OBTENER_USUARIO_POR_ID([global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID)
 		{
@@ -315,6 +324,15 @@ namespace AccesoADatos
 			return ((int)(result.ReturnValue));
 		}
 		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_GASTO_LISTAR_POR_GRUPO")]
+		public ISingleResult<SP_GASTO_LISTAR_POR_GRUPOResult> SP_GASTO_LISTAR_POR_GRUPO([global::System.Data.Linq.Mapping.ParameterAttribute(Name="GrupoID", DbType="Int")] System.Nullable<int> grupoID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaInicio", DbType="DateTime")] System.Nullable<System.DateTime> fechaInicio, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaFin", DbType="DateTime")] System.Nullable<System.DateTime> fechaFin, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), grupoID, usuarioID, fechaInicio, fechaFin, eRRORID, eRRORDESCRIPCION);
+			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(4)));
+			eRRORDESCRIPCION = ((string)(result.GetParameterValue(5)));
+			return ((ISingleResult<SP_GASTO_LISTAR_POR_GRUPOResult>)(result.ReturnValue));
+		}
+		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_GRUPO_ELIMINAR")]
 		public int SP_GRUPO_ELIMINAR([global::System.Data.Linq.Mapping.ParameterAttribute(Name="GrupoID", DbType="Int")] System.Nullable<int> grupoID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="AdminUsuarioID", DbType="Int")] System.Nullable<int> adminUsuarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
 		{
@@ -333,22 +351,13 @@ namespace AccesoADatos
 			return ((ISingleResult<SP_GRUPO_OBTENER_DETALLESResult>)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_GASTO_LISTAR_POR_GRUPO")]
-		public ISingleResult<SP_GASTO_LISTAR_POR_GRUPOResult> SP_GASTO_LISTAR_POR_GRUPO([global::System.Data.Linq.Mapping.ParameterAttribute(Name="GrupoID", DbType="Int")] System.Nullable<int> grupoID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaInicio", DbType="DateTime")] System.Nullable<System.DateTime> fechaInicio, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaFin", DbType="DateTime")] System.Nullable<System.DateTime> fechaFin, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_INVALIDAR_CODIGO_RECUPERACION")]
+		public int SP_INVALIDAR_CODIGO_RECUPERACION([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Email", DbType="VarChar(255)")] string email, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ErrorID", DbType="Int")] ref System.Nullable<int> errorID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ErrorMsg", DbType="VarChar(255)")] ref string errorMsg)
 		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), grupoID, usuarioID, fechaInicio, fechaFin, eRRORID, eRRORDESCRIPCION);
-			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(4)));
-			eRRORDESCRIPCION = ((string)(result.GetParameterValue(5)));
-			return ((ISingleResult<SP_GASTO_LISTAR_POR_GRUPOResult>)(result.ReturnValue));
-		}
-		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_BALANCE_CALCULAR_REGISTRAR")]
-		public ISingleResult<SP_BALANCE_CALCULAR_REGISTRARResult> SP_BALANCE_CALCULAR_REGISTRAR([global::System.Data.Linq.Mapping.ParameterAttribute(Name="GrupoID", DbType="Int")] System.Nullable<int> grupoID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaInicio", DbType="Date")] System.Nullable<System.DateTime> fechaInicio, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaFin", DbType="Date")] System.Nullable<System.DateTime> fechaFin, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), grupoID, fechaInicio, fechaFin, eRRORID, eRRORDESCRIPCION);
-			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(3)));
-			eRRORDESCRIPCION = ((string)(result.GetParameterValue(4)));
-			return ((ISingleResult<SP_BALANCE_CALCULAR_REGISTRARResult>)(result.ReturnValue));
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), email, errorID, errorMsg);
+			errorID = ((System.Nullable<int>)(result.GetParameterValue(1)));
+			errorMsg = ((string)(result.GetParameterValue(2)));
+			return ((int)(result.ReturnValue));
 		}
 		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_ACTUALIZAR_CODIGO_RECUPERACION")]
@@ -357,15 +366,6 @@ namespace AccesoADatos
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), email, codigoVerificacion, fechaExpiracion, errorID, errorMsg);
 			errorID = ((System.Nullable<int>)(result.GetParameterValue(3)));
 			errorMsg = ((string)(result.GetParameterValue(4)));
-			return ((int)(result.ReturnValue));
-		}
-		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_INVALIDAR_CODIGO_RECUPERACION")]
-		public int SP_INVALIDAR_CODIGO_RECUPERACION([global::System.Data.Linq.Mapping.ParameterAttribute(Name="Email", DbType="VarChar(255)")] string email, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ErrorID", DbType="Int")] ref System.Nullable<int> errorID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ErrorMsg", DbType="VarChar(255)")] ref string errorMsg)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), email, errorID, errorMsg);
-			errorID = ((System.Nullable<int>)(result.GetParameterValue(1)));
-			errorMsg = ((string)(result.GetParameterValue(2)));
 			return ((int)(result.ReturnValue));
 		}
 		
@@ -784,158 +784,6 @@ namespace AccesoADatos
 				if ((this._Diferencia != value))
 				{
 					this._Diferencia = value;
-				}
-			}
-		}
-	}
-	
-	public partial class SP_TRANSACCIONES_OBTENER_POR_USUARIOResult
-	{
-		
-		private int _TransaccionID;
-		
-		private string _Tipo;
-		
-		private decimal _Monto;
-		
-		private System.DateTime _Fecha;
-		
-		private string _Descripcion;
-		
-		private string _Categoria;
-		
-		private string _Icono;
-		
-		private string _ColorHex;
-		
-		public SP_TRANSACCIONES_OBTENER_POR_USUARIOResult()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransaccionID", DbType="Int NOT NULL")]
-		public int TransaccionID
-		{
-			get
-			{
-				return this._TransaccionID;
-			}
-			set
-			{
-				if ((this._TransaccionID != value))
-				{
-					this._TransaccionID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Tipo", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
-		public string Tipo
-		{
-			get
-			{
-				return this._Tipo;
-			}
-			set
-			{
-				if ((this._Tipo != value))
-				{
-					this._Tipo = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Monto", DbType="Decimal(10,2) NOT NULL")]
-		public decimal Monto
-		{
-			get
-			{
-				return this._Monto;
-			}
-			set
-			{
-				if ((this._Monto != value))
-				{
-					this._Monto = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Fecha", DbType="DateTime NOT NULL")]
-		public System.DateTime Fecha
-		{
-			get
-			{
-				return this._Fecha;
-			}
-			set
-			{
-				if ((this._Fecha != value))
-				{
-					this._Fecha = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Descripcion", DbType="Text", UpdateCheck=UpdateCheck.Never)]
-		public string Descripcion
-		{
-			get
-			{
-				return this._Descripcion;
-			}
-			set
-			{
-				if ((this._Descripcion != value))
-				{
-					this._Descripcion = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Categoria", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
-		public string Categoria
-		{
-			get
-			{
-				return this._Categoria;
-			}
-			set
-			{
-				if ((this._Categoria != value))
-				{
-					this._Categoria = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Icono", DbType="VarChar(50)")]
-		public string Icono
-		{
-			get
-			{
-				return this._Icono;
-			}
-			set
-			{
-				if ((this._Icono != value))
-				{
-					this._Icono = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ColorHex", DbType="VarChar(7)")]
-		public string ColorHex
-		{
-			get
-			{
-				return this._ColorHex;
-			}
-			set
-			{
-				if ((this._ColorHex != value))
-				{
-					this._ColorHex = value;
 				}
 			}
 		}
@@ -1665,418 +1513,6 @@ namespace AccesoADatos
 		}
 	}
 	
-	public partial class SP_GRUPO_OBTENER_DETALLESResult
-	{
-		
-		private int _GrupoID;
-		
-		private string _Nombre;
-		
-		private string _Descripcion;
-		
-		private System.DateTime _FechaCreacion;
-		
-		private int _CreadoPorUsuarioID;
-		
-		private string _Estado;
-		
-		private System.Nullable<System.DateTime> _FechaActualizacion;
-		
-		private int _UsuarioID;
-		
-		private string _NombreUsuario;
-		
-		private string _Rol;
-		
-		private System.DateTime _FechaUnion;
-		
-		public SP_GRUPO_OBTENER_DETALLESResult()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GrupoID", DbType="Int NOT NULL")]
-		public int GrupoID
-		{
-			get
-			{
-				return this._GrupoID;
-			}
-			set
-			{
-				if ((this._GrupoID != value))
-				{
-					this._GrupoID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nombre", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
-		public string Nombre
-		{
-			get
-			{
-				return this._Nombre;
-			}
-			set
-			{
-				if ((this._Nombre != value))
-				{
-					this._Nombre = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Descripcion", DbType="Text", UpdateCheck=UpdateCheck.Never)]
-		public string Descripcion
-		{
-			get
-			{
-				return this._Descripcion;
-			}
-			set
-			{
-				if ((this._Descripcion != value))
-				{
-					this._Descripcion = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FechaCreacion", DbType="DateTime NOT NULL")]
-		public System.DateTime FechaCreacion
-		{
-			get
-			{
-				return this._FechaCreacion;
-			}
-			set
-			{
-				if ((this._FechaCreacion != value))
-				{
-					this._FechaCreacion = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreadoPorUsuarioID", DbType="Int NOT NULL")]
-		public int CreadoPorUsuarioID
-		{
-			get
-			{
-				return this._CreadoPorUsuarioID;
-			}
-			set
-			{
-				if ((this._CreadoPorUsuarioID != value))
-				{
-					this._CreadoPorUsuarioID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Estado", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
-		public string Estado
-		{
-			get
-			{
-				return this._Estado;
-			}
-			set
-			{
-				if ((this._Estado != value))
-				{
-					this._Estado = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FechaActualizacion", DbType="DateTime")]
-		public System.Nullable<System.DateTime> FechaActualizacion
-		{
-			get
-			{
-				return this._FechaActualizacion;
-			}
-			set
-			{
-				if ((this._FechaActualizacion != value))
-				{
-					this._FechaActualizacion = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsuarioID", DbType="Int NOT NULL")]
-		public int UsuarioID
-		{
-			get
-			{
-				return this._UsuarioID;
-			}
-			set
-			{
-				if ((this._UsuarioID != value))
-				{
-					this._UsuarioID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NombreUsuario", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
-		public string NombreUsuario
-		{
-			get
-			{
-				return this._NombreUsuario;
-			}
-			set
-			{
-				if ((this._NombreUsuario != value))
-				{
-					this._NombreUsuario = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Rol", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
-		public string Rol
-		{
-			get
-			{
-				return this._Rol;
-			}
-			set
-			{
-				if ((this._Rol != value))
-				{
-					this._Rol = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FechaUnion", DbType="DateTime NOT NULL")]
-		public System.DateTime FechaUnion
-		{
-			get
-			{
-				return this._FechaUnion;
-			}
-			set
-			{
-				if ((this._FechaUnion != value))
-				{
-					this._FechaUnion = value;
-				}
-			}
-		}
-	}
-	
-	public partial class SP_GRUPO_OBTENER_DETALLESResult
-	{
-		
-		private int _GrupoID;
-		
-		private string _Nombre;
-		
-		private string _Descripcion;
-		
-		private System.DateTime _FechaCreacion;
-		
-		private int _CreadoPorUsuarioID;
-		
-		private string _Estado;
-		
-		private System.Nullable<System.DateTime> _FechaActualizacion;
-		
-		private int _UsuarioID;
-		
-		private string _NombreUsuario;
-		
-		private string _Rol;
-		
-		private System.DateTime _FechaUnion;
-		
-		public SP_GRUPO_OBTENER_DETALLESResult()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GrupoID", DbType="Int NOT NULL")]
-		public int GrupoID
-		{
-			get
-			{
-				return this._GrupoID;
-			}
-			set
-			{
-				if ((this._GrupoID != value))
-				{
-					this._GrupoID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nombre", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
-		public string Nombre
-		{
-			get
-			{
-				return this._Nombre;
-			}
-			set
-			{
-				if ((this._Nombre != value))
-				{
-					this._Nombre = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Descripcion", DbType="Text", UpdateCheck=UpdateCheck.Never)]
-		public string Descripcion
-		{
-			get
-			{
-				return this._Descripcion;
-			}
-			set
-			{
-				if ((this._Descripcion != value))
-				{
-					this._Descripcion = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FechaCreacion", DbType="DateTime NOT NULL")]
-		public System.DateTime FechaCreacion
-		{
-			get
-			{
-				return this._FechaCreacion;
-			}
-			set
-			{
-				if ((this._FechaCreacion != value))
-				{
-					this._FechaCreacion = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreadoPorUsuarioID", DbType="Int NOT NULL")]
-		public int CreadoPorUsuarioID
-		{
-			get
-			{
-				return this._CreadoPorUsuarioID;
-			}
-			set
-			{
-				if ((this._CreadoPorUsuarioID != value))
-				{
-					this._CreadoPorUsuarioID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Estado", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
-		public string Estado
-		{
-			get
-			{
-				return this._Estado;
-			}
-			set
-			{
-				if ((this._Estado != value))
-				{
-					this._Estado = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FechaActualizacion", DbType="DateTime")]
-		public System.Nullable<System.DateTime> FechaActualizacion
-		{
-			get
-			{
-				return this._FechaActualizacion;
-			}
-			set
-			{
-				if ((this._FechaActualizacion != value))
-				{
-					this._FechaActualizacion = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsuarioID", DbType="Int NOT NULL")]
-		public int UsuarioID
-		{
-			get
-			{
-				return this._UsuarioID;
-			}
-			set
-			{
-				if ((this._UsuarioID != value))
-				{
-					this._UsuarioID = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NombreUsuario", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
-		public string NombreUsuario
-		{
-			get
-			{
-				return this._NombreUsuario;
-			}
-			set
-			{
-				if ((this._NombreUsuario != value))
-				{
-					this._NombreUsuario = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Rol", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
-		public string Rol
-		{
-			get
-			{
-				return this._Rol;
-			}
-			set
-			{
-				if ((this._Rol != value))
-				{
-					this._Rol = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FechaUnion", DbType="DateTime NOT NULL")]
-		public System.DateTime FechaUnion
-		{
-			get
-			{
-				return this._FechaUnion;
-			}
-			set
-			{
-				if ((this._FechaUnion != value))
-				{
-					this._FechaUnion = value;
-				}
-			}
-		}
-	}
-	
 	public partial class SP_GASTO_LISTAR_POR_GRUPOResult
 	{
 		
@@ -2095,8 +1531,6 @@ namespace AccesoADatos
 		private string _Estado;
 		
 		private System.Nullable<System.DateTime> _Fecha;
-		
-		private string _Descripcion;
 		
 		public SP_GASTO_LISTAR_POR_GRUPOResult()
 		{
@@ -2203,35 +1637,15 @@ namespace AccesoADatos
 		{
 			get
 			{
-				return this._ColorHex;
+				return this._Estado;
 			}
 			set
 			{
-				if ((this._ColorHex != value))
+				if ((this._Estado != value))
 				{
-					this._ColorHex = value;
+					this._Estado = value;
 				}
 			}
-		}
-	}
-	
-	public partial class SP_OBTENER_MENSAJESResult
-	{
-		
-		private int _MensajeID;
-		
-		private int _AnalisisID;
-		
-		private string _Role;
-		
-		private string _Content;
-		
-		private int _Orden;
-		
-		private System.DateTime _FechaEnvio;
-		
-		public SP_OBTENER_MENSAJESResult()
-		{
 		}
 		
 		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Fecha", DbType="DateTime")]
@@ -2246,6 +1660,68 @@ namespace AccesoADatos
 				if ((this._Fecha != value))
 				{
 					this._Fecha = value;
+				}
+			}
+		}
+	}
+	
+	public partial class SP_GRUPO_OBTENER_DETALLESResult
+	{
+		
+		private int _GrupoID;
+		
+		private string _Nombre;
+		
+		private string _Descripcion;
+		
+		private System.DateTime _FechaCreacion;
+		
+		private int _CreadoPorUsuarioID;
+		
+		private string _Estado;
+		
+		private System.Nullable<System.DateTime> _FechaActualizacion;
+		
+		private int _UsuarioID;
+		
+		private string _NombreUsuario;
+		
+		private string _Rol;
+		
+		private System.DateTime _FechaUnion;
+		
+		public SP_GRUPO_OBTENER_DETALLESResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GrupoID", DbType="Int NOT NULL")]
+		public int GrupoID
+		{
+			get
+			{
+				return this._GrupoID;
+			}
+			set
+			{
+				if ((this._GrupoID != value))
+				{
+					this._GrupoID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nombre", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		public string Nombre
+		{
+			get
+			{
+				return this._Nombre;
+			}
+			set
+			{
+				if ((this._Nombre != value))
+				{
+					this._Nombre = value;
 				}
 			}
 		}
@@ -2265,41 +1741,67 @@ namespace AccesoADatos
 				}
 			}
 		}
-	}
-	
-	public partial class SP_BALANCE_CALCULAR_REGISTRARResult
-	{
 		
-		private int _GrupoID;
-		
-		private int _UsuarioID;
-		
-		private string _NombreUsuario;
-		
-		private decimal _TotalGastos;
-		
-		private decimal _TotalPagado;
-		
-		private decimal _Saldo;
-		
-		private System.DateTime _FechaCalculo;
-		
-		public SP_BALANCE_CALCULAR_REGISTRARResult()
-		{
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GrupoID", DbType="Int NOT NULL")]
-		public int GrupoID
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FechaCreacion", DbType="DateTime NOT NULL")]
+		public System.DateTime FechaCreacion
 		{
 			get
 			{
-				return this._GrupoID;
+				return this._FechaCreacion;
 			}
 			set
 			{
-				if ((this._GrupoID != value))
+				if ((this._FechaCreacion != value))
 				{
-					this._GrupoID = value;
+					this._FechaCreacion = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreadoPorUsuarioID", DbType="Int NOT NULL")]
+		public int CreadoPorUsuarioID
+		{
+			get
+			{
+				return this._CreadoPorUsuarioID;
+			}
+			set
+			{
+				if ((this._CreadoPorUsuarioID != value))
+				{
+					this._CreadoPorUsuarioID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Estado", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
+		public string Estado
+		{
+			get
+			{
+				return this._Estado;
+			}
+			set
+			{
+				if ((this._Estado != value))
+				{
+					this._Estado = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FechaActualizacion", DbType="DateTime")]
+		public System.Nullable<System.DateTime> FechaActualizacion
+		{
+			get
+			{
+				return this._FechaActualizacion;
+			}
+			set
+			{
+				if ((this._FechaActualizacion != value))
+				{
+					this._FechaActualizacion = value;
 				}
 			}
 		}
@@ -2320,82 +1822,50 @@ namespace AccesoADatos
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FechaInicio", DbType="Date NOT NULL")]
-		public System.DateTime FechaInicio
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NombreUsuario", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		public string NombreUsuario
 		{
 			get
 			{
-				return this._FechaInicio;
+				return this._NombreUsuario;
 			}
 			set
 			{
-				if ((this._FechaInicio != value))
+				if ((this._NombreUsuario != value))
 				{
-					this._FechaInicio = value;
+					this._NombreUsuario = value;
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalGastos", DbType="Decimal(10,2) NOT NULL")]
-		public decimal TotalGastos
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Rol", DbType="VarChar(20) NOT NULL", CanBeNull=false)]
+		public string Rol
 		{
 			get
 			{
-				return this._TotalGastos;
+				return this._Rol;
 			}
 			set
 			{
-				if ((this._TotalGastos != value))
+				if ((this._Rol != value))
 				{
-					this._TotalGastos = value;
+					this._Rol = value;
 				}
 			}
 		}
 		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TotalPagado", DbType="Decimal(10,2) NOT NULL")]
-		public decimal TotalPagado
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FechaUnion", DbType="DateTime NOT NULL")]
+		public System.DateTime FechaUnion
 		{
 			get
 			{
-				return this._TotalPagado;
+				return this._FechaUnion;
 			}
 			set
 			{
-				if ((this._TotalPagado != value))
+				if ((this._FechaUnion != value))
 				{
-					this._TotalPagado = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Saldo", DbType="Decimal(10,2) NOT NULL")]
-		public decimal Saldo
-		{
-			get
-			{
-				return this._Saldo;
-			}
-			set
-			{
-				if ((this._Saldo != value))
-				{
-					this._Saldo = value;
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_FechaCalculo", DbType="DateTime NOT NULL")]
-		public System.DateTime FechaCalculo
-		{
-			get
-			{
-				return this._FechaCalculo;
-			}
-			set
-			{
-				if ((this._FechaCalculo != value))
-				{
-					this._FechaCalculo = value;
+					this._FechaUnion = value;
 				}
 			}
 		}

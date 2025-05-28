@@ -380,6 +380,7 @@ namespace Backend.Logica
 
             try
             {
+
                 // Validar la sesión
                 if (!ValidarSesion(req, ref errores))
                 {
@@ -412,21 +413,23 @@ namespace Backend.Logica
                     return res;
                 }
 
-                // Calcular y registrar balances
+                // Calcular balances primero
                 int? errorIdBD = 0;
                 string errorMsgBD = "";
-                var balancesResult = _dbContext.SP_BALANCE_CALCULAR_REGISTRAR(
-                    req.GrupoID,
-                    req.FechaInicio,
-                    req.FechaFin,
-                    ref errorIdBD,
-                    ref errorMsgBD
-                );
+                _dbContext.SP_BALANCE_CALCULAR_REGISTRAR(req.GrupoID, req.FechaInicio, req.FechaFin, ref errorIdBD, ref errorMsgBD);
 
-                if (errorIdBD == 0)
+                if (errorIdBD != 0)
                 {
-                    res.Balances = balancesResult.Select(b => new BalanceMiembro
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, "Error al calcular los balances"));
+                    res.resultado = false;
+                    return res;
+                }
+
+                // Obtener balances calculados
+                var balances = _dbContext.SP_BALANCE_OBTENER_POR_GRUPO(req.GrupoID, req.FechaInicio, req.FechaFin)
+                    .Select(b => new BalanceMiembro
                     {
+                        BalanceID = b.BalanceID,
                         GrupoID = b.GrupoID,
                         UsuarioID = b.UsuarioID,
                         NombreUsuario = b.NombreUsuario,
@@ -434,15 +437,10 @@ namespace Backend.Logica
                         TotalPagado = b.TotalPagado,
                         Saldo = b.Saldo,
                         FechaCalculo = b.FechaCalculo
-                        // Nota: BalanceID no se devuelve en el SP, se asigna automáticamente en la tabla
                     }).ToList();
-                    res.resultado = true;
-                }
-                else
-                {
-                    res.error.Add(HelperValidacion.CrearError((enumErrores)errorIdBD, errorMsgBD));
-                    res.resultado = false;
-                }
+
+                res.Balances = balances;
+                res.resultado = true;
             }
             catch (Exception ex)
             {
@@ -891,8 +889,7 @@ namespace Backend.Logica
         {
             ResListarGastos res = new ResListarGastos
             {
-                error = new List<Error>(),
-                Gastos = new List<GastoCompartidoDTO>()
+                error = new List<Error>()
             };
 
             List<Error> errores = new List<Error>();
@@ -962,8 +959,7 @@ namespace Backend.Logica
                         NombreUsuario = g.NombreUsuario,
                         Monto = (decimal)g.Monto,
                         Estado = g.Estado,
-                        Fecha = (DateTime)g.Fecha,
-                        Descripcion = g.Descripcion
+                        Fecha = (DateTime)g.Fecha
                     }).ToList();
                     res.resultado = true;
                 }
