@@ -422,6 +422,7 @@ namespace Backend.Logica
         // 4. Cerrar sesión
         public ResCerrarSesion CerrarSesion(ReqCerrarSesion req)
         {
+
             ResCerrarSesion res = new ResCerrarSesion
             {
                 error = new List<Error>()
@@ -445,13 +446,6 @@ namespace Backend.Logica
                 {
                     res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "Solicitud no válida"));
                 }
-                else
-                {
-                    if (req.SesionID <= 0)
-                    {
-                        res.error.Add(HelperValidacion.CrearError(enumErrores.sesionInvalida, "ID de sesión inválido"));
-                    }
-                }
                 #endregion
 
                 if (res.error.Any())
@@ -460,10 +454,27 @@ namespace Backend.Logica
                     return res;
                 }
 
+                // Extraer el GUID del JWT
+                string guid1 = string.Empty;
+
+                try
+                {
+                    guid1 = HelperJWT.ValidarTokenYObtenerGuid(req.token);
+                }
+                catch (SecurityTokenException ex)
+                {
+                    errores.Add(HelperValidacion.CrearError(enumErrores.tokenInvalido, ex.Message));
+                }
+
+                // Consultar la sesión en la base de datos
+                int? errorIdBD1 = 0;
+                string errorMsgBD1 = "";
+                var sesion = _dbContext.SP_SESION_OBTENER_POR_GUID(guid1, ref errorIdBD1, ref errorMsgBD1).FirstOrDefault();
+
                 int? errorIdBD = 0;
                 string errorMsgBD = "";
 
-                _dbContext.SP_CERRAR_SESION(req.SesionID, req.MotivoRevocacion, ref errorIdBD, ref errorMsgBD);
+                _dbContext.SP_CERRAR_SESION(sesion.SesionID, req.MotivoRevocacion, ref errorIdBD, ref errorMsgBD);
 
                 if (errorIdBD == 0)
                 {
