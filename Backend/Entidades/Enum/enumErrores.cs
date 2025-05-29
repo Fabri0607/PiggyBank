@@ -46,5 +46,6 @@ namespace Backend.Entidades
         permisoDenegado = 35,
         TipoTransaccionInvalido = 36,
         FechaInvalida = 37,
+        gastoNoEncontrado = 38
     }
 }

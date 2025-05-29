@@ -380,7 +380,6 @@ namespace Backend.Logica
 
             try
             {
-
                 // Validar la sesión
                 if (!ValidarSesion(req, ref errores))
                 {
@@ -413,23 +412,21 @@ namespace Backend.Logica
                     return res;
                 }
 
-                // Calcular balances primero
+                // Calcular y registrar balances
                 int? errorIdBD = 0;
                 string errorMsgBD = "";
-                _dbContext.SP_BALANCE_CALCULAR_REGISTRAR(req.GrupoID, req.FechaInicio, req.FechaFin, ref errorIdBD, ref errorMsgBD);
+                var balancesResult = _dbContext.SP_BALANCE_CALCULAR_REGISTRAR(
+                    req.GrupoID,
+                    req.FechaInicio,
+                    req.FechaFin,
+                    ref errorIdBD,
+                    ref errorMsgBD
+                );
 
-                if (errorIdBD != 0)
+                if (errorIdBD == 0)
                 {
-                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, "Error al calcular los balances"));
-                    res.resultado = false;
-                    return res;
-                }
-
-                // Obtener balances calculados
-                var balances = _dbContext.SP_BALANCE_OBTENER_POR_GRUPO(req.GrupoID, req.FechaInicio, req.FechaFin)
-                    .Select(b => new BalanceMiembro
+                    res.Balances = balancesResult.Select(b => new BalanceMiembro
                     {
-                        BalanceID = b.BalanceID,
                         GrupoID = b.GrupoID,
                         UsuarioID = b.UsuarioID,
                         NombreUsuario = b.NombreUsuario,
@@ -437,10 +434,15 @@ namespace Backend.Logica
                         TotalPagado = b.TotalPagado,
                         Saldo = b.Saldo,
                         FechaCalculo = b.FechaCalculo
+                        // Nota: BalanceID no se devuelve en el SP, se asigna automáticamente en la tabla
                     }).ToList();
-
-                res.Balances = balances;
-                res.resultado = true;
+                    res.resultado = true;
+                }
+                else
+                {
+                    res.error.Add(HelperValidacion.CrearError((enumErrores)errorIdBD, errorMsgBD));
+                    res.resultado = false;
+                }
             }
             catch (Exception ex)
             {
@@ -884,12 +886,13 @@ namespace Backend.Logica
             return res;
         }
 
-        // 10. Listar Gastos Compartidos
+        // 10. Listar Grupos
         public ResListarGastos ListarGastos(ReqListarGastos req)
         {
             ResListarGastos res = new ResListarGastos
             {
-                error = new List<Error>()
+                error = new List<Error>(),
+                Gastos = new List<GastoCompartidoDTO>()
             };
 
             List<Error> errores = new List<Error>();
@@ -959,7 +962,8 @@ namespace Backend.Logica
                         NombreUsuario = g.NombreUsuario,
                         Monto = (decimal)g.Monto,
                         Estado = g.Estado,
-                        Fecha = (DateTime)g.Fecha
+                        Fecha = (DateTime)g.Fecha,
+                        Descripcion = g.Descripcion
                     }).ToList();
                     res.resultado = true;
                 }
@@ -1039,6 +1043,109 @@ namespace Backend.Logica
                 if (errorIdBD == 0)
                 {
                     res.resultado = true;
+                }
+                else
+                {
+                    res.error.Add(HelperValidacion.CrearError((enumErrores)errorIdBD, errorMsgBD));
+                    res.resultado = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Error en la lógica: " + ex.Message));
+                res.resultado = false;
+            }
+
+            return res;
+        }
+
+        // 12. Actualizar estado de Gasto Compartido
+        public ResActualizarEstadoGasto ActualizarEstadoGasto(ReqActualizarEstadoGasto req)
+        {
+            ResActualizarEstadoGasto res = new ResActualizarEstadoGasto
+            {
+                error = new List<Error>()
+            };
+
+            List<Error> errores = new List<Error>();
+
+            try
+            {
+                // Validar la sesión
+                if (!ValidarSesion(req, ref errores))
+                {
+                    res.error = errores;
+                    res.resultado = false;
+                    return res;
+                }
+
+                #region Validaciones
+                if (req == null)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "Solicitud no válida"));
+                }
+                else
+                {
+                    if (req.GastoID <= 0)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.gastoNoEncontrado, "Gasto inválido"));
+                    }
+                    if (req.UsuarioID <= 0)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.usuarioNoEncontrado, "Usuario inválido"));
+                    }
+                    if (req.sesion.UsuarioID != req.UsuarioID)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.permisoDenegado, "No tienes permiso para realizar esta acción"));
+                    }
+                    if (string.IsNullOrEmpty(req.NuevoEstado) || !new[] { "Pendiente", "Pagado", "Rechazado" }.Contains(req.NuevoEstado))
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.valorInvalido, "Estado inválido. Los valores permitidos son: Pendiente, Pagado, Rechazado"));
+                    }
+                }
+                #endregion
+
+                if (res.error.Any())
+                {
+                    res.resultado = false;
+                    return res;
+                }
+
+                int? errorIdBD = 0;
+                string errorMsgBD = "";
+
+                var gastoResult = _dbContext.SP_GASTO_ACTUALIZAR_ESTADO(
+                    req.GastoID,
+                    req.UsuarioID,
+                    req.NuevoEstado,
+                    ref errorIdBD,
+                    ref errorMsgBD
+                );
+
+                if (errorIdBD == 0)
+                {
+                    var gasto = gastoResult.FirstOrDefault();
+                    if (gasto != null)
+                    {
+                        res.Gasto = new GastoCompartidoDTO
+                        {
+                            GastoID = (int)gasto.GastoID,
+                            TransaccionID = (int)gasto.TransaccionID,
+                            GrupoID = (int)gasto.GrupoID,
+                            UsuarioID = (int)gasto.UsuarioID,
+                            NombreUsuario = gasto.NombreUsuario,
+                            Monto = (decimal)gasto.Monto,
+                            Estado = gasto.Estado,
+                            Fecha = (DateTime)gasto.Fecha,
+                            Descripcion = gasto.Descripcion
+                        };
+                        res.resultado = true;
+                    }
+                    else
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.gastoNoEncontrado, "Gasto no encontrado"));
+                        res.resultado = false;
+                    }
                 }
                 else
                 {

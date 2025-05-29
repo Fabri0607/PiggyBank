@@ -431,5 +431,51 @@ namespace APIRest.Controllers
             return _logica.EliminarGrupo(req);
         }
 
+        [HttpPut]
+        [Route("api/gastos/{id}/estado")]
+        public ResActualizarEstadoGasto ActualizarEstadoGasto(int id, [FromBody] ReqActualizarEstadoGasto req)
+        {
+            if (req == null)
+            {
+                return new ResActualizarEstadoGasto
+                {
+                    resultado = false,
+                    error = new List<Error>
+            {
+                new Error
+                {
+                    ErrorCode = (int)enumErrores.requestNulo,
+                    Message = "Solicitud no válida"
+                }
+            }
+                };
+            }
+
+            req.GastoID = id;
+
+            var authHeader = Request.Headers.Authorization;
+            if (authHeader != null && authHeader.Scheme == "Bearer")
+            {
+                req.token = authHeader.Parameter;
+            }
+            else
+            {
+                return new ResActualizarEstadoGasto
+                {
+                    resultado = false,
+                    error = new List<Error>
+            {
+                new Error
+                {
+                    ErrorCode = (int)enumErrores.tokenFaltante,
+                    Message = "Token de autorización no proporcionado"
+                }
+            }
+                };
+            }
+
+            return _logica.ActualizarEstadoGasto(req);
+        }
+
     }
 }
