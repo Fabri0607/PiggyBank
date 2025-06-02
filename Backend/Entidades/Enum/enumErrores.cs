@@ -45,6 +45,7 @@ namespace Backend.Entidades
         categoriaFaltante = 34,
         fechaFaltante = 35,
         fechaInvalida = 36,
-        tituloFaltante = 37
+        tituloFaltante = 37,
+        permisoDenegado = 38
     }
 }

@@ -198,6 +198,290 @@ namespace Backend.Logica
         }
 
 
+        public ResObtenerDetalleTransaccion ObtenerDetalleTransaccion(ReqObtenerDetalleTransaccion req)
+        {
+            ResObtenerDetalleTransaccion res = new ResObtenerDetalleTransaccion()
+            {
+                error = new List<Error>()
+            };
+
+            try
+            {
+                if (req == null)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "El objeto request es nulo"));
+                }
+                else
+                {
+                    #region Validaciones
+                    if (req.TransaccionID <= 0)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.idFaltante, "El ID de la transacción es requerido y debe ser mayor a 0"));
+                    }
+
+                    if (req.UsuarioID <= 0)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.idFaltante, "El ID del usuario es requerido y debe ser mayor a 0"));
+                    }
+                    #endregion
+
+                    if (res.error.Any())
+                    {
+                        res.resultado = false;
+                    }
+                    else
+                    {
+                        int? errorIdBD = 0;
+                        string errorMsgBD = "";
+
+                        SP_TRANSACCION_OBTENER_DETALLEResult tipoComplejo = new SP_TRANSACCION_OBTENER_DETALLEResult();
+
+                        tipoComplejo = _dbContext.SP_TRANSACCION_OBTENER_DETALLE(
+                            req.TransaccionID,
+                            req.UsuarioID,
+                            ref errorIdBD,
+                            ref errorMsgBD
+                        ).ToList().FirstOrDefault();
+
+                        if (tipoComplejo != null && errorIdBD == 0)
+                        {
+                            res.TransaccionID = (int)tipoComplejo.TransaccionID;
+                            res.UsuarioID = (int)tipoComplejo.UsuarioID;
+                            res.Tipo = tipoComplejo.Tipo;
+                            res.Monto = (decimal)tipoComplejo.Monto;
+                            res.Categoria = tipoComplejo.NombreCategoria;
+                            res.Fecha = (DateTime)tipoComplejo.Fecha;
+                            res.Titulo = tipoComplejo.Titulo;
+                            res.Descripcion = tipoComplejo.Descripcion;
+                            res.EsCompartido = (bool)tipoComplejo.EsCompartido;
+                            res.GrupoID = tipoComplejo.GrupoID;
+                            res.resultado = true;
+                        }
+                        else
+                        {
+                            if (errorIdBD == 404)
+                            {
+                                res.resultado = false;
+                                res.error.Add(HelperValidacion.CrearError(enumErrores.transaccionNoEncontrada, errorMsgBD));
+                            }
+                            else if (errorIdBD == 403)
+                            {
+                                res.resultado = false;
+                                res.error.Add(HelperValidacion.CrearError(enumErrores.permisoDenegado, errorMsgBD));
+                            }
+                            else
+                            {
+                                res.resultado = false;
+                                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, "Error en la base de datos"));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                res.resultado = false;
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Excepción no controlada"));
+            }
+
+            return res;
+        }
+
+
+        public ResActualizarTransaccion ActualizarTransaccion(ReqActualizarTransaccion req)
+        {
+            ResActualizarTransaccion res = new ResActualizarTransaccion()
+            {
+                error = new List<Error>()
+            };
+
+            try
+            {
+                if (req == null)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "El objeto request es nulo"));
+                }
+                else if (req.TransaccionID <= 0)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.valorInvalido, "Debe ingresar un ID de transacción válido"));
+                }
+                else if (req.UsuarioID <= 0)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.valorInvalido, "Debe ingresar un ID de usuario válido"));
+                }
+                else
+                {
+                    #region Validaciones
+                    if (string.IsNullOrEmpty(req.Tipo))
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.campoRequerido, "El tipo de transacción es requerido"));
+                    }
+                    else if (req.Tipo != "Ingreso" && req.Tipo != "Gasto")
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.valorInvalido, "El tipo de transacción debe ser 'Ingreso' o 'Gasto'"));
+                    }
+
+                    if (req.Monto <= 0)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.valorInvalido, "El monto debe ser mayor a 0"));
+                    }
+
+                    if (req.CategoriaID <= 0)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.valorInvalido, "El ID de la categoría debe ser mayor a 0"));
+                    }
+
+                    if (req.Fecha == default(DateTime))
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.campoRequerido, "La fecha es requerida"));
+                    }
+                    else if (req.Fecha > DateTime.Now)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.valorInvalido, "La fecha no puede ser futura"));
+                    }
+
+                    if (string.IsNullOrEmpty(req.Titulo))
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.campoRequerido, "El título es requerido"));
+                    }
+
+                    if (req.EsCompartido && req.GrupoID == null)
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.valorInvalido, "El ID del grupo es requerido para una transacción compartida"));
+                    }
+                    #endregion
+
+                    if (res.error.Any())
+                    {
+                        res.resultado = false;
+                    }
+                    else
+                    {
+                        int? errorIdBD = 0;
+                        string errorMsgBD = "";
+
+                        _dbContext.SP_TRANSACCION_ACTUALIZAR(
+                            req.TransaccionID,
+                            req.UsuarioID,
+                            req.Tipo,
+                            req.Monto,
+                            req.CategoriaID,
+                            req.Fecha,
+                            req.Titulo,
+                            req.Descripcion,
+                            req.EsCompartido,
+                            req.GrupoID,
+                            ref errorIdBD,
+                            ref errorMsgBD
+                        );
+
+                        if (errorIdBD == 0)
+                        {
+                            res.resultado = true;
+                        }
+                        else
+                        {
+                            if (errorIdBD == 404)
+                            {
+                                res.resultado = false;
+                                res.error.Add(HelperValidacion.CrearError(enumErrores.transaccionNoEncontrada, errorMsgBD));
+                            }
+                            else if (errorIdBD == 403)
+                            {
+                                res.resultado = false;
+                                res.error.Add(HelperValidacion.CrearError(enumErrores.permisoDenegado, errorMsgBD));
+                            }
+                            else if (errorIdBD == 400)
+                            {
+                                res.resultado = false;
+                                res.error.Add(HelperValidacion.CrearError(enumErrores.valorInvalido, errorMsgBD));
+                            }
+                            else
+                            {
+                                res.resultado = false;
+                                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, "Error en la base de datos"));
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                res.resultado = false;
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Excepción no controlada"));
+            }
+
+            return res;
+        }
+
+
+        public ResEliminarTransaccion EliminarTransaccion(ReqEliminarTransaccion req)
+        {
+            ResEliminarTransaccion res = new ResEliminarTransaccion()
+            {
+                error = new List<Error>()
+            };
+
+            try
+            {
+                if (req == null)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "El objeto request es nulo"));
+                }
+                else if (req.TransaccionID <= 0)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.valorInvalido, "Debe ingresar un ID de transacción válido"));
+                }
+                else if (req.UsuarioID <= 0)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.valorInvalido, "Debe ingresar un ID de usuario válido"));
+                }
+                else
+                {
+                    int? errorIdBD = 0;
+                    string errorMsgBD = "";
+
+                    _dbContext.SP_TRANSACCION_ELIMINAR(
+                        req.TransaccionID,
+                        req.UsuarioID,
+                        ref errorIdBD,
+                        ref errorMsgBD
+                    );
+
+                    if (errorIdBD == 0)
+                    {
+                        res.resultado = true;
+                    }
+                    else
+                    {
+                        if (errorIdBD == 404)
+                        {
+                            res.resultado = false;
+                            res.error.Add(HelperValidacion.CrearError(enumErrores.transaccionNoEncontrada, errorMsgBD));
+                        }
+                        else if (errorIdBD == 403)
+                        {
+                            res.resultado = false;
+                            res.error.Add(HelperValidacion.CrearError(enumErrores.permisoDenegado, errorMsgBD));
+                        }
+                        else
+                        {
+                            res.resultado = false;
+                            res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, "Error en la base de datos"));
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                res.resultado = false;
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Excepción no controlada"));
+            }
+
+            return res;
+        }
+
+
         #region Metodos Auxiliares
 
         private TransaccionDTO FactoriaTransaccion(SP_TRANSACCIONES_OBTENER_POR_USUARIOResult tc)

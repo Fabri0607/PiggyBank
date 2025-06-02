@@ -313,6 +313,33 @@ namespace AccesoADatos
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), usuarioID, fechaInicio, fechaFin, tipo);
 			return ((ISingleResult<SP_TRANSACCIONES_OBTENER_POR_USUARIOResult>)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_TRANSACCION_OBTENER_DETALLE")]
+		public ISingleResult<SP_TRANSACCION_OBTENER_DETALLEResult> SP_TRANSACCION_OBTENER_DETALLE([global::System.Data.Linq.Mapping.ParameterAttribute(Name="TransaccionID", DbType="Int")] System.Nullable<int> transaccionID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), transaccionID, usuarioID, eRRORID, eRRORDESCRIPCION);
+			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(2)));
+			eRRORDESCRIPCION = ((string)(result.GetParameterValue(3)));
+			return ((ISingleResult<SP_TRANSACCION_OBTENER_DETALLEResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_TRANSACCION_ACTUALIZAR")]
+		public int SP_TRANSACCION_ACTUALIZAR([global::System.Data.Linq.Mapping.ParameterAttribute(Name="TransaccionID", DbType="Int")] System.Nullable<int> transaccionID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Tipo", DbType="VarChar(10)")] string tipo, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Monto", DbType="Decimal(10,2)")] System.Nullable<decimal> monto, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CategoriaID", DbType="Int")] System.Nullable<int> categoriaID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Fecha", DbType="DateTime")] System.Nullable<System.DateTime> fecha, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Titulo", DbType="VarChar(50)")] string titulo, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Descripcion", DbType="Text")] string descripcion, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="EsCompartido", DbType="Bit")] System.Nullable<bool> esCompartido, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="GrupoID", DbType="Int")] System.Nullable<int> grupoID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), transaccionID, usuarioID, tipo, monto, categoriaID, fecha, titulo, descripcion, esCompartido, grupoID, eRRORID, eRRORDESCRIPCION);
+			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(10)));
+			eRRORDESCRIPCION = ((string)(result.GetParameterValue(11)));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_TRANSACCION_ELIMINAR")]
+		public int SP_TRANSACCION_ELIMINAR([global::System.Data.Linq.Mapping.ParameterAttribute(Name="TransaccionID", DbType="Int")] System.Nullable<int> transaccionID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), transaccionID, usuarioID, eRRORID, eRRORDESCRIPCION);
+			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(2)));
+			eRRORDESCRIPCION = ((string)(result.GetParameterValue(3)));
+			return ((int)(result.ReturnValue));
+		}
 	}
 	
 	public partial class SP_BALANCE_OBTENER_POR_GRUPOResult
@@ -1266,6 +1293,248 @@ namespace AccesoADatos
 				if ((this._ColorHex != value))
 				{
 					this._ColorHex = value;
+				}
+			}
+		}
+	}
+	
+	public partial class SP_TRANSACCION_OBTENER_DETALLEResult
+	{
+		
+		private System.Nullable<int> _TransaccionID;
+		
+		private System.Nullable<int> _UsuarioID;
+		
+		private string _NombreUsuario;
+		
+		private string _Tipo;
+		
+		private System.Nullable<decimal> _Monto;
+		
+		private System.Nullable<int> _CategoriaID;
+		
+		private string _NombreCategoria;
+		
+		private System.Nullable<System.DateTime> _Fecha;
+		
+		private string _Titulo;
+		
+		private string _Descripcion;
+		
+		private System.Nullable<bool> _EsCompartido;
+		
+		private System.Nullable<int> _GrupoID;
+		
+		private string _NombreGrupo;
+		
+		public SP_TRANSACCION_OBTENER_DETALLEResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TransaccionID", DbType="Int")]
+		public System.Nullable<int> TransaccionID
+		{
+			get
+			{
+				return this._TransaccionID;
+			}
+			set
+			{
+				if ((this._TransaccionID != value))
+				{
+					this._TransaccionID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsuarioID", DbType="Int")]
+		public System.Nullable<int> UsuarioID
+		{
+			get
+			{
+				return this._UsuarioID;
+			}
+			set
+			{
+				if ((this._UsuarioID != value))
+				{
+					this._UsuarioID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NombreUsuario", DbType="NVarChar(MAX)")]
+		public string NombreUsuario
+		{
+			get
+			{
+				return this._NombreUsuario;
+			}
+			set
+			{
+				if ((this._NombreUsuario != value))
+				{
+					this._NombreUsuario = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Tipo", DbType="VarChar(10)")]
+		public string Tipo
+		{
+			get
+			{
+				return this._Tipo;
+			}
+			set
+			{
+				if ((this._Tipo != value))
+				{
+					this._Tipo = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Monto", DbType="Decimal(10,2)")]
+		public System.Nullable<decimal> Monto
+		{
+			get
+			{
+				return this._Monto;
+			}
+			set
+			{
+				if ((this._Monto != value))
+				{
+					this._Monto = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoriaID", DbType="Int")]
+		public System.Nullable<int> CategoriaID
+		{
+			get
+			{
+				return this._CategoriaID;
+			}
+			set
+			{
+				if ((this._CategoriaID != value))
+				{
+					this._CategoriaID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NombreCategoria", DbType="NVarChar(MAX)")]
+		public string NombreCategoria
+		{
+			get
+			{
+				return this._NombreCategoria;
+			}
+			set
+			{
+				if ((this._NombreCategoria != value))
+				{
+					this._NombreCategoria = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Fecha", DbType="DateTime")]
+		public System.Nullable<System.DateTime> Fecha
+		{
+			get
+			{
+				return this._Fecha;
+			}
+			set
+			{
+				if ((this._Fecha != value))
+				{
+					this._Fecha = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Titulo", DbType="VarChar(50)")]
+		public string Titulo
+		{
+			get
+			{
+				return this._Titulo;
+			}
+			set
+			{
+				if ((this._Titulo != value))
+				{
+					this._Titulo = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Descripcion", DbType="Text", UpdateCheck=UpdateCheck.Never)]
+		public string Descripcion
+		{
+			get
+			{
+				return this._Descripcion;
+			}
+			set
+			{
+				if ((this._Descripcion != value))
+				{
+					this._Descripcion = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_EsCompartido", DbType="Bit")]
+		public System.Nullable<bool> EsCompartido
+		{
+			get
+			{
+				return this._EsCompartido;
+			}
+			set
+			{
+				if ((this._EsCompartido != value))
+				{
+					this._EsCompartido = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_GrupoID", DbType="Int")]
+		public System.Nullable<int> GrupoID
+		{
+			get
+			{
+				return this._GrupoID;
+			}
+			set
+			{
+				if ((this._GrupoID != value))
+				{
+					this._GrupoID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NombreGrupo", DbType="NVarChar(MAX)")]
+		public string NombreGrupo
+		{
+			get
+			{
+				return this._NombreGrupo;
+			}
+			set
+			{
+				if ((this._NombreGrupo != value))
+				{
+					this._NombreGrupo = value;
 				}
 			}
 		}

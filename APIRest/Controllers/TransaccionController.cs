@@ -28,5 +28,26 @@ namespace APIRest.Controllers
         {
             return _logica.ListarTransaccionesPorUsuario(req);
         }
+
+        [HttpGet]
+        [Route("api/transaccion/obtenerDetalle")]
+        public ResObtenerDetalleTransaccion ObtenerDetalleTransaccion(ReqObtenerDetalleTransaccion req)
+        {
+            return _logica.ObtenerDetalleTransaccion(req);
+        }
+
+        [HttpPut]
+        [Route("api/transaccion/actualizar")]
+        public ResActualizarTransaccion ActualizarTransaccion(ReqActualizarTransaccion req)
+        {
+            return _logica.ActualizarTransaccion(req);
+        }
+
+        [HttpDelete]
+        [Route("api/transaccion/eliminar")]
+        public ResEliminarTransaccion EliminarTransaccion(ReqEliminarTransaccion req)
+        {
+            return _logica.EliminarTransaccion(req);
+        }
     }
 }
