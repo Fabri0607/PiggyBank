@@ -325,4 +325,12 @@
     <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
     <Return Type="System.Int32" />
   </Function>
+  <Function Name="dbo.SP_OBTENER_CATEGORIAS" Method="SP_OBTENER_CATEGORIAS">
+    <ElementType Name="SP_OBTENER_CATEGORIASResult">
+      <Column Name="CategoriaID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Icono" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ColorHex" Type="System.String" DbType="VarChar(7)" CanBeNull="true" />
+    </ElementType>
+  </Function>
 </Database>

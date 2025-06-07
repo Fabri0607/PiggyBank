@@ -18,7 +18,7 @@ namespace Backend.DTO
         public string Icono { get; set; }
         public string ColorHex { get; set; }
 
-        //public bool EsCompartido { get; set; }
-        //public int? GrupoID { get; set; }
+        public bool EsCompartido { get; set; }
+        public int? GrupoID { get; set; }
     }
 }

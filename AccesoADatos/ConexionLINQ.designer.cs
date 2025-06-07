@@ -340,6 +340,13 @@ namespace AccesoADatos
 			eRRORDESCRIPCION = ((string)(result.GetParameterValue(3)));
 			return ((int)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_OBTENER_CATEGORIAS")]
+		public ISingleResult<SP_OBTENER_CATEGORIASResult> SP_OBTENER_CATEGORIAS()
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())));
+			return ((ISingleResult<SP_OBTENER_CATEGORIASResult>)(result.ReturnValue));
+		}
 	}
 	
 	public partial class SP_BALANCE_OBTENER_POR_GRUPOResult
@@ -1535,6 +1542,86 @@ namespace AccesoADatos
 				if ((this._NombreGrupo != value))
 				{
 					this._NombreGrupo = value;
+				}
+			}
+		}
+	}
+	
+	public partial class SP_OBTENER_CATEGORIASResult
+	{
+		
+		private int _CategoriaID;
+		
+		private string _Nombre;
+		
+		private string _Icono;
+		
+		private string _ColorHex;
+		
+		public SP_OBTENER_CATEGORIASResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoriaID", DbType="Int NOT NULL")]
+		public int CategoriaID
+		{
+			get
+			{
+				return this._CategoriaID;
+			}
+			set
+			{
+				if ((this._CategoriaID != value))
+				{
+					this._CategoriaID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Nombre", DbType="VarChar(50) NOT NULL", CanBeNull=false)]
+		public string Nombre
+		{
+			get
+			{
+				return this._Nombre;
+			}
+			set
+			{
+				if ((this._Nombre != value))
+				{
+					this._Nombre = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Icono", DbType="VarChar(50)")]
+		public string Icono
+		{
+			get
+			{
+				return this._Icono;
+			}
+			set
+			{
+				if ((this._Icono != value))
+				{
+					this._Icono = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ColorHex", DbType="VarChar(7)")]
+		public string ColorHex
+		{
+			get
+			{
+				return this._ColorHex;
+			}
+			set
+			{
+				if ((this._ColorHex != value))
+				{
+					this._ColorHex = value;
 				}
 			}
 		}

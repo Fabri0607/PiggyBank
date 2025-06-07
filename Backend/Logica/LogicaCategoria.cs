@@ -220,5 +220,41 @@ namespace Backend.Logica
             }
             return res;
         }
+
+
+        public ResObtenerCategorias ObtenerCategorias()
+        {
+            ResObtenerCategorias res = new ResObtenerCategorias()
+            {
+                error = new List<Error>(),
+                categorias = new List<Categoria>()
+            };
+            try
+            {
+                var categoriasBD = _dbContext.SP_OBTENER_CATEGORIAS().ToList();
+                if (categoriasBD != null && categoriasBD.Any())
+                {
+                    res.categorias = categoriasBD.Select(c => new Categoria
+                    {
+                        CategoriaID = c.CategoriaID,
+                        Nombre = c.Nombre,
+                        Icono = c.Icono,
+                        ColorHex = c.ColorHex
+                    }).ToList();
+                    res.resultado = true;
+                }
+                else
+                {
+                    res.resultado = false;
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.categoriaNoEncontrada, "No se encontraron categorias"));
+                }
+            }
+            catch (Exception ex)
+            {
+                res.resultado = false;
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Excepcion no controlada"));
+            }
+            return res;
+        }
     }
 }

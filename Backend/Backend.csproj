@@ -154,6 +154,7 @@
     <Compile Include="Entidades\Response\ResIniciarSesion.cs" />
     <Compile Include="Entidades\Response\ResInvitarMiembroGrupo.cs" />
     <Compile Include="Entidades\Response\ResObtenerBalanceGrupal.cs" />
+    <Compile Include="Entidades\Response\ResObtenerCategorias.cs" />
     <Compile Include="Entidades\Response\ResObtenerDetalleTransaccion.cs" />
     <Compile Include="Entidades\Response\ResObtenerUsuario.cs" />
     <Compile Include="Entidades\Response\ResReenviarCodigoVerificacion.cs" />

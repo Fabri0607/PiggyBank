@@ -36,5 +36,12 @@ namespace APIRest.Controllers
             return _logica.EliminarCategoria(categoriaId);
         }
 
+        [HttpGet]
+        [Route("api/categoria/listar")]
+        public ResObtenerCategorias ListarCategorias()
+        {
+            return _logica.ObtenerCategorias();
+        }
+
     }
 }
