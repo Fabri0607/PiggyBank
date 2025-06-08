@@ -13,5 +13,7 @@ namespace Backend.Entidades.Entity
         public string Descripcion { get; set; }
         public DateTime FechaCreacion { get; set; }
         public int CreadoPorUsuarioID { get; set; }
+        public string Estado { get; set; } // 'Activo', 'Eliminado'
+        public DateTime? FechaActualizacion { get; set; }
     }
 }

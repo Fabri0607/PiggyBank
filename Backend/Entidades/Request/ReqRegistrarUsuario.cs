@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Backend.Entidades.Request
 {
-    public class ReqRegistrarUsuario : ReqBase
+    public class ReqRegistrarUsuario
     {
         public string Nombre { get; set; }
         public string Email { get; set; }

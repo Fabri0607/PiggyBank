@@ -46,6 +46,16 @@ namespace Backend.Entidades
         fechaFaltante = 35,
         fechaInvalida = 36,
         tituloFaltante = 37,
-        permisoDenegado = 38
+        permisoDenegado = 38,
+        autenticacionFallida = 39,
+        tokenFaltante = 40,
+        tokenInvalido = 41,
+        sesionNoEncontrada = 42,
+        sesionInactiva = 43,
+        sesionExpirada = 44,
+        TipoTransaccionInvalido = 45,
+        FechaInvalida = 46,
+        gastoNoEncontrado = 47,
+        metaNoEncontrada = 48
     }
 }

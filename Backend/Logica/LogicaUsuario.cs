@@ -12,6 +12,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Backend.DTO;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Backend.Logica
 {
@@ -22,6 +23,82 @@ namespace Backend.Logica
         public LogicaUsuario()
         {
             _dbContext = new ConexionLINQDataContext();
+        }
+
+        // Validar Sesión
+        private bool ValidarSesion(ReqBase req, ref List<Error> errores)
+        {
+            try
+            {
+                // Validar que el token no sea nulo o vacío
+                if (string.IsNullOrEmpty(req.token))
+                {
+                    errores.Add(HelperValidacion.CrearError(enumErrores.tokenFaltante, "El token de autorización es requerido"));
+                    return false;
+                }
+
+                // Extraer el GUID del JWT
+                string guid;
+                try
+                {
+                    guid = HelperJWT.ValidarTokenYObtenerGuid(req.token);
+                }
+                catch (SecurityTokenException ex)
+                {
+                    errores.Add(HelperValidacion.CrearError(enumErrores.tokenInvalido, ex.Message));
+                    return false;
+                }
+
+                // Consultar la sesión en la base de datos
+                int? errorIdBD = 0;
+                string errorMsgBD = "";
+                var sesion = _dbContext.SP_SESION_OBTENER_POR_GUID(guid, ref errorIdBD, ref errorMsgBD).FirstOrDefault();
+
+                if (errorIdBD != 0)
+                {
+                    errores.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgBD));
+                    return false;
+                }
+
+                if (sesion == null)
+                {
+                    errores.Add(HelperValidacion.CrearError(enumErrores.sesionNoEncontrada, "Sesión no encontrada"));
+                    return false;
+                }
+
+                // Verificar si la sesión está activa
+                if (!sesion.EsActivo)
+                {
+                    errores.Add(HelperValidacion.CrearError(enumErrores.sesionInactiva, "La sesión no está activa"));
+                    return false;
+                }
+
+                // Verificar si la sesión ha expirado
+                if (sesion.FechaExpiracion < DateTime.Now)
+                {
+                    errores.Add(HelperValidacion.CrearError(enumErrores.sesionExpirada, "La sesión ha expirado"));
+                    return false;
+                }
+
+                // Asignar la sesión al request
+                req.sesion = new Sesion
+                {
+                    SesionID = sesion.SesionID,
+                    UsuarioID = sesion.UsuarioID,
+                    Guid = sesion.Guid,
+                    FechaCreacion = sesion.FechaCreacion,
+                    FechaExpiracion = sesion.FechaExpiracion,
+                    EsActivo = sesion.EsActivo,
+                    MotivoRevocacion = sesion.MotivoRevocacion
+                };
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errores.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, $"Error al validar la sesión: {ex.Message}"));
+                return false;
+            }
         }
 
         // 1. Registrar usuario
@@ -279,9 +356,10 @@ namespace Backend.Logica
                 int? sesionID = 0;
                 errorIdBD = 0;
                 errorMsgBD = "";
+                string guid = Guid.NewGuid().ToString("N");
                 DateTime fechaExpiracion = DateTime.Now.AddHours(24);
 
-                _dbContext.SP_ABRIR_SESION(usuario.UsuarioID, "", fechaExpiracion, ref sesionID, ref errorIdBD, ref errorMsgBD);
+                _dbContext.SP_ABRIR_SESION(usuario.UsuarioID, guid, fechaExpiracion, ref sesionID, ref errorIdBD, ref errorMsgBD);
 
                 if (sesionID <= 0)
                 {
@@ -291,12 +369,12 @@ namespace Backend.Logica
                 }
 
                 // Generar el token con el SesionID ya creado
-                string token = HelperJWT.GenerarToken(usuario.UsuarioID, usuario.Nombre, usuario.Email);
+                string token = HelperJWT.GenerarToken(guid);
 
-                // Actualizar la sesión con el token generado
+                // Actualizar la sesión con el guid generado
                 errorIdBD = 0;
                 errorMsgBD = "";
-                _dbContext.SP_ACTUALIZAR_TOKEN_SESION(sesionID.Value, token, ref errorIdBD, ref errorMsgBD);
+                _dbContext.SP_ACTUALIZAR_TOKEN_SESION(sesionID.Value, guid, ref errorIdBD, ref errorMsgBD);
 
                 if (errorIdBD != 0)
                 {
@@ -318,7 +396,6 @@ namespace Backend.Logica
                 }
 
                 // Armar respuesta
-                res.SesionID = sesionID.Value;
                 res.Token = token;
                 res.FechaExpiracion = fechaExpiracion;
                 res.Usuario = new UsuarioDTO
@@ -350,19 +427,23 @@ namespace Backend.Logica
                 error = new List<Error>()
             };
 
+            List<Error> errores = new List<Error>();
+
             try
             {
+
+                // Validar la sesión
+                if (!ValidarSesion(req, ref errores))
+                {
+                    res.error = errores;
+                    res.resultado = false;
+                    return res;
+                }
+
                 #region Validaciones
                 if (req == null)
                 {
                     res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "Solicitud no válida"));
-                }
-                else
-                {
-                    if (req.SesionID <= 0)
-                    {
-                        res.error.Add(HelperValidacion.CrearError(enumErrores.sesionInvalida, "ID de sesión inválido"));
-                    }
                 }
                 #endregion
 
@@ -372,10 +453,27 @@ namespace Backend.Logica
                     return res;
                 }
 
+                // Extraer el GUID del JWT
+                string guid1 = string.Empty;
+
+                try
+                {
+                    guid1 = HelperJWT.ValidarTokenYObtenerGuid(req.token);
+                }
+                catch (SecurityTokenException ex)
+                {
+                    errores.Add(HelperValidacion.CrearError(enumErrores.tokenInvalido, ex.Message));
+                }
+
+                // Consultar la sesión en la base de datos
+                int? errorIdBD1 = 0;
+                string errorMsgBD1 = "";
+                var sesion = _dbContext.SP_SESION_OBTENER_POR_GUID(guid1, ref errorIdBD1, ref errorMsgBD1).FirstOrDefault();
+
                 int? errorIdBD = 0;
                 string errorMsgBD = "";
 
-                _dbContext.SP_CERRAR_SESION(req.SesionID, req.MotivoRevocacion, ref errorIdBD, ref errorMsgBD);
+                _dbContext.SP_CERRAR_SESION(sesion.SesionID, req.MotivoRevocacion, ref errorIdBD, ref errorMsgBD);
 
                 if (errorIdBD == 0)
                 {
@@ -404,8 +502,19 @@ namespace Backend.Logica
                 error = new List<Error>()
             };
 
+            List<Error> errores = new List<Error>();
+
             try
             {
+
+                // Validar la sesión
+                if (!ValidarSesion(req, ref errores))
+                {
+                    res.error = errores;
+                    res.resultado = false;
+                    return res;
+                }
+
                 #region Validaciones
                 if (req == null)
                 {
@@ -468,8 +577,19 @@ namespace Backend.Logica
                 error = new List<Error>()
             };
 
+            List<Error> errores = new List<Error>();
+
             try
             {
+
+                // Validar la sesión
+                if (!ValidarSesion(req, ref errores))
+                {
+                    res.error = errores;
+                    res.resultado = false;
+                    return res;
+                }
+
                 #region Validaciones
                 if (req == null)
                 {
@@ -665,8 +785,19 @@ namespace Backend.Logica
                 error = new List<Error>()
             };
 
+            List<Error> errores = new List<Error>();
+
             try
             {
+
+                // Validar la sesión
+                if (!ValidarSesion(req, ref errores))
+                {
+                    res.error = errores;
+                    res.resultado = false;
+                    return res;
+                }
+
                 #region Validaciones
                 if (req == null)
                 {
@@ -708,6 +839,201 @@ namespace Backend.Logica
                     res.error.Add(HelperValidacion.CrearError(enumErrores.usuarioNoEncontrado, "Usuario no encontrado"));
                     res.resultado = false;
                 }
+            }
+            catch (Exception ex)
+            {
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Error en la lógica: " + ex.Message));
+                res.resultado = false;
+            }
+
+            return res;
+        }
+
+        // 9. Solicitar código para cambio de contraseña
+        public ResSolicitarCambioPassword SolicitarCambioPassword(ReqSolicitarCambioPassword req)
+        {
+            ResSolicitarCambioPassword res = new ResSolicitarCambioPassword
+            {
+                error = new List<Error>()
+            };
+
+            try
+            {
+                #region Validaciones
+                if (req == null)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "Solicitud no válida"));
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(req.Email))
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.correoFaltante, "El correo electrónico es requerido"));
+                    }
+                    else if (!EsCorreoValido(req.Email))
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.correoIncorrecto, "El formato del correo electrónico no es válido"));
+                    }
+                }
+                #endregion
+
+                if (res.error.Any())
+                {
+                    res.resultado = false;
+                    return res;
+                }
+
+                // Verificar si el usuario existe
+                int? errorIdBD = 0;
+                string errorMsgBD = "";
+                var usuario = _dbContext.SP_OBTENER_USUARIO_POR_EMAIL(req.Email, ref errorIdBD, ref errorMsgBD).FirstOrDefault();
+
+                if (errorIdBD != 0)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgBD));
+                    res.resultado = false;
+                    return res;
+                }
+
+                if (usuario == null)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.usuarioNoEncontrado, "Usuario no encontrado"));
+                    res.resultado = false;
+                    return res;
+                }
+
+                // Generar nuevo código de verificación
+                string nuevoCodigo = GenerarCodigoVerificacion(6);
+                DateTime fechaExpiracion = DateTime.Now.AddMinutes(30);
+
+                // Actualizar el código de verificación y su fecha de expiración
+                errorIdBD = 0;
+                errorMsgBD = "";
+                _dbContext.SP_ACTUALIZAR_CODIGO_RECUPERACION(req.Email, nuevoCodigo, fechaExpiracion, ref errorIdBD, ref errorMsgBD);
+
+                if (errorIdBD != 0)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgBD));
+                    res.resultado = false;
+                    return res;
+                }
+
+                // Enviar correo con el código de verificación
+                bool correoEnviado = HelperCorreo.EnviarCorreoVerificacion(req.Email, usuario.Nombre, nuevoCodigo);
+
+                if (correoEnviado)
+                {
+                    res.resultado = true;
+                }
+                else
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.errorEnvioCorreo, "No se pudo enviar el correo de verificación"));
+                    res.resultado = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Error en la lógica: " + ex.Message));
+                res.resultado = false;
+            }
+
+            return res;
+        }
+
+        // 10. Confirmar cambio de contraseña
+        public ResConfirmarCambioPassword ConfirmarCambioPassword(ReqConfirmarCambioPassword req)
+        {
+            ResConfirmarCambioPassword res = new ResConfirmarCambioPassword
+            {
+                error = new List<Error>()
+            };
+
+            try
+            {
+                #region Validaciones
+                if (req == null)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.requestNulo, "Solicitud no válida"));
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(req.Email))
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.correoFaltante, "El correo electrónico es requerido"));
+                    }
+                    else if (!EsCorreoValido(req.Email))
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.correoIncorrecto, "El formato del correo electrónico no es válido"));
+                    }
+                    if (string.IsNullOrEmpty(req.CodigoVerificacion))
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.codigoVerificacionFaltante, "El código de verificación es requerido"));
+                    }
+                    if (string.IsNullOrEmpty(req.NuevoPassword))
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.passwordFaltante, "La nueva contraseña es requerida"));
+                    }
+                    else if (!EsPasswordSeguro(req.NuevoPassword))
+                    {
+                        res.error.Add(HelperValidacion.CrearError(enumErrores.passwordMuyDebil, "La nueva contraseña no cumple con los requisitos de seguridad"));
+                    }
+                }
+                #endregion
+
+                if (res.error.Any())
+                {
+                    res.resultado = false;
+                    return res;
+                }
+
+                // Verificar si el usuario existe y obtener su información
+                int? errorIdBD = 0;
+                string errorMsgBD = "";
+                var usuario = _dbContext.SP_OBTENER_USUARIO_POR_EMAIL(req.Email, ref errorIdBD, ref errorMsgBD).FirstOrDefault();
+
+                if (errorIdBD != 0)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgBD));
+                    res.resultado = false;
+                    return res;
+                }
+
+                if (usuario == null)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.usuarioNoEncontrado, "Usuario no encontrado"));
+                    res.resultado = false;
+                    return res;
+                }
+                
+
+                // Generar nuevo hash para la nueva contraseña
+                string nuevoPasswordHash = HashearPassword(req.NuevoPassword, usuario.LlaveUnica);
+
+                // Actualizar la contraseña
+                errorIdBD = 0;
+                errorMsgBD = "";
+                _dbContext.SP_USUARIO_CAMBIAR_PASSWORD(usuario.UsuarioID, nuevoPasswordHash, ref errorIdBD, ref errorMsgBD);
+
+                if (errorIdBD != 0)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgBD));
+                    res.resultado = false;
+                    return res;
+                }
+
+                // Invalidar el código de verificación
+                errorIdBD = 0;
+                errorMsgBD = "";
+                _dbContext.SP_INVALIDAR_CODIGO_RECUPERACION(req.Email, ref errorIdBD, ref errorMsgBD);
+
+                if (errorIdBD != 0)
+                {
+                    res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionBaseDatos, errorMsgBD));
+                    res.resultado = false;
+                    return res;
+                }
+
+                res.resultado = true;
             }
             catch (Exception ex)
             {

@@ -10,7 +10,7 @@ namespace Backend.Entidades.Entity
     {
         public int SesionID { get; set; }
         public int UsuarioID { get; set; }
-        public string TokenJWT { get; set; }
+        public string Guid { get; set; }
         public DateTime FechaCreacion { get; set; }
         public DateTime FechaExpiracion { get; set; }
         public bool EsActivo { get; set; }

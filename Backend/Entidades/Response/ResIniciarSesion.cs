@@ -11,7 +11,6 @@ namespace Backend.Entidades.Response
     {
         public string Token { get; set; }
         public DateTime FechaExpiracion { get; set; }
-        public int SesionID { get; set; }
         public UsuarioDTO Usuario { get; set; }
     }
 }
