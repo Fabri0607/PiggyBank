@@ -1,5 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="PiggyBank" Class="ConexionLINQDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=34.41.22.76;Initial Catalog=PiggyBank;Persist Security Info=True;User ID=PiggyBankApp;Encrypt=True;Trust Server Certificate=True" SettingsObjectName="AccesoADatos.Properties.Settings" SettingsPropertyName="PiggyBankConnectionString3" Provider="System.Data.SqlClient" />
   <Function Name="dbo.SP_BALANCE_OBTENER_POR_GRUPO" Method="SP_BALANCE_OBTENER_POR_GRUPO">
     <Parameter Name="GrupoID" Parameter="grupoID" Type="System.Int32" DbType="Int" />
     <Parameter Name="FechaInicio" Parameter="fechaInicio" Type="System.DateTime" DbType="Date" />
@@ -116,20 +115,6 @@
     <Parameter Name="ERRORMSG" Parameter="eRRORMSG" Type="System.String" DbType="VarChar(MAX)" Direction="InOut" />
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.SP_TRANSACCION_REGISTRAR" Method="SP_TRANSACCION_REGISTRAR">
-    <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="Tipo" Parameter="tipo" Type="System.String" DbType="VarChar(10)" />
-    <Parameter Name="Monto" Parameter="monto" Type="System.Decimal" DbType="Decimal(10,2)" />
-    <Parameter Name="CategoriaID" Parameter="categoriaID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="Fecha" Parameter="fecha" Type="System.DateTime" DbType="DateTime" />
-    <Parameter Name="Descripcion" Parameter="descripcion" Type="System.String" DbType="Text" />
-    <Parameter Name="EsCompartido" Parameter="esCompartido" Type="System.Boolean" DbType="Bit" />
-    <Parameter Name="GrupoID" Parameter="grupoID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="TransaccionID" Parameter="transaccionID" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
-    <Return Type="System.Int32" />
-  </Function>
   <Function Name="dbo.SP_USUARIO_ACTUALIZAR_PERFIL" Method="SP_USUARIO_ACTUALIZAR_PERFIL">
     <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
     <Parameter Name="Nombre" Parameter="nombre" Type="System.String" DbType="VarChar(100)" />
@@ -202,6 +187,30 @@
     <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
     <Return Type="System.Int32" />
   </Function>
+  <Function Name="dbo.SP_INGRESAR_CATEGORIA" Method="SP_INGRESAR_CATEGORIA">
+    <Parameter Name="Nombre" Parameter="nombre" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="Icono" Parameter="icono" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="ColorHex" Parameter="colorHex" Type="System.String" DbType="VarChar(7)" />
+    <Parameter Name="CategoriaID" Parameter="categoriaID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORMSGBD" Parameter="eRRORMSGBD" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_ACTUALIZAR_CATEGORIA" Method="SP_ACTUALIZAR_CATEGORIA">
+    <Parameter Name="CategoriaID" Parameter="categoriaID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Nombre" Parameter="nombre" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="Icono" Parameter="icono" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="ColorHex" Parameter="colorHex" Type="System.String" DbType="VarChar(7)" />
+    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORMSGBD" Parameter="eRRORMSGBD" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_BORRAR_CATEGORIA" Method="SP_BORRAR_CATEGORIA">
+    <Parameter Name="CategoriaID" Parameter="categoriaID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORMSGBD" Parameter="eRRORMSGBD" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
   <Function Name="dbo.SP_ACTUALIZAR_TOKEN_SESION" Method="SP_ACTUALIZAR_TOKEN_SESION">
     <Parameter Name="SesionID" Parameter="sesionID" Type="System.Int32" DbType="Int" />
     <Parameter Name="Guid" Parameter="guid" Type="System.String" DbType="VarChar(MAX)" />
@@ -215,20 +224,6 @@
     <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
     <Parameter Name="ERRORMSG" Parameter="eRRORMSG" Type="System.String" DbType="VarChar(MAX)" Direction="InOut" />
     <Return Type="System.Int32" />
-  </Function>
-  <Function Name="dbo.SP_SESION_OBTENER_POR_GUID" Method="SP_SESION_OBTENER_POR_GUID">
-    <Parameter Name="Guid" Parameter="guid" Type="System.String" DbType="VarChar(MAX)" />
-    <Parameter Name="ErrorID" Parameter="errorID" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="ErrorMensaje" Parameter="errorMensaje" Type="System.String" DbType="VarChar(255)" Direction="InOut" />
-    <ElementType Name="SP_SESION_OBTENER_POR_GUIDResult">
-      <Column Name="SesionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="UsuarioID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Guid" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
-      <Column Name="FechaCreacion" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="FechaExpiracion" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="EsActivo" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
-      <Column Name="MotivoRevocacion" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
-    </ElementType>
   </Function>
   <Function Name="dbo.SP_GRUPO_SALIR_MIEMBRO" Method="SP_GRUPO_SALIR_MIEMBRO">
     <Parameter Name="GrupoID" Parameter="grupoID" Type="System.Int32" DbType="Int" />
@@ -371,6 +366,57 @@
       <Column Name="ColorHex" Type="System.String" DbType="VarChar(7)" CanBeNull="true" />
     </ElementType>
   </Function>
+  <Function Name="dbo.SP_TRANSACCION_OBTENER_DETALLE" Method="SP_TRANSACCION_OBTENER_DETALLE">
+    <Parameter Name="TransaccionID" Parameter="transaccionID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
+    <ElementType Name="SP_TRANSACCION_OBTENER_DETALLEResult">
+      <Column Name="TransaccionID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UsuarioID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NombreUsuario" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Tipo" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Monto" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="CategoriaID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NombreCategoria" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Fecha" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Titulo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="Descripcion" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Column Name="EsCompartido" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="GrupoID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NombreGrupo" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SP_TRANSACCION_ACTUALIZAR" Method="SP_TRANSACCION_ACTUALIZAR">
+    <Parameter Name="TransaccionID" Parameter="transaccionID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Tipo" Parameter="tipo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Monto" Parameter="monto" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Parameter Name="CategoriaID" Parameter="categoriaID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Fecha" Parameter="fecha" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="Titulo" Parameter="titulo" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="Descripcion" Parameter="descripcion" Type="System.String" DbType="Text" />
+    <Parameter Name="EsCompartido" Parameter="esCompartido" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="GrupoID" Parameter="grupoID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_TRANSACCION_ELIMINAR" Method="SP_TRANSACCION_ELIMINAR">
+    <Parameter Name="TransaccionID" Parameter="transaccionID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_OBTENER_CATEGORIAS" Method="SP_OBTENER_CATEGORIAS">
+    <ElementType Name="SP_OBTENER_CATEGORIASResult">
+      <Column Name="CategoriaID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Nombre" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Icono" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ColorHex" Type="System.String" DbType="VarChar(7)" CanBeNull="true" />
+    </ElementType>
+  </Function>
   <Function Name="dbo.SP_OBTENER_MENSAJES" Method="SP_OBTENER_MENSAJES">
     <Parameter Name="AnalisisID" Parameter="analisisID" Type="System.Int32" DbType="Int" />
     <ElementType Name="SP_OBTENER_MENSAJESResult">
@@ -389,18 +435,8 @@
     <Parameter Name="ContextoID" Parameter="contextoID" Type="System.Int32" DbType="Int" />
     <Parameter Name="AnalisisID" Parameter="analisisID" Type="System.Int32" DbType="Int" Direction="InOut" />
     <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="ERRORDESCRIPTION" Parameter="eRRORDESCRIPTION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
-    <ElementType Name="SP_CREAR_ANALISISResult">
-      <Column Name="TransaccionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Tipo" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
-      <Column Name="Monto" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
-      <Column Name="Fecha" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
-      <Column Name="Titulo" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="Descripcion" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
-      <Column Name="Categoria" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
-      <Column Name="Icono" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
-      <Column Name="ColorHex" Type="System.String" DbType="VarChar(7)" CanBeNull="true" />
-    </ElementType>
+    <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
+    <Return Type="System.Int32" />
   </Function>
   <Function Name="dbo.SP_OBTENER_CONTEXTO_POR_ID" Method="SP_OBTENER_CONTEXTO_POR_ID">
     <Parameter Name="CONTEXTOID" Parameter="cONTEXTOID" Type="System.Int32" DbType="Int" />
@@ -459,22 +495,6 @@
       <Column Name="Estado" Type="System.String" DbType="VarChar(20)" CanBeNull="true" />
       <Column Name="Fecha" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="Descripcion" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
-    </ElementType>
-  </Function>
-  <Function Name="dbo.SP_BALANCE_CALCULAR_REGISTRAR" Method="SP_BALANCE_CALCULAR_REGISTRAR">
-    <Parameter Name="GrupoID" Parameter="grupoID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="FechaInicio" Parameter="fechaInicio" Type="System.DateTime" DbType="Date" />
-    <Parameter Name="FechaFin" Parameter="fechaFin" Type="System.DateTime" DbType="Date" />
-    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
-    <ElementType Name="SP_BALANCE_CALCULAR_REGISTRARResult">
-      <Column Name="GrupoID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="UsuarioID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="NombreUsuario" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
-      <Column Name="TotalGastos" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
-      <Column Name="TotalPagado" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
-      <Column Name="Saldo" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
-      <Column Name="FechaCalculo" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
   <Function Name="dbo.SP_META_ACTUALIZAR" Method="SP_META_ACTUALIZAR">
@@ -538,5 +558,50 @@
       <Column Name="Descripcion" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
       <Column Name="MontoTransaccion" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
     </ElementType>
+  </Function>
+  <Function Name="dbo.SP_BALANCE_CALCULAR_REGISTRAR" Method="SP_BALANCE_CALCULAR_REGISTRAR">
+    <Parameter Name="GrupoID" Parameter="grupoID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FechaInicio" Parameter="fechaInicio" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="FechaFin" Parameter="fechaFin" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
+    <ElementType Name="SP_BALANCE_CALCULAR_REGISTRARResult">
+      <Column Name="GrupoID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UsuarioID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NombreUsuario" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="TotalGastos" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="TotalPagado" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Saldo" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="FechaCalculo" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SP_SESION_OBTENER_POR_GUID" Method="SP_SESION_OBTENER_POR_GUID">
+    <Parameter Name="Guid" Parameter="guid" Type="System.String" DbType="VarChar(MAX)" />
+    <Parameter Name="ErrorID" Parameter="errorID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ErrorMensaje" Parameter="errorMensaje" Type="System.String" DbType="VarChar(255)" Direction="InOut" />
+    <ElementType Name="SP_SESION_OBTENER_POR_GUIDResult">
+      <Column Name="SesionID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="UsuarioID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Guid" Type="System.String" DbType="VarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="FechaCreacion" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="FechaExpiracion" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="EsActivo" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MotivoRevocacion" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SP_TRANSACCION_REGISTRAR" Method="SP_TRANSACCION_REGISTRAR">
+    <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Tipo" Parameter="tipo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Monto" Parameter="monto" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Parameter Name="CategoriaID" Parameter="categoriaID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Fecha" Parameter="fecha" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="Descripcion" Parameter="descripcion" Type="System.String" DbType="Text" />
+    <Parameter Name="EsCompartido" Parameter="esCompartido" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="GrupoID" Parameter="grupoID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Titulo" Parameter="titulo" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="TransaccionID" Parameter="transaccionID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
+    <Return Type="System.Int32" />
   </Function>
 </Database>

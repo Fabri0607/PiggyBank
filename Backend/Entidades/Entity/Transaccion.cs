@@ -14,6 +14,7 @@ namespace Backend.Entidades.Entity
         public decimal Monto { get; set; }
         public int CategoriaID { get; set; }
         public DateTime Fecha { get; set; }
+        public string Titulo { get; set; }
         public string Descripcion { get; set; }
         public bool EsCompartido { get; set; }
         public int? GrupoID { get; set; }
