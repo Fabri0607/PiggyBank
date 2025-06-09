@@ -22,14 +22,14 @@ namespace APIRest.Controllers
             return _logica.IngresarTransaccion(req);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("api/transaccion/transaccionesPorUsuario")]
         public ResTransaccionesPorUsuario ObtenerTransaccionesPorUusario(ReqTransaccionesPorUsuario req)
         {
             return _logica.ListarTransaccionesPorUsuario(req);
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("api/transaccion/obtenerDetalle")]
         public ResObtenerDetalleTransaccion ObtenerDetalleTransaccion(ReqObtenerDetalleTransaccion req)
         {
@@ -43,7 +43,7 @@ namespace APIRest.Controllers
             return _logica.ActualizarTransaccion(req);
         }
 
-        [HttpDelete]
+        [HttpPost]
         [Route("api/transaccion/eliminar")]
         public ResEliminarTransaccion EliminarTransaccion(ReqEliminarTransaccion req)
         {
