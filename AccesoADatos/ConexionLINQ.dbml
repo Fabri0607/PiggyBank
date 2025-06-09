@@ -1,5 +1,4 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="PiggyBank" Class="ConexionLINQDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=34.41.22.76;Initial Catalog=PiggyBank;Persist Security Info=True;User ID=PiggyBankApp;Encrypt=True;Trust Server Certificate=True" SettingsObjectName="AccesoADatos.Properties.Settings" SettingsPropertyName="PiggyBankConnectionString3" Provider="System.Data.SqlClient" />
   <Function Name="dbo.SP_BALANCE_OBTENER_POR_GRUPO" Method="SP_BALANCE_OBTENER_POR_GRUPO">
     <Parameter Name="GrupoID" Parameter="grupoID" Type="System.Int32" DbType="Int" />
     <Parameter Name="FechaInicio" Parameter="fechaInicio" Type="System.DateTime" DbType="Date" />
@@ -116,20 +115,6 @@
     <Parameter Name="ERRORMSG" Parameter="eRRORMSG" Type="System.String" DbType="VarChar(MAX)" Direction="InOut" />
     <Return Type="System.Int32" />
   </Function>
-  <Function Name="dbo.SP_TRANSACCION_REGISTRAR" Method="SP_TRANSACCION_REGISTRAR">
-    <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="Tipo" Parameter="tipo" Type="System.String" DbType="VarChar(10)" />
-    <Parameter Name="Monto" Parameter="monto" Type="System.Decimal" DbType="Decimal(10,2)" />
-    <Parameter Name="CategoriaID" Parameter="categoriaID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="Fecha" Parameter="fecha" Type="System.DateTime" DbType="DateTime" />
-    <Parameter Name="Descripcion" Parameter="descripcion" Type="System.String" DbType="Text" />
-    <Parameter Name="EsCompartido" Parameter="esCompartido" Type="System.Boolean" DbType="Bit" />
-    <Parameter Name="GrupoID" Parameter="grupoID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="TransaccionID" Parameter="transaccionID" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
-    <Return Type="System.Int32" />
-  </Function>
   <Function Name="dbo.SP_USUARIO_ACTUALIZAR_PERFIL" Method="SP_USUARIO_ACTUALIZAR_PERFIL">
     <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
     <Parameter Name="Nombre" Parameter="nombre" Type="System.String" DbType="VarChar(100)" />
@@ -222,21 +207,6 @@
   </Function>
   <Function Name="dbo.SP_BORRAR_CATEGORIA" Method="SP_BORRAR_CATEGORIA">
     <Parameter Name="CategoriaID" Parameter="categoriaID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="ERRORMSGBD" Parameter="eRRORMSGBD" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
-    <Return Type="System.Int32" />
-  </Function>
-  <Function Name="dbo.SP_TRANSACCION_REGISTRAR" Method="SP_TRANSACCION_REGISTRAR">
-    <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="Tipo" Parameter="tipo" Type="System.String" DbType="VarChar(10)" />
-    <Parameter Name="Monto" Parameter="monto" Type="System.Decimal" DbType="Decimal(10,2)" />
-    <Parameter Name="CategoriaID" Parameter="categoriaID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="Fecha" Parameter="fecha" Type="System.DateTime" DbType="DateTime" />
-    <Parameter Name="Descripcion" Parameter="descripcion" Type="System.String" DbType="Text" />
-    <Parameter Name="EsCompartido" Parameter="esCompartido" Type="System.Boolean" DbType="Bit" />
-    <Parameter Name="GrupoID" Parameter="grupoID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="Titulo" Parameter="titulo" Type="System.String" DbType="VarChar(50)" />
-    <Parameter Name="TransaccionID" Parameter="transaccionID" Type="System.Int32" DbType="Int" Direction="InOut" />
     <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
     <Parameter Name="ERRORMSGBD" Parameter="eRRORMSGBD" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
     <Return Type="System.Int32" />
@@ -618,5 +588,20 @@
       <Column Name="EsActivo" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Column Name="MotivoRevocacion" Type="System.String" DbType="VarChar(255)" CanBeNull="true" />
     </ElementType>
+  </Function>
+  <Function Name="dbo.SP_TRANSACCION_REGISTRAR" Method="SP_TRANSACCION_REGISTRAR">
+    <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Tipo" Parameter="tipo" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="Monto" Parameter="monto" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Parameter Name="CategoriaID" Parameter="categoriaID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Fecha" Parameter="fecha" Type="System.DateTime" DbType="DateTime" />
+    <Parameter Name="Descripcion" Parameter="descripcion" Type="System.String" DbType="Text" />
+    <Parameter Name="EsCompartido" Parameter="esCompartido" Type="System.Boolean" DbType="Bit" />
+    <Parameter Name="GrupoID" Parameter="grupoID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Titulo" Parameter="titulo" Type="System.String" DbType="VarChar(50)" />
+    <Parameter Name="TransaccionID" Parameter="transaccionID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
+    <Return Type="System.Int32" />
   </Function>
 </Database>

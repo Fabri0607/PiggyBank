@@ -30,15 +30,15 @@ namespace AccesoADatos
 		
     #region Definiciones de métodos de extensibilidad
     partial void OnCreated();
-    #endregion
-		
-		public ConexionLINQDataContext() : 
-				base(global::AccesoADatos.Properties.Settings.Default.PiggyBankConnectionString3, mappingSource)
-		{
-			OnCreated();
-		}
-		
-		public ConexionLINQDataContext(string connection) : 
+        #endregion
+
+        public ConexionLINQDataContext() :
+                base(global::AccesoADatos.Properties.Settings.Default.PiggyBankConnectionString3, mappingSource)
+        {
+            OnCreated();
+        }
+
+        public ConexionLINQDataContext(string connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
@@ -168,16 +168,6 @@ namespace AccesoADatos
 			return ((int)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_TRANSACCION_REGISTRAR")]
-		public int SP_TRANSACCION_REGISTRAR([global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Tipo", DbType="VarChar(10)")] string tipo, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Monto", DbType="Decimal(10,2)")] System.Nullable<decimal> monto, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CategoriaID", DbType="Int")] System.Nullable<int> categoriaID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Fecha", DbType="DateTime")] System.Nullable<System.DateTime> fecha, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Descripcion", DbType="Text")] string descripcion, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="EsCompartido", DbType="Bit")] System.Nullable<bool> esCompartido, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="GrupoID", DbType="Int")] System.Nullable<int> grupoID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TransaccionID", DbType="Int")] ref System.Nullable<int> transaccionID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), usuarioID, tipo, monto, categoriaID, fecha, descripcion, esCompartido, grupoID, transaccionID, eRRORID, eRRORDESCRIPCION);
-			transaccionID = ((System.Nullable<int>)(result.GetParameterValue(8)));
-			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(9)));
-			eRRORDESCRIPCION = ((string)(result.GetParameterValue(10)));
-			return ((int)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_USUARIO_ACTUALIZAR_PERFIL")]
 		public int SP_USUARIO_ACTUALIZAR_PERFIL([global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Nombre", DbType="VarChar(100)")] string nombre, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ConfiguracionNotificaciones", DbType="VarChar(MAX)")] string configuracionNotificaciones, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
 		{
@@ -267,16 +257,6 @@ namespace AccesoADatos
 			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), categoriaID, eRRORID, eRRORMSGBD);
 			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(1)));
 			eRRORMSGBD = ((string)(result.GetParameterValue(2)));
-			return ((int)(result.ReturnValue));
-		}
-		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_TRANSACCION_REGISTRAR")]
-		public int SP_TRANSACCION_REGISTRAR([global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Tipo", DbType="VarChar(10)")] string tipo, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Monto", DbType="Decimal(10,2)")] System.Nullable<decimal> monto, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CategoriaID", DbType="Int")] System.Nullable<int> categoriaID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Fecha", DbType="DateTime")] System.Nullable<System.DateTime> fecha, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Descripcion", DbType="Text")] string descripcion, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="EsCompartido", DbType="Bit")] System.Nullable<bool> esCompartido, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="GrupoID", DbType="Int")] System.Nullable<int> grupoID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Titulo", DbType="VarChar(50)")] string titulo, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TransaccionID", DbType="Int")] ref System.Nullable<int> transaccionID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORMSGBD", DbType="NVarChar(MAX)")] ref string eRRORMSGBD)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), usuarioID, tipo, monto, categoriaID, fecha, descripcion, esCompartido, grupoID, titulo, transaccionID, eRRORID, eRRORMSGBD);
-			transaccionID = ((System.Nullable<int>)(result.GetParameterValue(9)));
-			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(10)));
-			eRRORMSGBD = ((string)(result.GetParameterValue(11)));
 			return ((int)(result.ReturnValue));
 		}
 		
@@ -564,6 +544,16 @@ namespace AccesoADatos
 			errorID = ((System.Nullable<int>)(result.GetParameterValue(1)));
 			errorMensaje = ((string)(result.GetParameterValue(2)));
 			return ((ISingleResult<SP_SESION_OBTENER_POR_GUIDResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_TRANSACCION_REGISTRAR")]
+		public int SP_TRANSACCION_REGISTRAR([global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Tipo", DbType="VarChar(10)")] string tipo, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Monto", DbType="Decimal(10,2)")] System.Nullable<decimal> monto, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CategoriaID", DbType="Int")] System.Nullable<int> categoriaID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Fecha", DbType="DateTime")] System.Nullable<System.DateTime> fecha, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Descripcion", DbType="Text")] string descripcion, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="EsCompartido", DbType="Bit")] System.Nullable<bool> esCompartido, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="GrupoID", DbType="Int")] System.Nullable<int> grupoID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Titulo", DbType="VarChar(50)")] string titulo, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="TransaccionID", DbType="Int")] ref System.Nullable<int> transaccionID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), usuarioID, tipo, monto, categoriaID, fecha, descripcion, esCompartido, grupoID, titulo, transaccionID, eRRORID, eRRORDESCRIPCION);
+			transaccionID = ((System.Nullable<int>)(result.GetParameterValue(9)));
+			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(10)));
+			eRRORDESCRIPCION = ((string)(result.GetParameterValue(11)));
+			return ((int)(result.ReturnValue));
 		}
 	}
 	

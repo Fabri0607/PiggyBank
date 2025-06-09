@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Backend.Entidades.Request
 {
-    public class ReqTransaccionesPorUsuario
+    public class ReqTransaccionesPorUsuario: ReqBase
     {
         public int UsuarioID { get; set; }
         public DateTime? FechaInicio { get; set; } 
