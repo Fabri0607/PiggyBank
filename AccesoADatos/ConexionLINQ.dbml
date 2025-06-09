@@ -1,4 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="PiggyBank" Class="ConexionLINQDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=34.41.22.76;Initial Catalog=PiggyBank;Persist Security Info=True;User ID=PiggyBankApp;Encrypt=True;Trust Server Certificate=True" SettingsObjectName="AccesoADatos.Properties.Settings" SettingsPropertyName="PiggyBankConnectionString3" Provider="System.Data.SqlClient" />
   <Function Name="dbo.SP_BALANCE_OBTENER_POR_GRUPO" Method="SP_BALANCE_OBTENER_POR_GRUPO">
     <Parameter Name="GrupoID" Parameter="grupoID" Type="System.Int32" DbType="Int" />
     <Parameter Name="FechaInicio" Parameter="fechaInicio" Type="System.DateTime" DbType="Date" />
@@ -428,16 +429,6 @@
       <Column Name="FechaEnvio" Type="System.DateTime" DbType="DateTime2 NOT NULL" CanBeNull="false" />
     </ElementType>
   </Function>
-  <Function Name="dbo.SP_CREAR_ANALISIS" Method="SP_CREAR_ANALISIS">
-    <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="FechaInicio" Parameter="fechaInicio" Type="System.DateTime" DbType="Date" />
-    <Parameter Name="FechaFin" Parameter="fechaFin" Type="System.DateTime" DbType="Date" />
-    <Parameter Name="ContextoID" Parameter="contextoID" Type="System.Int32" DbType="Int" />
-    <Parameter Name="AnalisisID" Parameter="analisisID" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
-    <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
-    <Return Type="System.Int32" />
-  </Function>
   <Function Name="dbo.SP_OBTENER_CONTEXTO_POR_ID" Method="SP_OBTENER_CONTEXTO_POR_ID">
     <Parameter Name="CONTEXTOID" Parameter="cONTEXTOID" Type="System.Int32" DbType="Int" />
     <ElementType Name="SP_OBTENER_CONTEXTO_POR_IDResult">
@@ -602,6 +593,16 @@
     <Parameter Name="TransaccionID" Parameter="transaccionID" Type="System.Int32" DbType="Int" Direction="InOut" />
     <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
     <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_CREAR_ANALISIS" Method="SP_CREAR_ANALISIS">
+    <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FechaInicio" Parameter="fechaInicio" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="FechaFin" Parameter="fechaFin" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="ContextoID" Parameter="contextoID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="AnalisisID" Parameter="analisisID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORDESCRIPTION" Parameter="eRRORDESCRIPTION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
     <Return Type="System.Int32" />
   </Function>
 </Database>

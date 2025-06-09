@@ -30,15 +30,15 @@ namespace AccesoADatos
 		
     #region Definiciones de métodos de extensibilidad
     partial void OnCreated();
-        #endregion
-
-        public ConexionLINQDataContext() :
-                base(global::AccesoADatos.Properties.Settings.Default.PiggyBankConnectionString3, mappingSource)
-        {
-            OnCreated();
-        }
-
-        public ConexionLINQDataContext(string connection) : 
+    #endregion
+		
+		public ConexionLINQDataContext() : 
+				base(global::AccesoADatos.Properties.Settings.Default.PiggyBankConnectionString3, mappingSource)
+		{
+			OnCreated();
+		}
+		
+		public ConexionLINQDataContext(string connection) : 
 				base(connection, mappingSource)
 		{
 			OnCreated();
@@ -441,16 +441,6 @@ namespace AccesoADatos
 			return ((ISingleResult<SP_OBTENER_MENSAJESResult>)(result.ReturnValue));
 		}
 		
-		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_CREAR_ANALISIS")]
-		public int SP_CREAR_ANALISIS([global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaInicio", DbType="Date")] System.Nullable<System.DateTime> fechaInicio, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaFin", DbType="Date")] System.Nullable<System.DateTime> fechaFin, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ContextoID", DbType="Int")] System.Nullable<int> contextoID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="AnalisisID", DbType="Int")] ref System.Nullable<int> analisisID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
-		{
-			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), usuarioID, fechaInicio, fechaFin, contextoID, analisisID, eRRORID, eRRORDESCRIPCION);
-			analisisID = ((System.Nullable<int>)(result.GetParameterValue(4)));
-			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(5)));
-			eRRORDESCRIPCION = ((string)(result.GetParameterValue(6)));
-			return ((int)(result.ReturnValue));
-		}
-		
 		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_OBTENER_CONTEXTO_POR_ID")]
 		public ISingleResult<SP_OBTENER_CONTEXTO_POR_IDResult> SP_OBTENER_CONTEXTO_POR_ID([global::System.Data.Linq.Mapping.ParameterAttribute(Name="CONTEXTOID", DbType="Int")] System.Nullable<int> cONTEXTOID)
 		{
@@ -553,6 +543,16 @@ namespace AccesoADatos
 			transaccionID = ((System.Nullable<int>)(result.GetParameterValue(9)));
 			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(10)));
 			eRRORDESCRIPCION = ((string)(result.GetParameterValue(11)));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_CREAR_ANALISIS")]
+		public int SP_CREAR_ANALISIS([global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaInicio", DbType="Date")] System.Nullable<System.DateTime> fechaInicio, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaFin", DbType="Date")] System.Nullable<System.DateTime> fechaFin, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ContextoID", DbType="Int")] System.Nullable<int> contextoID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="AnalisisID", DbType="Int")] ref System.Nullable<int> analisisID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPTION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPTION)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), usuarioID, fechaInicio, fechaFin, contextoID, analisisID, eRRORID, eRRORDESCRIPTION);
+			analisisID = ((System.Nullable<int>)(result.GetParameterValue(4)));
+			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(5)));
+			eRRORDESCRIPTION = ((string)(result.GetParameterValue(6)));
 			return ((int)(result.ReturnValue));
 		}
 	}
