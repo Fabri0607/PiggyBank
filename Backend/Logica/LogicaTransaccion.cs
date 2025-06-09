@@ -219,7 +219,7 @@ namespace Backend.Logica
             catch (Exception ex)
             {
                 res.resultado = false;
-                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Excepcion no controlada"));
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Excepcion no controlada" + ex.Message));
             }
 
             return res;
@@ -285,7 +285,7 @@ namespace Backend.Logica
             catch (Exception ex)
             {
                 res.resultado = false;
-                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Excepcion no controlada"));
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Excepcion no controlada" + ex.Message));
             }
 
             return res;
@@ -385,7 +385,7 @@ namespace Backend.Logica
             catch (Exception ex)
             {
                 res.resultado = false;
-                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Excepción no controlada"));
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Excepción no controlada" + ex.Message));
             }
 
             return res;
@@ -522,7 +522,7 @@ namespace Backend.Logica
             catch (Exception ex)
             {
                 res.resultado = false;
-                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Excepción no controlada"));
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Excepción no controlada" + ex.Message));
             }
 
             return res;
@@ -599,7 +599,7 @@ namespace Backend.Logica
             catch (Exception ex)
             {
                 res.resultado = false;
-                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Excepción no controlada"));
+                res.error.Add(HelperValidacion.CrearError(enumErrores.excepcionLogica, "Excepción no controlada" + ex.Message));
             }
 
             return res;
