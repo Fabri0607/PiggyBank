@@ -136,6 +136,7 @@ namespace APIRest.Controllers
         {
             return _logica.ObtenerUsuario(req);
         }
+
         [HttpPost]
         [Route("api/usuarios/solicitar-cambio-password")]
         [AllowAnonymous]
