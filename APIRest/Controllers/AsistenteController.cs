@@ -21,12 +21,16 @@ namespace APIRest.Controllers
         // POST: /api/asistente
         [HttpGet]
         [Route("api/asistente/contextos")]
-        public ResObtenerTodosContexto GetContextos(ReqObtenerTodosContexto req)
+        public ResObtenerTodosContexto GetContextos()
         {
             var authHeader = Request.Headers.Authorization;
             if (authHeader != null && authHeader.Scheme == "Bearer")
             {
-                req.token = authHeader.Parameter;
+                var req = new ReqObtenerTodosContexto
+                {
+                    token = authHeader.Parameter
+                };
+                return _logica.ObtenerContextos(req);
             }
             else
             {
@@ -43,7 +47,6 @@ namespace APIRest.Controllers
                 }
                 };
             }
-            return _logica.ObtenerContextos(req);
         }
 
         [HttpGet]
