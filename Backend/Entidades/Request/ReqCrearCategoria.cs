@@ -11,5 +11,5 @@ namespace Backend.Entidades.Request
         public string Nombre { get; set; }
         public string Icono { get; set; }
         public string ColorHex { get; set; }
-}
+    }
 }
