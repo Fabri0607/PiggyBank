@@ -605,4 +605,67 @@
     <Parameter Name="ERRORDESCRIPTION" Parameter="eRRORDESCRIPTION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
     <Return Type="System.Int32" />
   </Function>
+  <Function Name="dbo.SP_PAGO_PROGRAMADO_REGISTRAR" Method="SP_PAGO_PROGRAMADO_REGISTRAR">
+    <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Titulo" Parameter="titulo" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="Monto" Parameter="monto" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Parameter Name="Fecha_Vencimiento" Parameter="fecha_Vencimiento" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="CategoriaID" Parameter="categoriaID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="PagoID" Parameter="pagoID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_PAGO_PROGRAMADO_ACTUALIZAR" Method="SP_PAGO_PROGRAMADO_ACTUALIZAR">
+    <Parameter Name="PagoID" Parameter="pagoID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="Titulo" Parameter="titulo" Type="System.String" DbType="VarChar(100)" />
+    <Parameter Name="Monto" Parameter="monto" Type="System.Decimal" DbType="Decimal(10,2)" />
+    <Parameter Name="Fecha_Vencimiento" Parameter="fecha_Vencimiento" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="Estado" Parameter="estado" Type="System.String" DbType="VarChar(10)" />
+    <Parameter Name="CategoriaID" Parameter="categoriaID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_PAGO_PROGRAMADO_ELIMINAR" Method="SP_PAGO_PROGRAMADO_ELIMINAR">
+    <Parameter Name="PagoID" Parameter="pagoID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
+    <Return Type="System.Int32" />
+  </Function>
+  <Function Name="dbo.SP_PAGO_PROGRAMADO_OBTENER_DETALLE" Method="SP_PAGO_PROGRAMADO_OBTENER_DETALLE">
+    <Parameter Name="PagoID" Parameter="pagoID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="ERRORID" Parameter="eRRORID" Type="System.Int32" DbType="Int" Direction="InOut" />
+    <Parameter Name="ERRORDESCRIPCION" Parameter="eRRORDESCRIPCION" Type="System.String" DbType="NVarChar(MAX)" Direction="InOut" />
+    <ElementType Name="SP_PAGO_PROGRAMADO_OBTENER_DETALLEResult">
+      <Column Name="PagoID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="UsuarioID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Titulo" Type="System.String" DbType="VarChar(100)" CanBeNull="true" />
+      <Column Name="Monto" Type="System.Decimal" DbType="Decimal(10,2)" CanBeNull="true" />
+      <Column Name="Fecha_Vencimiento" Type="System.DateTime" DbType="Date" CanBeNull="true" />
+      <Column Name="Estado" Type="System.String" DbType="VarChar(10)" CanBeNull="true" />
+      <Column Name="Created_at" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="CategoriaID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="NombreCategoria" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Icono" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="ColorHex" Type="System.String" DbType="VarChar(7)" CanBeNull="true" />
+    </ElementType>
+  </Function>
+  <Function Name="dbo.SP_PAGOSPROGRAMADOS_OBTENER_POR_USUARIO" Method="SP_PAGOSPROGRAMADOS_OBTENER_POR_USUARIO">
+    <Parameter Name="UsuarioID" Parameter="usuarioID" Type="System.Int32" DbType="Int" />
+    <Parameter Name="FechaInicio" Parameter="fechaInicio" Type="System.DateTime" DbType="Date" />
+    <Parameter Name="FechaFin" Parameter="fechaFin" Type="System.DateTime" DbType="Date" />
+    <ElementType Name="SP_PAGOSPROGRAMADOS_OBTENER_POR_USUARIOResult">
+      <Column Name="PagoID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Titulo" Type="System.String" DbType="VarChar(100) NOT NULL" CanBeNull="false" />
+      <Column Name="Monto" Type="System.Decimal" DbType="Decimal(10,2) NOT NULL" CanBeNull="false" />
+      <Column Name="Fecha_Vencimiento" Type="System.DateTime" DbType="Date NOT NULL" CanBeNull="false" />
+      <Column Name="Estado" Type="System.String" DbType="VarChar(10) NOT NULL" CanBeNull="false" />
+      <Column Name="Created_at" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="Categoria" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+    </ElementType>
+  </Function>
 </Database>

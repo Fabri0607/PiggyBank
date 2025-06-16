@@ -108,6 +108,7 @@
     <Compile Include="DTO\MetaTransaccionDTO.cs" />
     <Compile Include="DTO\MiembroDTO.cs" />
     <Compile Include="DTO\ContextoDTO.cs" />
+    <Compile Include="DTO\PagoDTO.cs" />
     <Compile Include="DTO\RespuestaDTO.cs" />
     <Compile Include="DTO\TransaccionDTO.cs" />
     <Compile Include="DTO\UsuarioDTO.cs" />
@@ -138,6 +139,7 @@
     <Compile Include="Entidades\Request\ReqActualizarEstadoGasto.cs" />
     <Compile Include="Entidades\Request\ReqActualizarGrupo.cs" />
     <Compile Include="Entidades\Request\ReqActualizarMeta.cs" />
+    <Compile Include="Entidades\Request\ReqActualizarPago.cs" />
     <Compile Include="Entidades\Request\ReqActualizarPerfil.cs" />
     <Compile Include="Entidades\Request\ReqActualizarProgresoMeta.cs" />
     <Compile Include="Entidades\Request\ReqActualizarResumen.cs" />
@@ -154,7 +156,9 @@
     <Compile Include="Entidades\Request\ReqEliminarGrupo.cs" />
     <Compile Include="Entidades\Request\ReqEliminarMeta.cs" />
     <Compile Include="Entidades\Request\ReqEliminarMiembro.cs" />
+    <Compile Include="Entidades\Request\ReqEliminarPago.cs" />
     <Compile Include="Entidades\Request\ReqEliminarTransaccion.cs" />
+    <Compile Include="Entidades\Request\ReqIngresarPagoProgramado.cs" />
     <Compile Include="Entidades\Request\ReqIngresarTransaccion.cs" />
     <Compile Include="Entidades\Request\ReqIniciarSesion.cs" />
     <Compile Include="Entidades\Request\ReqInsertarMensajeChat.cs" />
@@ -164,6 +168,7 @@
     <Compile Include="Entidades\Request\ReqListarMetas.cs" />
     <Compile Include="Entidades\Request\ReqObtenerAnalisisUsuario.cs" />
     <Compile Include="Entidades\Request\ReqObtenerBalanceGrupal.cs" />
+    <Compile Include="Entidades\Request\ReqObtenerDetallePago.cs" />
     <Compile Include="Entidades\Request\ReqObtenerDetalleTransaccion.cs" />
     <Compile Include="Entidades\Request\ReqObtenerDetallesGrupo.cs" />
     <Compile Include="Entidades\Request\ReqObtenerDetallesMeta.cs" />
@@ -171,6 +176,7 @@
     <Compile Include="Entidades\Request\ReqObtenerTransacciones.cs" />
     <Compile Include="Entidades\Request\ReqObtenerMensajes.cs" />
     <Compile Include="Entidades\Request\ReqObtenerUsuario.cs" />
+    <Compile Include="Entidades\Request\ReqPagosPorUsuario.cs" />
     <Compile Include="Entidades\Request\ReqReenviarCodigoVerificacion.cs" />
     <Compile Include="Entidades\Request\ReqRegistrarGastoCompartido.cs" />
     <Compile Include="Entidades\Request\ReqRegistrarUsuario.cs" />
@@ -182,6 +188,7 @@
     <Compile Include="Entidades\Response\ResActualizarEstadoGasto.cs" />
     <Compile Include="Entidades\Response\ResActualizarGrupo.cs" />
     <Compile Include="Entidades\Response\ResActualizarMeta.cs" />
+    <Compile Include="Entidades\Response\ResActualizarPago.cs" />
     <Compile Include="Entidades\Response\ResActualizarPerfil.cs" />
     <Compile Include="Entidades\Response\ResActualizarProgresoMeta.cs" />
     <Compile Include="Entidades\Response\ResActualizarResumen.cs" />
@@ -199,7 +206,9 @@
     <Compile Include="Entidades\Response\ResEliminarGrupo.cs" />
     <Compile Include="Entidades\Response\ResEliminarMeta.cs" />
     <Compile Include="Entidades\Response\ResEliminarMiembro.cs" />
+    <Compile Include="Entidades\Response\ResEliminarPago.cs" />
     <Compile Include="Entidades\Response\ResEliminarTransaccion.cs" />
+    <Compile Include="Entidades\Response\ResIngresarPagoProgramado.cs" />
     <Compile Include="Entidades\Response\ResIngresarTransaccion.cs" />
     <Compile Include="Entidades\Response\ResIniciarSesion.cs" />
     <Compile Include="Entidades\Response\ResInsertarMensajeChat.cs" />
@@ -210,6 +219,7 @@
     <Compile Include="Entidades\Response\ResObtenerAnalisisUsuario.cs" />
     <Compile Include="Entidades\Response\ResObtenerBalanceGrupal.cs" />
     <Compile Include="Entidades\Response\ResObtenerCategorias.cs" />
+    <Compile Include="Entidades\Response\ResObtenerDetallePago.cs" />
     <Compile Include="Entidades\Response\ResObtenerDetalleTransaccion.cs" />
     <Compile Include="Entidades\Response\ResObtenerDetallesGrupo.cs" />
     <Compile Include="Entidades\Response\ResObtenerDetallesMeta.cs" />
@@ -217,6 +227,7 @@
     <Compile Include="Entidades\Response\ResObtenerTransacciones.cs" />
     <Compile Include="Entidades\Response\ResObtenerMensajes.cs" />
     <Compile Include="Entidades\Response\ResObtenerUsuario.cs" />
+    <Compile Include="Entidades\Response\ResPagosPorUsuario.cs" />
     <Compile Include="Entidades\Response\ResReenviarCodigoVerificacion.cs" />
     <Compile Include="Entidades\Response\ResRegistrarGastoCompartido.cs" />
     <Compile Include="Entidades\Response\ResRegistrarUsuario.cs" />
@@ -233,6 +244,7 @@
     <Compile Include="Logica\LogicaCategoria.cs" />
     <Compile Include="Logica\LogicaGrupo.cs" />
     <Compile Include="Logica\LogicaMeta.cs" />
+    <Compile Include="Logica\LogicaPagoProgramado.cs" />
     <Compile Include="Logica\LogicaTransaccion.cs" />
     <Compile Include="Logica\LogicaUsuario.cs" />
     <Compile Include="Logica\TestLogAsis.cs" />

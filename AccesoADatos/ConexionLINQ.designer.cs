@@ -555,6 +555,50 @@ namespace AccesoADatos
 			eRRORDESCRIPTION = ((string)(result.GetParameterValue(6)));
 			return ((int)(result.ReturnValue));
 		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_PAGO_PROGRAMADO_REGISTRAR")]
+		public int SP_PAGO_PROGRAMADO_REGISTRAR([global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Titulo", DbType="VarChar(100)")] string titulo, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Monto", DbType="Decimal(10,2)")] System.Nullable<decimal> monto, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Fecha_Vencimiento", DbType="Date")] System.Nullable<System.DateTime> fecha_Vencimiento, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CategoriaID", DbType="Int")] System.Nullable<int> categoriaID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="PagoID", DbType="Int")] ref System.Nullable<int> pagoID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), usuarioID, titulo, monto, fecha_Vencimiento, categoriaID, pagoID, eRRORID, eRRORDESCRIPCION);
+			pagoID = ((System.Nullable<int>)(result.GetParameterValue(5)));
+			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(6)));
+			eRRORDESCRIPCION = ((string)(result.GetParameterValue(7)));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_PAGO_PROGRAMADO_ACTUALIZAR")]
+		public int SP_PAGO_PROGRAMADO_ACTUALIZAR([global::System.Data.Linq.Mapping.ParameterAttribute(Name="PagoID", DbType="Int")] System.Nullable<int> pagoID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Titulo", DbType="VarChar(100)")] string titulo, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Monto", DbType="Decimal(10,2)")] System.Nullable<decimal> monto, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Fecha_Vencimiento", DbType="Date")] System.Nullable<System.DateTime> fecha_Vencimiento, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="Estado", DbType="VarChar(10)")] string estado, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="CategoriaID", DbType="Int")] System.Nullable<int> categoriaID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pagoID, usuarioID, titulo, monto, fecha_Vencimiento, estado, categoriaID, eRRORID, eRRORDESCRIPCION);
+			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(7)));
+			eRRORDESCRIPCION = ((string)(result.GetParameterValue(8)));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_PAGO_PROGRAMADO_ELIMINAR")]
+		public int SP_PAGO_PROGRAMADO_ELIMINAR([global::System.Data.Linq.Mapping.ParameterAttribute(Name="PagoID", DbType="Int")] System.Nullable<int> pagoID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pagoID, usuarioID, eRRORID, eRRORDESCRIPCION);
+			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(2)));
+			eRRORDESCRIPCION = ((string)(result.GetParameterValue(3)));
+			return ((int)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_PAGO_PROGRAMADO_OBTENER_DETALLE")]
+		public ISingleResult<SP_PAGO_PROGRAMADO_OBTENER_DETALLEResult> SP_PAGO_PROGRAMADO_OBTENER_DETALLE([global::System.Data.Linq.Mapping.ParameterAttribute(Name="PagoID", DbType="Int")] System.Nullable<int> pagoID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORID", DbType="Int")] ref System.Nullable<int> eRRORID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="ERRORDESCRIPCION", DbType="NVarChar(MAX)")] ref string eRRORDESCRIPCION)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), pagoID, usuarioID, eRRORID, eRRORDESCRIPCION);
+			eRRORID = ((System.Nullable<int>)(result.GetParameterValue(2)));
+			eRRORDESCRIPCION = ((string)(result.GetParameterValue(3)));
+			return ((ISingleResult<SP_PAGO_PROGRAMADO_OBTENER_DETALLEResult>)(result.ReturnValue));
+		}
+		
+		[global::System.Data.Linq.Mapping.FunctionAttribute(Name="dbo.SP_PAGOSPROGRAMADOS_OBTENER_POR_USUARIO")]
+		public ISingleResult<SP_PAGOSPROGRAMADOS_OBTENER_POR_USUARIOResult> SP_PAGOSPROGRAMADOS_OBTENER_POR_USUARIO([global::System.Data.Linq.Mapping.ParameterAttribute(Name="UsuarioID", DbType="Int")] System.Nullable<int> usuarioID, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaInicio", DbType="Date")] System.Nullable<System.DateTime> fechaInicio, [global::System.Data.Linq.Mapping.ParameterAttribute(Name="FechaFin", DbType="Date")] System.Nullable<System.DateTime> fechaFin)
+		{
+			IExecuteResult result = this.ExecuteMethodCall(this, ((MethodInfo)(MethodInfo.GetCurrentMethod())), usuarioID, fechaInicio, fechaFin);
+			return ((ISingleResult<SP_PAGOSPROGRAMADOS_OBTENER_POR_USUARIOResult>)(result.ReturnValue));
+		}
 	}
 	
 	public partial class SP_BALANCE_OBTENER_POR_GRUPOResult
@@ -3636,6 +3680,346 @@ namespace AccesoADatos
 				if ((this._MotivoRevocacion != value))
 				{
 					this._MotivoRevocacion = value;
+				}
+			}
+		}
+	}
+	
+	public partial class SP_PAGO_PROGRAMADO_OBTENER_DETALLEResult
+	{
+		
+		private System.Nullable<int> _PagoID;
+		
+		private System.Nullable<int> _UsuarioID;
+		
+		private string _Titulo;
+		
+		private System.Nullable<decimal> _Monto;
+		
+		private System.Nullable<System.DateTime> _Fecha_Vencimiento;
+		
+		private string _Estado;
+		
+		private System.Nullable<System.DateTime> _Created_at;
+		
+		private System.Nullable<int> _CategoriaID;
+		
+		private string _NombreCategoria;
+		
+		private string _Icono;
+		
+		private string _ColorHex;
+		
+		public SP_PAGO_PROGRAMADO_OBTENER_DETALLEResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PagoID", DbType="Int")]
+		public System.Nullable<int> PagoID
+		{
+			get
+			{
+				return this._PagoID;
+			}
+			set
+			{
+				if ((this._PagoID != value))
+				{
+					this._PagoID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UsuarioID", DbType="Int")]
+		public System.Nullable<int> UsuarioID
+		{
+			get
+			{
+				return this._UsuarioID;
+			}
+			set
+			{
+				if ((this._UsuarioID != value))
+				{
+					this._UsuarioID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Titulo", DbType="VarChar(100)")]
+		public string Titulo
+		{
+			get
+			{
+				return this._Titulo;
+			}
+			set
+			{
+				if ((this._Titulo != value))
+				{
+					this._Titulo = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Monto", DbType="Decimal(10,2)")]
+		public System.Nullable<decimal> Monto
+		{
+			get
+			{
+				return this._Monto;
+			}
+			set
+			{
+				if ((this._Monto != value))
+				{
+					this._Monto = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Fecha_Vencimiento", DbType="Date")]
+		public System.Nullable<System.DateTime> Fecha_Vencimiento
+		{
+			get
+			{
+				return this._Fecha_Vencimiento;
+			}
+			set
+			{
+				if ((this._Fecha_Vencimiento != value))
+				{
+					this._Fecha_Vencimiento = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Estado", DbType="VarChar(10)")]
+		public string Estado
+		{
+			get
+			{
+				return this._Estado;
+			}
+			set
+			{
+				if ((this._Estado != value))
+				{
+					this._Estado = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Created_at", DbType="DateTime")]
+		public System.Nullable<System.DateTime> Created_at
+		{
+			get
+			{
+				return this._Created_at;
+			}
+			set
+			{
+				if ((this._Created_at != value))
+				{
+					this._Created_at = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CategoriaID", DbType="Int")]
+		public System.Nullable<int> CategoriaID
+		{
+			get
+			{
+				return this._CategoriaID;
+			}
+			set
+			{
+				if ((this._CategoriaID != value))
+				{
+					this._CategoriaID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_NombreCategoria", DbType="NVarChar(MAX)")]
+		public string NombreCategoria
+		{
+			get
+			{
+				return this._NombreCategoria;
+			}
+			set
+			{
+				if ((this._NombreCategoria != value))
+				{
+					this._NombreCategoria = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Icono", DbType="VarChar(50)")]
+		public string Icono
+		{
+			get
+			{
+				return this._Icono;
+			}
+			set
+			{
+				if ((this._Icono != value))
+				{
+					this._Icono = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_ColorHex", DbType="VarChar(7)")]
+		public string ColorHex
+		{
+			get
+			{
+				return this._ColorHex;
+			}
+			set
+			{
+				if ((this._ColorHex != value))
+				{
+					this._ColorHex = value;
+				}
+			}
+		}
+	}
+	
+	public partial class SP_PAGOSPROGRAMADOS_OBTENER_POR_USUARIOResult
+	{
+		
+		private int _PagoID;
+		
+		private string _Titulo;
+		
+		private decimal _Monto;
+		
+		private System.DateTime _Fecha_Vencimiento;
+		
+		private string _Estado;
+		
+		private System.Nullable<System.DateTime> _Created_at;
+		
+		private string _Categoria;
+		
+		public SP_PAGOSPROGRAMADOS_OBTENER_POR_USUARIOResult()
+		{
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PagoID", DbType="Int NOT NULL")]
+		public int PagoID
+		{
+			get
+			{
+				return this._PagoID;
+			}
+			set
+			{
+				if ((this._PagoID != value))
+				{
+					this._PagoID = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Titulo", DbType="VarChar(100) NOT NULL", CanBeNull=false)]
+		public string Titulo
+		{
+			get
+			{
+				return this._Titulo;
+			}
+			set
+			{
+				if ((this._Titulo != value))
+				{
+					this._Titulo = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Monto", DbType="Decimal(10,2) NOT NULL")]
+		public decimal Monto
+		{
+			get
+			{
+				return this._Monto;
+			}
+			set
+			{
+				if ((this._Monto != value))
+				{
+					this._Monto = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Fecha_Vencimiento", DbType="Date NOT NULL")]
+		public System.DateTime Fecha_Vencimiento
+		{
+			get
+			{
+				return this._Fecha_Vencimiento;
+			}
+			set
+			{
+				if ((this._Fecha_Vencimiento != value))
+				{
+					this._Fecha_Vencimiento = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Estado", DbType="VarChar(10) NOT NULL", CanBeNull=false)]
+		public string Estado
+		{
+			get
+			{
+				return this._Estado;
+			}
+			set
+			{
+				if ((this._Estado != value))
+				{
+					this._Estado = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Created_at", DbType="DateTime")]
+		public System.Nullable<System.DateTime> Created_at
+		{
+			get
+			{
+				return this._Created_at;
+			}
+			set
+			{
+				if ((this._Created_at != value))
+				{
+					this._Created_at = value;
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Categoria", DbType="VarChar(50)")]
+		public string Categoria
+		{
+			get
+			{
+				return this._Categoria;
+			}
+			set
+			{
+				if ((this._Categoria != value))
+				{
+					this._Categoria = value;
 				}
 			}
 		}

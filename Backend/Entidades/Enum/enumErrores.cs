@@ -56,6 +56,7 @@ namespace Backend.Entidades
         TipoTransaccionInvalido = 45,
         FechaInvalida = 46,
         gastoNoEncontrado = 47,
-        metaNoEncontrada = 48
+        metaNoEncontrada = 48,
+        pagoNoEncontrado = 49,
     }
 }
