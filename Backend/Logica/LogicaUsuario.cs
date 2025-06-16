@@ -919,7 +919,7 @@ namespace Backend.Logica
                 }
 
                 // Enviar correo con el código de verificación
-                bool correoEnviado = HelperCorreo.EnviarCorreoVerificacion(req.Email, usuario.Nombre, nuevoCodigo);
+                bool correoEnviado = HelperCorreo.EnviarCorreoContrasena(req.Email, usuario.Nombre, nuevoCodigo);
 
                 if (correoEnviado)
                 {
