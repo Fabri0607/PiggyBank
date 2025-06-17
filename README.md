@@ -147,7 +147,7 @@
 </ul>
 
 <hr>
-<p>Desarrollado por: <strong>Fabricio Alfaro Arce</strong>, Cristopher González, Nahum Mora y Orlando | Curso: Diseño y Programación de Plataformas Móviles</p>
+<p>Desarrollado por: <strong>Fabricio Alfaro Arce</strong>, Cristopher González, Nahum Mora y Orlando Mena| Curso: Diseño y Programación de Plataformas Móviles</p>
 
 </body>
 </html>
